@@ -9,13 +9,15 @@ SRC_DIR		=	./src/
 
 INC_DIR		=	./include/
 
+RM			=	rm -f
+
 CC			=	g++
 
 SRC			=	$(SRC_DIR)main.cpp					
 
 OBJ			=	$(SRC:.cpp=.o)
 
-CFLAGS  	+=	-Wall -Wextra -Werror
+CFLAGS  	+=	-Wall -Wextra
 
 NAME		=	arcade
 
@@ -25,11 +27,11 @@ $(NAME):		$(OBJ)
 				$(CC) -o $(NAME) $(OBJ)
 
 clean:
-				@rm -f $(OBJ)
+				$(RM) -f $(OBJ)
 
 fclean: 		clean
-				@rm -f $(NAME)
+				$(RM) -f $(NAME)
 
 re: 			fclean all
 
-.PHONY:			all clean fclean re% 
+.PHONY:			all clean fclean re
