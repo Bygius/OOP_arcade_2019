@@ -38,8 +38,8 @@ class IDisplayModule {
             LIGHT_BLUE,
             LIGHT_MAGENTA,
             LIGHT_CYAN,
-            WHITE,
-            END
+            WHITE
+            // END
         };
 
         // Keys you have to implement, there are enough keys to have multiple keyboard configurations for every game

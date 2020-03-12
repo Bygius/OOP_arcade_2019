@@ -5,28 +5,26 @@
 ## Makefile
 ##
 
-INC_DIR		= include/
+INC_DIR		= ./include/
+INT_DIR		= ../../include/
 
-CFLAGS		+= -I $(INC_DIR)
-CFLAGS		+= -Wall -Wextra
+CXXFLAGS		+= -I $(INC_DIR)
+CXXFLAGS		+= -Wall -Wextra -fPIC
+CXXFLAGS		+= -I $(INT_DIR)
 
-RM		= rm -f
+RM		=	rm -f
 
-CC		=	gcc
+CC		=	g++
 
-NAME		=	lib_arcade_libone.so
+NAME		=	lib_arcade_sfml.so
 
 SRCS_DIR	=	src/
-SRCS_FILES	=	main.c 					
+SRCS_FILES	=	display_stuff.cpp \
+				libsfml.cpp					
 
 SRCS		= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
-OBJS		= $(SRCS:.c=.o)
-
-CFLAGS  +=      -Wall -Wextra -fpic -I $(DIR_INC)
-
-MAKEFLAGS +=	--no-print-directory
-
+OBJS		= $(SRCS:.cpp=.o)
 
 all: $(NAME)
 	cp	$(NAME) ../
