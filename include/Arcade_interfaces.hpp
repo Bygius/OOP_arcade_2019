@@ -38,8 +38,8 @@ class IDisplayModule {
             LIGHT_BLUE,
             LIGHT_MAGENTA,
             LIGHT_CYAN,
-            WHITE
-            // END
+            WHITE,
+            COLORS_END
         };
 
         // Keys you have to implement, there are enough keys to have multiple keyboard configurations for every game
@@ -65,34 +65,34 @@ class IDisplayModule {
             I,
             M,
             R,
-            END
+            KEYS_END
         };
 
         // For the core
         // Reset the library
         virtual void reset() = 0;
         // Check if the window is open
-        virtual bool is_open() = 0;
+        virtual bool isOpen() = 0;
 
         // Handle switching libs & games (the names are explicit)
         // Those are all key presses
         // Those must be different than the keys listed in the Keys enum.
         // The keys enum only lists keys used by games, not special keys to switch libraries.
-        virtual bool switch_to_next_lib() = 0;
-        virtual bool switch_to_previous_lib() = 0;
-        virtual bool switch_to_next_game() = 0;
-        virtual bool switch_to_previous_game() = 0;
+        virtual bool switchToNext_lib() = 0;
+        virtual bool switchToPrevious_lib() = 0;
+        virtual bool switchToNext_game() = 0;
+        virtual bool switchToPrevious_game() = 0;
         // From the pdf
-        virtual bool should_be_restarted() = 0;
-        virtual bool should_go_to_menu() = 0;
-        virtual bool should_exit() = 0;
+        virtual bool shouldBeRestarted() = 0;
+        virtual bool shouldGoToMenu() = 0;
+        virtual bool shouldExit() = 0;
 
         // Handle Inputs & Events
-        virtual bool is_key_pressed(IDisplayModule::Keys) = 0;
-        virtual bool is_key_pressed_once(IDisplayModule::Keys) = 0;
+        virtual bool isKeyPressed(IDisplayModule::Keys) = 0;
+        virtual bool isKeyPressedOnce(IDisplayModule::Keys) = 0;
         // Get the number of frames that passed between two calls to this function
         // The games should not be frame dependant!! That's why this is here.
-        virtual float get_delta() = 0;
+        virtual float getDelta() = 0;
 
         // Handle Loop
         virtual void clear() = 0;
@@ -105,27 +105,27 @@ class IDisplayModule {
 
         // Handle Text Input
         // We need to ask for the player's name (check the pdf before complaining and asking about this function)
-        virtual std::string get_player_name() = 0;
-        virtual void set_player_name(std::string) = 0;
+        virtual std::string getPlayerName() = 0;
+        virtual void setPlayerName(std::string) = 0;
 
         // Display Stuff
         // Sets the color for all the following draw functions.
         // everything you display after this will have the selected color
-        virtual void set_color(IDisplayModule::Colors col) = 0;
+        virtual void setColor(IDisplayModule::Colors col) = 0;
         // Display a pixel
-        virtual void put_pixel(float x, float y) = 0;
+        virtual void putPixel(float x, float y) = 0;
         // Display a line
-        virtual void put_line(float x1, float y1, float x2, float y2) = 0;
+        virtual void putLine(float x1, float y1, float x2, float y2) = 0;
         // Display an empty rectangle
-        virtual void put_rect(float x, float y, float w, float h) = 0;
+        virtual void putRect(float x, float y, float w, float h) = 0;
         // Display a full rectangle
-        virtual void put_fill_rect(float x, float y, float w, float h) = 0;
+        virtual void putFillRect(float x, float y, float w, float h) = 0;
         // Display an empty circle
-        virtual void put_circle(float x, float y, float rad) = 0;
+        virtual void putCircle(float x, float y, float rad) = 0;
         // Display a full circle
-        virtual void put_fill_circle(float x, float y, float rad) = 0;
+        virtual void putFillCircle(float x, float y, float rad) = 0;
         // Display some text
-        virtual void put_text(std::string text, float size, int x, int y) = 0;
+        virtual void putText(std::string text, float size, float x, float y) = 0;
 
         // We chose not to display images because some library can't and it would cause other problems
         // You can still parse a file and display pixel art images by displaying pixels manually if you want.
@@ -144,19 +144,19 @@ class IGameModule {
         virtual void reset() = 0;
 
         // Load highscores from file and return wether it worked or not
-        virtual bool load_from_file(std::string filepath) = 0; // with filename
-        virtual bool load_from_file() = 0; // default filename
+        virtual bool loadFromFile(std::string filepath) = 0; // with filename
+        virtual bool loadFromFile() = 0; // default filename
 
         // save highscores to file return wether it worked or not
-        virtual bool save_to_file(std::string filepath) = 0; // with filename
-        virtual bool save_to_file() = 0; // default filename
+        virtual bool saveToFile(std::string filepath) = 0; // with filename
+        virtual bool saveToFile() = 0; // default filename
 
         // Set the player's name
-        virtual void set_player_name(std::string) = 0;
+        virtual void setPlayerName(std::string) = 0;
         // get the best score
-        virtual std::map<std::string, int> get_highscore() = 0;
+        virtual std::map<std::string, int> getHighscore() = 0;
         // get the 16 best scores
-        virtual std::vector<std::map<std::string, int>> get_latest_scores() = 0;
+        virtual std::vector<std::map<std::string, int>> getLatestScores() = 0;
 
         // Handle Game
         // update game
