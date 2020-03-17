@@ -13,7 +13,8 @@ RM			=	rm -f
 
 CC			=	g++
 
-SRC			=	$(SRC_DIR)main.cpp					
+SRC			=	$(SRC_DIR)main.cpp		\
+				$(SRC_DIR)Core.cpp			
 
 OBJ			=	$(SRC:.cpp=.o)
 
@@ -22,6 +23,7 @@ CFLAGS  	+=	-Wall -Wextra
 NAME		=	arcade
 
 all: 			$(NAME)
+				cp $(NAME) ../
 
 $(NAME):		$(OBJ)
 				$(CC) -o $(NAME) $(OBJ)

@@ -11,8 +11,8 @@ DIR_CORE	=	core/
 DIR_DOC 	= 	doc/
 
 all:
-	make -C	$(DIR_GAME)
-	make -C $(DIR_LIB)
+	# make -C	$(DIR_GAME)
+	# make -C $(DIR_LIB)
 	make -C $(DIR_CORE)
 
 core:
