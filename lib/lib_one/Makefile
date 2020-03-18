@@ -11,6 +11,7 @@ INT_DIR		= ../../include/
 CXXFLAGS		+= -I $(INC_DIR)
 CXXFLAGS		+= -Wall -Wextra -fPIC
 CXXFLAGS		+= -I $(INT_DIR)
+CXXFLAGS		+= -lsfml-graphics -lsfml-window -lsfml-system
 
 RM		=	rm -f
 
@@ -19,8 +20,8 @@ CC		=	g++
 NAME		=	lib_arcade_sfml.so
 
 SRCS_DIR	=	src/
-SRCS_FILES	=	display_stuff.cpp \
-				libsfml.cpp					
+SRCS_FILES	=	main.cpp \
+				Libsfml.cpp					
 
 SRCS		= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
