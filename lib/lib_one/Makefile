@@ -21,7 +21,7 @@ NAME		=	lib_arcade_sfml.so
 
 SRCS_DIR	=	src/
 SRCS_FILES	=	main.cpp \
-				Libsfml.cpp					
+				Libsfml.cpp \
 
 SRCS		= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
