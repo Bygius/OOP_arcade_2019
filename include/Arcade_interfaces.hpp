@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <vector>
-#include<tuple>
+#include <tuple>
 
 #define SAVE_PATH "games/.saves/"
 #define WIDTH 640

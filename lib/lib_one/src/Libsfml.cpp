@@ -7,76 +7,64 @@
 
 #include "Libsfml.hpp"
 
-Libsfml::Libsfml(size_t width, size_t height)
+Libsfml::Libsfml()
 {
-    this->_window.create(sf::VideoMode(width, height), "My window");
-    this->_texture.create(width, height);
+    this->_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(WIDTH, HEIGHT), "My window");
     this->_color = sf::Color::White;
 }
 
 void Libsfml::reset()
 {
-
 }
         
 bool Libsfml::isOpen() const
 {
-    return (this->_window.isOpen());
+    return (this->_window->isOpen());
 }
 
 bool Libsfml::switchToNext_lib() const
 {
-
 }
 
 bool Libsfml::switchToPrevious_lib() const
 {
-
 }
 
 bool Libsfml::switchToNext_game() const
 {
-
 }
 
 bool Libsfml::switchToPrevious_game() const
 {
-
 }
 
 bool Libsfml::shouldBeRestarted() const
 {
-
 }
 
 bool Libsfml::shouldGoToMenu() const
 {
-
 }
 
 bool Libsfml::shouldExit() const
 {
-
 }
 
 bool Libsfml::isKeyPressed(IDisplayModule::Keys) const
 {
-
 }
 
 bool Libsfml::isKeyPressedOnce(IDisplayModule::Keys) const
 {
-
 }
 
 float Libsfml::getDelta() const
 {
-
 }
 
 void Libsfml::clear() const
 {
-    //this->_window.clear();
+    this->_window->clear();
 }
 
 void Libsfml::update()
@@ -85,7 +73,11 @@ void Libsfml::update()
 
 void Libsfml::render() const
 {
-    //this->_window.display();
+    this->_window->display();
+}
+
+char Libsfml::getKeyCode() const
+{
 }
 
 void Libsfml::setColor(IDisplayModule::Colors color)
@@ -151,12 +143,17 @@ void Libsfml::putPixel(float x, float y) const
     sf::VertexArray vertex(sf::Points, 1);
     vertex[0].position = sf::Vector2f(x, y);
     vertex[0].color = this->_color; 
-    // this->_window.draw(vertex);
+    this->_window->draw(vertex);
 }
 
 void Libsfml::putLine(float x1, float y1, float x2, float y2) const
 {
-    sf::VertexArray vertex(sf::Lines, 1);
+    sf::VertexArray vertex(sf::Lines, 2);
+    vertex[0].position = sf::Vector2f(x1, y1);
+    vertex[1].position = sf::Vector2f(x2, y2);
+    vertex[0].color = this->_color;
+    vertex[1].color = this->_color;
+    this->_window->draw(vertex);
 }
 
 void Libsfml::putRect(float x, float y, float w, float h) const

@@ -10,17 +10,18 @@
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 #include "Arcade_interfaces.hpp"
+#include <memory>
 
 class Libsfml : public IDisplayModule
 {
     private:
-        sf::RenderWindow _window;
-        sf::Texture _texture;
+        std::unique_ptr<sf::RenderWindow> _window;
         sf::Color _color;
 
     public:
-        Libsfml(size_t width, size_t height);
+        Libsfml();
         
         void reset();
         bool isOpen() const;
