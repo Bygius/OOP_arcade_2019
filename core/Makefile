@@ -8,17 +8,18 @@
 SRC_DIR		=	./src/
 
 INC_DIR		=	./include/
+INC_DIR		=	../include/
 
 RM			=	rm -f
 
 CC			=	g++
 
 SRC			=	$(SRC_DIR)main.cpp		\
-				$(SRC_DIR)Core.cpp			
+				$(SRC_DIR)Core.cpp
 
 OBJ			=	$(SRC:.cpp=.o)
 
-CFLAGS  	+=	-Wall -Wextra
+CXXFLAGS  	+=	-Wall -Wextra -I$(INC_DIR)
 
 NAME		=	arcade
 
@@ -26,7 +27,7 @@ all: 			$(NAME)
 				cp $(NAME) ../
 
 $(NAME):		$(OBJ)
-				$(CC) -o $(NAME) $(OBJ)
+				$(CC) -o $(NAME) $(OBJ) -ldl
 
 clean:
 				$(RM) -f $(OBJ)
