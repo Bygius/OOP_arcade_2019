@@ -5,25 +5,26 @@
 ## Makefile
 ##
 
-INC_DIR		= include/
+INC_DIR		= ./include/
+INT_DIR		= ../../include/
 
-CFLAGS		+= -I $(INC_DIR)
-CFLAGS		+= -Wall -Wextra
+CXXFLAGS		+= -I $(INC_DIR)
+CXXFLAGS		+= -Wall -Wextra -fPIC
+CXXFLAGS		+= -I $(INT_DIR)
+CXXFLAGS		+= -lncurses
 
-RM		= rm -f
+RM		=	rm -f
 
 CC		=	gcc
 
-NAME		=	lib_arcade_libtwo.so
+NAME		=	lib_arcade_ncurses.so
 
 SRCS_DIR	=	src/
-SRCS_FILES	=	main.c 					
+SRCS_FILES	=	Libncurses.cpp
 
 SRCS		= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
-OBJS		= $(SRCS:.c=.o)
-
-CFLAGS  +=      -Wall -Wextra -fpic -I $(DIR_INC)
+OBJS		= $(SRCS:.cpp=.o)
 
 MAKEFLAGS +=	--no-print-directory
 
