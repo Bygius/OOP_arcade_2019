@@ -16,7 +16,7 @@ Libsfml::Libsfml()
 void Libsfml::reset()
 {
 }
-        
+
 bool Libsfml::isOpen() const
 {
     return (this->_window->isOpen());
@@ -178,5 +178,10 @@ void Libsfml::putText(const std::string &text, unsigned int size, float x, float
 
 const std::string &Libsfml::getLibName() const
 {
-    
+
+}
+
+extern "C" std::unique_ptr<IDisplayModule> createLib(void)
+{
+    return std::make_unique<Libsfml>();
 }
