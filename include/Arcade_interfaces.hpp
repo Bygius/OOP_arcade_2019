@@ -5,8 +5,8 @@
 ** core
 */
 
-#ifndef CORE_HPP_
-#define CORE_HPP_
+#ifndef ARCADE_INTERFACE_HPP_
+#define ARCADE_INTERFACE_HPP_
 
 #include <iostream>
 #include <vector>
