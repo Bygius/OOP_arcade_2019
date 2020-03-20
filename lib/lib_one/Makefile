@@ -9,7 +9,7 @@ INC_DIR		= ./include/
 INT_DIR		= ../../include/
 
 CXXFLAGS		+= -I $(INC_DIR)
-CXXFLAGS		+= -Wall -Wextra -fPIC
+CXXFLAGS		+= -Wall -Wextra -fPIC -rdynamic
 CXXFLAGS		+= -I $(INT_DIR)
 CXXFLAGS		+= -lsfml-graphics -lsfml-window -lsfml-system
 
@@ -31,7 +31,7 @@ all: $(NAME)
 	cp	$(NAME) ../
 
 $(NAME): $(OBJS)
-	$(CC) -shared -o $(NAME) $(OBJS)
+	$(CC) -o $(NAME) $(OBJS) $(CXXFLAGS) -shared -rdynamic
 
 clean:
 	$(RM) $(OBJS)
