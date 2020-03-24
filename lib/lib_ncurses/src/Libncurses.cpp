@@ -6,6 +6,8 @@
 */
 
 #include "Libncurses.hpp"
+#include <memory>
+#include <string>
 
 Libncurses::Libncurses()
 {
@@ -249,4 +251,9 @@ void Libncurses::putText(const std::string &text, unsigned int size, float x, fl
 const std::string &Libncurses::getLibName() const
 {
     return ("nCurses");
+}
+
+extern "C" std::unique_ptr<IDisplayModule> createLib(void)
+{
+    return std::make_unique<Libncurses>();
 }

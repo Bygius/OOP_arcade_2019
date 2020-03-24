@@ -6,7 +6,7 @@
 ##
 
 LIB_ONE		=	lib_one/
-LIB_TWO		=	lib_two/
+LIB_TWO		=	lib_ncurses/
 LIB_THREE	=	lib_three/
 
 
