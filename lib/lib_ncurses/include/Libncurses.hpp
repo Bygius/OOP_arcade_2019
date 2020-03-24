@@ -56,4 +56,6 @@ class Libncurses : public IDisplayModule
     private:
 };
 
+void my_clear();
+
 #endif /* !LIBNCURSES_HPP_ */

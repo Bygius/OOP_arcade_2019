@@ -12,7 +12,7 @@ DIR_DOC 	= 	doc/
 
 all:
 	# make -C	$(DIR_GAME)
-	# make -C $(DIR_LIB)
+	make -C $(DIR_LIB)
 	make -C $(DIR_CORE)
 
 core:
@@ -25,18 +25,18 @@ graphicals:
 	make -C $(DIR_LIB)
 
 clean:
-	make -C $(DIR_GAME)
+	# make -C $(DIR_GAME)
 	make -C $(DIR_LIB)
 	make -C $(DIR_CORE)
 
 fclean:
 	make -C $(DIR_DOC) fclean
-	make -C $(DIR_GAME) fclean
+	# make -C $(DIR_GAME) fclean
 	make -C $(DIR_LIB) fclean
 	make -C $(DIR_CORE) fclean
 
 re:
-	make -C $(DIR_GAME) re
+	# make -C $(DIR_GAME) re
 	make -C $(DIR_LIB) re
 	make -C $(DIR_CORE) re
 

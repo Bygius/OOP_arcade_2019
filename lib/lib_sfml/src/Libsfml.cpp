@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2020
-** lib_one
+** lib_sfml
 ** File description:
 ** libsfml
 */

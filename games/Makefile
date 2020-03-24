@@ -5,9 +5,9 @@
 ## Makefile
 ##
 
-GAME_ONE		=	lib_one/
-GAME_TWO		=	lib_two/
-GAME_THREE		=	lib_three/
+GAME_ONE		=	game_one/
+GAME_TWO		=	game_two/
+GAME_THREE		=	game_three/
 
 
 all:

@@ -6,7 +6,7 @@
 */
 #include <dlfcn.h>
 #include "../include/Core.hpp"
-#include "../../lib/lib_one/include/Libsfml.hpp"
+#include "../../lib/lib_sfml/include/Libsfml.hpp"
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>

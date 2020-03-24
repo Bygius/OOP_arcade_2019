@@ -90,9 +90,14 @@ float Libncurses::getDelta() const
 
 }
 
-void Libncurses::clear() const
+void my_clear()
 {
     clear();
+}
+
+void Libncurses::clear() const
+{
+    my_clear();
 }
 
 void Libncurses::update()
