@@ -31,6 +31,8 @@ Libncurses::Libncurses()
     init_pair(LIGHT_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
     init_pair(LIGHT_CYAN, COLOR_CYAN, COLOR_BLACK);
     init_pair(WHITE, COLOR_WHITE, COLOR_BLACK);
+
+    this->_name = "nCurses";
 }
 
 Libncurses::~Libncurses()
@@ -59,52 +61,52 @@ bool Libncurses::isOpen() const
 
 bool Libncurses::switchToNext_lib() const
 {
-
+    return (false);
 }
 
 bool Libncurses::switchToPrevious_lib() const
 {
-
+    return (false);
 }
 
 bool Libncurses::switchToNext_game() const
 {
-
+    return (false);
 }
 
 bool Libncurses::switchToPrevious_game() const
 {
-
+    return (false);
 }
 
 bool Libncurses::shouldBeRestarted() const
 {
-
+    return (false);
 }
 
 bool Libncurses::shouldGoToMenu() const
 {
-
+    return (false);
 }
 
 bool Libncurses::shouldExit() const
 {
-
+    return (false);
 }
 
 bool Libncurses::isKeyPressed(IDisplayModule::Keys) const
 {
-
+    return (false);
 }
 
 bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys) const
 {
-
+    return (false);
 }
 
 float Libncurses::getDelta() const
 {
-
+    return (0.00);
 }
 
 void my_clear()
@@ -128,7 +130,7 @@ void Libncurses::render() const
 
 char Libncurses::getKeyCode() const
 {
-    
+    return ('a');
 }
 
 void Libncurses::setColor(IDisplayModule::Colors color)
@@ -198,25 +200,24 @@ void Libncurses::putPixel(float x, float y) const
 
 void Libncurses::putLine(float x1, float y1, float x2, float y2) const
 {
-    int sign = 0;
-    (int) x1;
-    (int) x2;
-    (int) y1;
-    (int) y2;
+    int x_one = (int) x1;
+    int x_two = (int) x2;
+    int y_one = (int) y1;
+    int y_two = (int) y2;
     int n = 0;
 
-    if (y2 != y1 && x1 == x2) {
-        if (y1 < y2)
-            n = y2 - y1;
+    if (y_two != y_one && x_one == x_two) {
+        if (y_one < y_two)
+            n = y_two - y_one;
         else
-            n = y1 - y2;
-        mvvline(resize(y1), resize(x1), '|', n);
-    } else if (x1 != x2 && y1 == y2) {
-        if (x1 < x2)
-            n = x2 - x1;
+            n = y_one - y_two;
+        mvvline(resize(y_one), resize(x_one), '|', n);
+    } else if (x_one != x_two && y_one == y_two) {
+        if (x_one < x_two)
+            n = x_two - x_one;
         else
-            n = x1 - x2;
-        mvhline(resize(y1), resize(x1), '_', n);
+            n = x_one - x_two;
+        mvhline(resize((int) y_one), resize(x_one), '_', n);
     } else {
         printf("Bad coord");
     }
@@ -251,11 +252,15 @@ void Libncurses::putFillRect(float x, float y, float w, float h) const
 
 void Libncurses::putCircle(float x, float y, float rad) const
 {
+    (void) rad;
     mvprintw(resize(y), resize(x),"o");
 }
 
 void Libncurses::putFillCircle(float x, float y, float rad) const
 {
+    (void) x;
+    (void) y;
+    (void) rad;
 }
 
 void Libncurses::putText(const std::string &text, unsigned int size, float x, float y) const
@@ -267,7 +272,7 @@ void Libncurses::putText(const std::string &text, unsigned int size, float x, fl
 
 const std::string &Libncurses::getLibName() const
 {
-    return ("nCurses");
+    return (this->_name);
 }
 
 int resize(int x)
