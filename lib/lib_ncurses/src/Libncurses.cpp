@@ -6,14 +6,31 @@
 */
 
 #include "Libncurses.hpp"
-#include <memory>
-#include <string>
 
 Libncurses::Libncurses()
 {
     initscr();
     nodelay(stdscr, true);
     curs_set(0);
+
+    start_color();
+    init_pair(DEFAULT, COLOR_WHITE, COLOR_BLACK);
+    init_pair(BLACK, COLOR_BLACK, COLOR_BLACK);
+    init_pair(RED, COLOR_RED, COLOR_BLACK);
+    init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
+    init_pair(YELLOW, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(BLUE, COLOR_BLUE, COLOR_BLACK);
+    init_pair(MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(CYAN, COLOR_CYAN, COLOR_BLACK);
+    init_pair(LIGHT_GRAY, COLOR_BLACK, COLOR_BLACK);
+    init_pair(DARK_GRAY, COLOR_BLACK, COLOR_BLACK);
+    init_pair(LIGHT_RED, COLOR_RED, COLOR_BLACK);
+    init_pair(LIGHT_GREEN, COLOR_GREEN, COLOR_BLACK);
+    init_pair(LIGHT_YELLOW, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(LIGHT_BLUE, COLOR_BLUE, COLOR_BLACK);
+    init_pair(LIGHT_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(LIGHT_CYAN, COLOR_CYAN, COLOR_BLACK);
+    init_pair(WHITE, COLOR_WHITE, COLOR_BLACK);
 }
 
 Libncurses::~Libncurses()
@@ -114,83 +131,69 @@ char Libncurses::getKeyCode() const
     
 }
 
-void Libncurses::_init_pair(size_t obj, size_t color, size_t back)
-{
-    init_pair(obj, color, back);
-}
-
-void Libncurses::_attron(size_t obj)
-{
-    attron(COLOR_PAIR(obj));
-}
-
-void Libncurses::_attroff(size_t obj)
-{
-    attroff(COLOR_PAIR(obj));
-}
-
 void Libncurses::setColor(IDisplayModule::Colors color)
 {
-    start_color();
+    
     switch (color)
     {
         case (DEFAULT):
-            this->_init_pair(0, 7, 0);
+            attron(COLOR_PAIR(DEFAULT));
             break;
         case (BLACK):
-            this->_init_pair(0, 0, 0);
+            attron(COLOR_PAIR(BLACK));
             break;
         case (RED):
-            this->_init_pair(0, 1, 0);
+            attron(COLOR_PAIR(RED));
             break;
         case (GREEN):
-            this->_init_pair(0, 2, 0);
+            attron(COLOR_PAIR(GREEN));
             break;
         case (YELLOW):
-            this->_init_pair(0, 3, 0);
+            attron(COLOR_PAIR(YELLOW));
             break;
         case (BLUE):
-            this->_init_pair(0, 4, 0);
+            attron(COLOR_PAIR(BLUE));
             break;
         case (MAGENTA):
-            this->_init_pair(0, 5, 0);
+            attron(COLOR_PAIR(MAGENTA));
             break;
         case (CYAN):
-            this->_init_pair(0, 6, 0);
+            attron(COLOR_PAIR(CYAN));
             break;
         case (LIGHT_GRAY):
-            this->_init_pair(0, 7, 0);
+            attron(COLOR_PAIR(LIGHT_GRAY));
             break;
         case (DARK_GRAY):
-            this->_init_pair(0, 7, 0);
+            attron(COLOR_PAIR(DARK_GRAY));
             break;
         case (LIGHT_RED):
-            this->_init_pair(0, 7, 0);
+            attron(COLOR_PAIR(LIGHT_RED));
             break;
         case (LIGHT_GREEN):
-            this->_init_pair(0, 7, 0);
+            attron(COLOR_PAIR(LIGHT_GREEN));
             break;
         case (LIGHT_YELLOW):
-            this->_init_pair(0, 7, 0);
+            attron(COLOR_PAIR(LIGHT_YELLOW));
             break;
         case (LIGHT_BLUE):
-            this->_init_pair(0, 7, 0);
+            attron(COLOR_PAIR(LIGHT_BLUE));
             break;
         case (LIGHT_MAGENTA):
-            this->_init_pair(0, 7, 0);
+            attron(COLOR_PAIR(LIGHT_MAGENTA));
             break;
         case (LIGHT_CYAN):
-            this->_init_pair(0, 7, 0);
+            attron(COLOR_PAIR(LIGHT_CYAN));
             break;
         default:
             printf("Bad color\n");
             break;
     }
+    
 }
 
 void Libncurses::putPixel(float x, float y) const
 {
-    mvprintw(x, y, ".");
+    mvprintw(resize(y), resize(x), ".");
 }
 
 void Libncurses::putLine(float x1, float y1, float x2, float y2) const
@@ -207,13 +210,13 @@ void Libncurses::putLine(float x1, float y1, float x2, float y2) const
             n = y2 - y1;
         else
             n = y1 - y2;
-        mvvline(y1, x1, '|', n);
+        mvvline(resize(y1), resize(x1), '|', n);
     } else if (x1 != x2 && y1 == y2) {
         if (x1 < x2)
             n = x2 - x1;
         else
             n = x1 - x2;
-        mvhline(y1, x1, '_', n);
+        mvhline(resize(y1), resize(x1), '_', n);
     } else {
         printf("Bad coord");
     }
@@ -223,6 +226,11 @@ void Libncurses::putLine(float x1, float y1, float x2, float y2) const
 
 void Libncurses::putRect(float x, float y, float w, float h) const
 {
+    x = resize(x);
+    y = resize(y);
+    w = resize(w);
+    h = resize(h);
+
     mvhline(y, x + 1, '_', w);
     mvvline(y + 1, x, '|', h);
     mvvline(y + 1, x + w + 1, '|', h);
@@ -234,13 +242,16 @@ void Libncurses::putFillRect(float x, float y, float w, float h) const
 {
     int i = 0;
 
-    for (i = y; i <= h ; i ++)
+    x = resize(x);
+    y = resize(y);
+    for (i = y; i <= y + h ; i ++)
         mvhline(i, x, 'X', w);
 }
 
+
 void Libncurses::putCircle(float x, float y, float rad) const
 {
-    printw("o");
+    mvprintw(resize(y), resize(x),"o");
 }
 
 void Libncurses::putFillCircle(float x, float y, float rad) const
@@ -250,7 +261,8 @@ void Libncurses::putFillCircle(float x, float y, float rad) const
 void Libncurses::putText(const std::string &text, unsigned int size, float x, float y) const
 {
     (void) size;
-    mvprintw(y, x, text.c_str());
+
+    mvprintw(resize(y), resize(x), text.c_str());
 }
 
 const std::string &Libncurses::getLibName() const
@@ -258,7 +270,7 @@ const std::string &Libncurses::getLibName() const
     return ("nCurses");
 }
 
-extern "C" std::unique_ptr<IDisplayModule> createLib(void)
+int resize(int x)
 {
-    return std::make_unique<Libncurses>();
+    return (x / 8);
 }

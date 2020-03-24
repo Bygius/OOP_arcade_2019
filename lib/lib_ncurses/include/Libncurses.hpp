@@ -47,15 +47,11 @@ class Libncurses : public IDisplayModule
         const std::string &getLibName() const;
 
 
-        // Not in the interface
-        void _init_pair(size_t obj, size_t color, size_t back);
-        void _attron(size_t obj);
-        void _attroff(size_t obj);
-
     protected:
     private:
 };
 
 void my_clear();
+int resize(int x);
 
 #endif /* !LIBNCURSES_HPP_ */
