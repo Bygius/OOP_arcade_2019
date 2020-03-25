@@ -15,11 +15,12 @@ RM			=	rm -f
 CC			=	g++
 
 SRC			=	$(SRC_DIR)main.cpp		\
+				$(SRC_DIR)Lib.cpp		\
 				$(SRC_DIR)Core.cpp
 
 OBJ			=	$(SRC:.cpp=.o)
 
-CXXFLAGS  	+=	-Wall -Wextra -I$(INC_DIR)
+CXXFLAGS  	+=	-Wall -Wextra -I./include -I./../include/
 
 NAME		=	arcade
 
