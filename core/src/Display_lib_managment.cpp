@@ -2,29 +2,26 @@
 ** EPITECH PROJECT, 2020
 ** OOP_arcade_2019
 ** File description:
-** Lib
+** Display_lib_managment
 */
 
-#include "Lib.hpp"
+#include "Display.hpp"
 #include <dirent.h>
 #include <sys/types.h>
 #include <string.h>
 #include <memory>
 #include <dlfcn.h>
-#include <unistd.h>
-#include <algorithm>
 #include <cstddef>
+#include <algorithm>
 
-#include "../../include/Arcade_interfaces.hpp"
-
-void Lib::PrintAllLib(void) const
+void Display::PrintAllLib(void) const
 {
     for(auto &it : this->lib_list) {
         std::cout << it.c_str() << std::endl;
     }
 }
 
-bool Lib::RefreshLibList(void)
+bool Display::RefreshLibList(void)
 {
     struct dirent *entry;
     DIR *dir = opendir(this->lib_path.c_str());
@@ -42,7 +39,7 @@ bool Lib::RefreshLibList(void)
     return EXIT_SUCCESS;
 }
 
-bool Lib::Load(const std::string name)
+bool Display::Load(const std::string name)
 {
     void *handle;
 
@@ -69,7 +66,7 @@ bool Lib::Load(const std::string name)
     return EXIT_SUCCESS;
 }
 
-bool Lib::LoadPreviousLib(void)
+bool Display::LoadPreviousLib(void)
 {
     this->RefreshLibList();
     auto pos = std::find(this->lib_list.begin(), this->lib_list.end(), this->current_lib_name);
@@ -87,9 +84,10 @@ bool Lib::LoadPreviousLib(void)
         pos--;
         this->Load(pos->c_str());
     }
+    return EXIT_SUCCESS;
 }
 
-bool Lib::LoadNextLib(void)
+bool Display::LoadNextLib(void)
 {
     this->RefreshLibList();
 
@@ -108,14 +106,5 @@ bool Lib::LoadNextLib(void)
         pos++;
         this->Load(pos->c_str());
     }
-}
-
-Lib::Lib(const std::string lib_path) : lib_path(lib_path)
-{
-    RefreshLibList();
-}
-
-Lib::~Lib()
-{
-
+    return EXIT_SUCCESS;
 }
