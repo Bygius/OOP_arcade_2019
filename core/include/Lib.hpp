@@ -17,17 +17,18 @@ class Lib {
     public:
         void PrintAllLib(void) const;
         bool RefreshLibList(void);
-        bool SetCurrentLib(const std::string lib_name);
+        bool Load(const std::string lib_name);
+        bool LoadPreviousLib(void);
+        bool LoadNextLib(void);
         Lib(const std::string lib_dir);
         ~Lib();
-    std::unique_ptr<IDisplayModule> actual_lib;
+        std::unique_ptr<IDisplayModule> actual_lib;
 
     protected:
     private:
         const std::string lib_path;
         std::vector<std::string> lib_list;
         std::string current_lib_name;
-
 };
 
 #endif /* !LIB_HPP_ */

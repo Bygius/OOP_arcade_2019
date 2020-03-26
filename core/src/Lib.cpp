@@ -13,6 +13,7 @@
 #include <dlfcn.h>
 #include <unistd.h>
 #include <algorithm>
+#include <cstddef>
 
 #include "../../include/Arcade_interfaces.hpp"
 
@@ -41,13 +42,16 @@ bool Lib::RefreshLibList(void)
     return EXIT_SUCCESS;
 }
 
-bool Lib::SetCurrentLib(const std::string name)
+bool Lib::Load(const std::string name)
 {
     void *handle;
 
     this->RefreshLibList();
-    if (this->lib_list.size() == 0)
-        exit(42);
+    if (this->lib_list.size() == 0) {
+        if (this->actual_lib.get() == nullptr)
+            exit(84);
+        return EXIT_FAILURE;
+    }
     if (std::find(this->lib_list.begin(), this->lib_list.end(), name) == this->lib_list.end()) {
         handle = dlopen((this->lib_path + this->lib_list[0]).c_str(), RTLD_NOW | RTLD_GLOBAL);
     } else {
@@ -60,7 +64,50 @@ bool Lib::SetCurrentLib(const std::string name)
     std::unique_ptr<IDisplayModule> (*create)();
     create = (std::unique_ptr<IDisplayModule> (*)())dlsym(handle, "createLib");
     this->actual_lib = create();
+    this->current_lib_name = name;
+
     return EXIT_SUCCESS;
+}
+
+bool Lib::LoadPreviousLib(void)
+{
+    this->RefreshLibList();
+    auto pos = std::find(this->lib_list.begin(), this->lib_list.end(), this->current_lib_name);
+
+    if (pos == this->lib_list.end()) {
+        if (this->lib_list.size() > 0) {
+            this->Load(this->lib_list.front());
+            return EXIT_SUCCESS;
+        } else
+            return EXIT_FAILURE;
+    }
+    if (pos == this->lib_list.begin()) {
+        this->Load(this->lib_list.back());
+    } else {
+        pos--;
+        this->Load(pos->c_str());
+    }
+}
+
+bool Lib::LoadNextLib(void)
+{
+    this->RefreshLibList();
+
+    auto pos = std::find(this->lib_list.begin(), this->lib_list.end(), this->current_lib_name);
+
+    if (pos == this->lib_list.end()) {
+        if (this->lib_list.size() > 0) {
+            this->Load(this->lib_list.front());
+            return EXIT_SUCCESS;
+        } else
+            return EXIT_FAILURE;
+    }
+    if (pos == this->lib_list.end()-1) {
+        this->Load(this->lib_list.front());
+    } else {
+        pos++;
+        this->Load(pos->c_str());
+    }
 }
 
 Lib::Lib(const std::string lib_path) : lib_path(lib_path)

@@ -23,15 +23,25 @@ int main(int ac, char **av)
         return 84;
 
     Lib lib("./lib/");
-    lib.SetCurrentLib("lib_arcade_ncurses.so");
-
+    //lib.PrintAllLib();
+    //return 0;
+    lib.Load("lib_arcade_sfml.so");
+    size_t i = 0;
     while (1) {
+        
+        /*if (i % 2 == 0)
+            lib.Load("lib_arcade_sfml.so");
+        else
+            lib.Load("lib_arcade_ncurses.so");*/
         lib.actual_lib->clear();
         lib.actual_lib->putPixel(1, 20);
         lib.actual_lib->setColor(IDisplayModule::Colors::BLUE);
         lib.actual_lib->putFillRect(20, 15, 100, 100);
         lib.actual_lib->update();
         lib.actual_lib->render();
+        sleep(1);
+        lib.LoadNextLib();
+        //i++;
     }
     return 0;
 }
