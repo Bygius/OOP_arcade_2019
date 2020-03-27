@@ -19,6 +19,8 @@ class Libsfml : public IDisplayModule
     private:
         std::unique_ptr<sf::RenderWindow> _window;
         sf::Color _color;
+        sf::Event _event;
+        sf::Clock _clock;
 
     public:
         Libsfml();
