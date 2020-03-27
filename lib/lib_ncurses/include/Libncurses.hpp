@@ -54,5 +54,6 @@ class Libncurses : public IDisplayModule
 
 void my_clear();
 int resize(int x);
+void print_circle(int x, int y, int radius);
 
 #endif /* !LIBNCURSES_HPP_ */

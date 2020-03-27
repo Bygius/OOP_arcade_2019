@@ -7,6 +7,7 @@
 
 #include "Libncurses.hpp"
 #include <memory>
+#include <math.h>
 
 Libncurses::Libncurses()
 {
@@ -250,11 +251,23 @@ void Libncurses::putFillRect(float x, float y, float w, float h) const
         mvhline(i, x, 'X', w);
 }
 
+void print_circle(int x, int y, int radius)
+{
+    mvprintw(radius+y, radius+x, "*");
+}
 
 void Libncurses::putCircle(float x, float y, float rad) const
 {
-    (void) rad;
-    mvprintw(resize(y), resize(x),"o");
+    float xpos,ypos,radsqr,xsqr;
+
+    for(xpos = x-rad; xpos <= x+rad; xpos += 0.1)
+    {
+        radsqr = pow(rad,2);
+        xsqr = pow(xpos,2);
+        ypos = sqrt(abs(radsqr - xsqr));
+        print_circle(rintf(xpos),rintf(ypos), rintf(rad));
+        print_circle(rintf(xpos),rintf(-ypos), rintf(rad));
+    }
 }
 
 void Libncurses::putFillCircle(float x, float y, float rad) const
