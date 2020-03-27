@@ -145,7 +145,7 @@ bool Libncurses::isKeyPressed(IDisplayModule::Keys key) const
     return (false);
 }
 
-bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys) const
+bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys key) const
 {
     int t = getch();
 
@@ -284,15 +284,15 @@ void Libncurses::setColor(IDisplayModule::Colors color)
 
 void Libncurses::putPixel(float x, float y) const
 {
-    mvprintw(resize(y), resize(x), ".");
+    mvprintw(resize(y) / 2, resize(x), "X");
 }
 
 void Libncurses::putLine(float x1, float y1, float x2, float y2) const
 {
-    int x_one = (int) x1;
-    int x_two = (int) x2;
-    int y_one = (int) y1;
-    int y_two = (int) y2;
+    int x_one = (int)resize(x1);
+    int x_two = (int)resize(x2);
+    int y_one = (int)resize(y1) / 2;
+    int y_two = (int)resize(y2) / 2;
     int n = 0;
 
     if (y_two != y_one && x_one == x_two) {
@@ -300,13 +300,13 @@ void Libncurses::putLine(float x1, float y1, float x2, float y2) const
             n = y_two - y_one;
         else
             n = y_one - y_two;
-        mvvline(resize(y_one), resize(x_one), '|', n);
+        mvvline(y_one, x_one, '|', n);
     } else if (x_one != x_two && y_one == y_two) {
         if (x_one < x_two)
             n = x_two - x_one;
         else
             n = x_one - x_two;
-        mvhline(resize((int) y_one), resize(x_one), '_', n);
+        mvhline(y_one, x_one, '_', n);
     } else {
         printf("Bad coord");
     }
@@ -317,9 +317,9 @@ void Libncurses::putLine(float x1, float y1, float x2, float y2) const
 void Libncurses::putRect(float x, float y, float w, float h) const
 {
     x = resize(x);
-    y = resize(y);
+    y = resize(y) / 2;
     w = resize(w);
-    h = resize(h);
+    h = resize(h) / 2;
 
     mvhline(y, x + 1, '_', w);
     mvvline(y + 1, x, '|', h);
@@ -333,32 +333,47 @@ void Libncurses::putFillRect(float x, float y, float w, float h) const
     int i = 0;
 
     x = resize(x);
-    y = resize(y);
+    y = resize(y) / 2;
     w = resize(w);
-    h = resize(h);
+    h = resize(h) / 2;
     for (i = y; i <= y + h ; i ++)
         mvhline(i, x, 'X', w);
 }
 
 void print_circle(int x, int y, int radius)
 {
-    mvprintw(radius+y, radius+x, "*");
+    mvprintw(0-y, 0+x, "*");
 }
 
 void Libncurses::putCircle(float x, float y, float rad) const
 {
-    float xpos,ypos,radsqr,xsqr;
-
-    x = resize(x);
-    y = resize(y);
-    rad = resize(rad);
-    for(xpos = x-rad; xpos <= x+rad; xpos += 0.1)
-    {
-        radsqr = pow(rad,2);
-        xsqr = pow(xpos,2);
-        ypos = sqrt(abs(radsqr - xsqr));
-        print_circle(rintf(xpos),rintf(ypos), rintf(rad));
-        print_circle(rintf(xpos),rintf(-ypos), rintf(rad));
+    int diameter = (rad * 2);
+    int xValue = rad - 1;
+    int yValue = 0;
+    int tx = 1;
+    int ty = 0;
+    int error = (tx - diameter);
+    x = x + rad;
+    y = y + rad;
+    while (xValue >= yValue) {
+        putPixel(x + xValue, y - yValue);
+        putPixel(x + xValue, y + yValue);
+        putPixel(x - xValue, y - yValue);
+        putPixel(x - xValue, y + yValue);
+        putPixel(x + yValue, y - xValue);
+        putPixel(x + yValue, y + xValue);
+        putPixel(x - yValue, y - xValue);
+        putPixel(x - yValue, y + xValue);
+        if (error <= 0) {
+            ++yValue;
+            error += ty;
+            ty += 2;
+        }
+        if (error > 0) {
+            --xValue;
+            tx += 2;
+            error += (tx - diameter);
+        }
     }
 }
 
