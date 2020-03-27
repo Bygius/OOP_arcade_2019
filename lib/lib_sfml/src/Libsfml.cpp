@@ -15,6 +15,7 @@ Libsfml::Libsfml()
 
 void Libsfml::reset()
 {
+    this->_color = sf::Color::White;
 }
 
 bool Libsfml::isOpen() const
@@ -24,42 +25,103 @@ bool Libsfml::isOpen() const
 
 bool Libsfml::switchToNext_lib() const
 {
+    return false;
 }
 
 bool Libsfml::switchToPrevious_lib() const
 {
+    return false;
 }
 
 bool Libsfml::switchToNext_game() const
 {
+    return false;
 }
 
 bool Libsfml::switchToPrevious_game() const
 {
+    return false;
 }
 
 bool Libsfml::shouldBeRestarted() const
 {
+    return false;
 }
 
 bool Libsfml::shouldGoToMenu() const
 {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+        return true;
+    }
+    return false;
 }
 
 bool Libsfml::shouldExit() const
 {
+    if (this->_event.type == sf::Event::Closed) {
+        this->_window->close();
+        return true;
+    }
+    return false;
 }
 
-bool Libsfml::isKeyPressed(IDisplayModule::Keys) const
+bool Libsfml::isKeyPressed(IDisplayModule::Keys key) const
 {
+    if (key == A && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        return true;
+    if (key == RIGHT && sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        return true;
+    if (key == LEFT && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            return true;
+    if (key == UP && sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        return true;
+    if (key == DOWN && sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        return true;
+    if (key == Z && sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+        return true;
+    if (key == Q && sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+        return true;
+    if (key == S && sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        return true;
+    if (key == D && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        return true;
+    if (key == A && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        return true;
+    if (key == E && sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+        return true;
+    if (key == W && sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        return true;
+    if (key == X && sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+        return true;
+    if (key == SPACE && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        return true;
+    if (key == ESCAPE && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        return true;
+    if (key == J && sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+        return true;
+    if (key == K && sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+        return true;
+    if (key == U && sf::Keyboard::isKeyPressed(sf::Keyboard::U))
+        return true;
+    if (key == I && sf::Keyboard::isKeyPressed(sf::Keyboard::I))
+        return true;
+    if (key == M && sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+        return true;
+    if (key == R && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+        return true;
+    if (key == KEYS_END && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        return true;
+    return false;
 }
 
-bool Libsfml::isKeyPressedOnce(IDisplayModule::Keys) const
+bool Libsfml::isKeyPressedOnce(IDisplayModule::Keys key) const
 {
+    return false;
 }
 
 float Libsfml::getDelta() const
 {
+    return 0.00;
 }
 
 void Libsfml::clear() const
@@ -69,6 +131,8 @@ void Libsfml::clear() const
 
 void Libsfml::update()
 {
+    this->_window->pollEvent(this->_event);
+    this->shouldExit();
 }
 
 void Libsfml::render() const
@@ -78,6 +142,12 @@ void Libsfml::render() const
 
 char Libsfml::getKeyCode() const
 {
+    if (this->_event.type == sf::Event::TextEntered)
+    {
+        if (this->_event.text.unicode < 128)
+            return (static_cast<char>(this->_event.text.unicode));
+    }
+    return '\0';
 }
 
 void Libsfml::setColor(IDisplayModule::Colors color)
@@ -158,27 +228,71 @@ void Libsfml::putLine(float x1, float y1, float x2, float y2) const
 
 void Libsfml::putRect(float x, float y, float w, float h) const
 {
+    sf::VertexArray vertex(sf::LinesStrip, 5);
+    vertex[0].position = sf::Vector2f(x, y);
+    vertex[1].position = sf::Vector2f(x, y + h);
+    vertex[2].position = sf::Vector2f(x + w, y + h);
+    vertex[3].position = sf::Vector2f(x + w, y);
+    vertex[4].position = sf::Vector2f(x, y);
+    vertex[0].color = this->_color;
+    vertex[1].color = this->_color;
+    vertex[2].color = this->_color;
+    vertex[3].color = this->_color;
+    vertex[4].color = this->_color;
+    this->_window->draw(vertex);
 }
 
 void Libsfml::putFillRect(float x, float y, float w, float h) const
 {
+    sf::VertexArray vertex(sf::Quads, 4);
+    vertex[0].position = sf::Vector2f(x, y);
+    vertex[1].position = sf::Vector2f(x, y + h);
+    vertex[2].position = sf::Vector2f(x + w, y + h);
+    vertex[3].position = sf::Vector2f(x + w, y);
+    vertex[0].color = this->_color;
+    vertex[1].color = this->_color;
+    vertex[2].color = this->_color;
+    vertex[3].color = this->_color;
+    this->_window->draw(vertex);
 }
 
 void Libsfml::putCircle(float x, float y, float rad) const
 {
+    sf::CircleShape circle(rad);
+    circle.setPosition(sf::Vector2f(x, y));
+    circle.setOutlineThickness(1);
+    circle.setOutlineColor(this->_color);
+    circle.setFillColor(sf::Color::Transparent);
+    this->_window->draw(circle);
 }
 
 void Libsfml::putFillCircle(float x, float y, float rad) const
 {
+    sf::CircleShape circle(rad);
+    circle.setPosition(sf::Vector2f(x, y));
+    circle.setOutlineThickness(1);
+    circle.setOutlineColor(this->_color);
+    circle.setFillColor(this->_color);
+    this->_window->draw(circle);
 }
 
 void Libsfml::putText(const std::string &text, unsigned int size, float x, float y) const
 {
+    sf::Font font;
+    font.loadFromFile("../Fonts/AndBasR.ttf");
+    sf::Text str;
+    str.setFont(font);
+    str.setString(text);
+    str.setCharacterSize(size);
+    str.setColor(this->_color);
+    str.setPosition(sf::Vector2f(x, y));
+    this->_window->draw(str);
 }
 
 const std::string &Libsfml::getLibName() const
 {
-
+    const std::string ret = "sfml";
+    return ret;
 }
 
 extern "C" std::unique_ptr<IDisplayModule> createLib(void)

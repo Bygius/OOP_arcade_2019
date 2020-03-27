@@ -31,7 +31,7 @@ all: $(NAME)
 	cp	$(NAME) ../
 
 $(NAME): $(OBJS)
-	$(CC) -o $(NAME) $(OBJS) $(CXXFLAGS) -shared -rdynamic
+	$(CC) -o $(NAME) $(OBJS) $(CXXFLAGS) -shared -rdynamic -g
 
 clean:
 	$(RM) $(OBJS)
