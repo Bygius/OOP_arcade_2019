@@ -96,15 +96,102 @@ bool Libncurses::shouldExit() const
     return (false);
 }
 
-bool Libncurses::isKeyPressed(IDisplayModule::Keys) const
+bool Libncurses::isKeyPressed(IDisplayModule::Keys key) const
 {
+    int t = getch();
+
+    if (key == RIGHT && t == KEY_RIGHT)
+        return true;
+    if (key == LEFT && t == KEY_LEFT)
+            return true;
+    if (key == UP && t == KEY_UP)
+        return true;
+    if (key == DOWN && t == KEY_DOWN)
+        return true;
+    if (key == Z && t == 122)
+        return true;
+    if (key == Q && t == 113)
+        return true;
+    if (key == S && t == 115)
+        return true;
+    if (key == D && t == 100)
+        return true;
+    if (key == A && t == 97)
+        return true;
+    if (key == E && t == 101)
+        return true;
+    if (key == W && t == 119)
+        return true;
+    if (key == X && t == 120)
+        return true;
+    if (key == SPACE && t == 32)
+        return true;
+    if (key == ESCAPE && t == 27)
+        return true;
+    if (key == J && t == 106)
+        return true;
+    if (key == K && 107)
+        return true;
+    if (key == U && 117)
+        return true;
+    if (key == I && 105)
+        return true;
+    if (key == M && t == 97)
+        return true;
+    if (key == R && t == 114)
+        return true;
+    if (key == KEYS_END && t == 27)
+        return true;
     return (false);
 }
 
 bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys) const
 {
-    return (false);
-}
+    int t = getch();
+
+    if (key == RIGHT && t == KEY_RIGHT)
+        return true;
+    if (key == LEFT && t == KEY_LEFT)
+            return true;
+    if (key == UP && t == KEY_UP)
+        return true;
+    if (key == DOWN && t == KEY_DOWN)
+        return true;
+    if (key == Z && t == 122)
+        return true;
+    if (key == Q && t == 113)
+        return true;
+    if (key == S && t == 115)
+        return true;
+    if (key == D && t == 100)
+        return true;
+    if (key == A && t == 97)
+        return true;
+    if (key == E && t == 101)
+        return true;
+    if (key == W && t == 119)
+        return true;
+    if (key == X && t == 120)
+        return true;
+    if (key == SPACE && t == 32)
+        return true;
+    if (key == ESCAPE && t == 27)
+        return true;
+    if (key == J && t == 106)
+        return true;
+    if (key == K && 107)
+        return true;
+    if (key == U && 117)
+        return true;
+    if (key == I && 105)
+        return true;
+    if (key == M && t == 97)
+        return true;
+    if (key == R && t == 114)
+        return true;
+    if (key == KEYS_END && t == 27)
+        return true;
+    return (false);}
 
 float Libncurses::getDelta() const
 {
@@ -247,6 +334,8 @@ void Libncurses::putFillRect(float x, float y, float w, float h) const
 
     x = resize(x);
     y = resize(y);
+    w = resize(w);
+    h = resize(h);
     for (i = y; i <= y + h ; i ++)
         mvhline(i, x, 'X', w);
 }
@@ -260,6 +349,9 @@ void Libncurses::putCircle(float x, float y, float rad) const
 {
     float xpos,ypos,radsqr,xsqr;
 
+    x = resize(x);
+    y = resize(y);
+    rad = resize(rad);
     for(xpos = x-rad; xpos <= x+rad; xpos += 0.1)
     {
         radsqr = pow(rad,2);
