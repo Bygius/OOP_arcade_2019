@@ -11,18 +11,18 @@ INT_DIR		= ../../include/
 CXXFLAGS		+= -I $(INC_DIR)
 CXXFLAGS		+= -Wall -Wextra -fPIC -rdynamic
 CXXFLAGS		+= -I $(INT_DIR)
-CXXFLAGS		+= -lGL -lglfw
+CXXFLAGS		+= -lSDL2
 
 
 RM		=	rm -f
 
 CC		=	g++
 
-NAME		=	lib_arcade_opengl.so
+NAME		=	lib_arcade_sdl.so
 
 SRCS_DIR	=	src/
 
-SRCS_FILES	=   Libopengl.cpp \
+SRCS_FILES	=   Libsdl.cpp \
 
 SRCS		= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 

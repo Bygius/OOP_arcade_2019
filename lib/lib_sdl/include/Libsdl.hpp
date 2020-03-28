@@ -2,24 +2,22 @@
 ** EPITECH PROJECT, 2020
 ** OOP_arcade_2019
 ** File description:
-** Libopengl
+** Libsdl
 */
 
-#ifndef LIBOPENGL_HPP_
-#define LIBOPENGL_HPP_
+#ifndef LIBSDL_HPP_
+#define LIBSDL_HPP_
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <GL/glew.h>
-#include <GL/gl.h>
-#include <GLFW/glfw3.h>
+#include "SDL2/SDL.h"
 #include "Arcade_interfaces.hpp"
 
-class Libopengl : public IDisplayModule
+class Libsdl : public IDisplayModule
 {
     public:
-        Libopengl();
-        ~Libopengl();
+        Libsdl();
+        ~Libsdl();
 
         void reset();
         bool isOpen() const;
@@ -52,10 +50,10 @@ class Libopengl : public IDisplayModule
 
 
     protected:
-        GLFWwindow* window;
+        SDL_Window *window;
     private:
         std::string _name;
 };
 
 
-#endif /* !LIBOPENGL_HPP_ */
+#endif /* !Libsdl_HPP_ */
