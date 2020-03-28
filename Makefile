@@ -26,8 +26,8 @@ graphicals:
 
 clean:
 	# make -C $(DIR_GAME)
-	make -C $(DIR_LIB)
-	make -C $(DIR_CORE)
+	make -C $(DIR_LIB) clean
+	make -C $(DIR_CORE) clean
 
 fclean:
 	make -C $(DIR_DOC) fclean
