@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "SDL2/SDL.h"
 #include "Arcade_interfaces.hpp"
 
 class Libsdl : public IDisplayModule
@@ -49,6 +50,7 @@ class Libsdl : public IDisplayModule
 
 
     protected:
+        SDL_Window *window;
     private:
         std::string _name;
 };

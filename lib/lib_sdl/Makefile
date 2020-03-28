@@ -11,7 +11,7 @@ INT_DIR		= ../../include/
 CXXFLAGS		+= -I $(INC_DIR)
 CXXFLAGS		+= -Wall -Wextra -fPIC -rdynamic
 CXXFLAGS		+= -I $(INT_DIR)
-CXXFLAGS		+= -lGL -lglfw
+CXXFLAGS		+= -lSDL2
 
 
 RM		=	rm -f

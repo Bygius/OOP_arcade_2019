@@ -11,10 +11,15 @@
 
 Libsdl::Libsdl()
 {
+    SDL_Init(SDL_INIT_VIDEO);
+    window = SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
+    SDL_Delay(3000);
 }
 
 Libsdl::~Libsdl()
 {
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 }
 
 void Libsdl::reset()
@@ -23,7 +28,7 @@ void Libsdl::reset()
         
 bool Libsdl::isOpen() const
 {
-    bool value = false;
+    bool value = true;
     return (value);
 }
 
@@ -144,6 +149,7 @@ const std::string &Libsdl::getLibName() const
 {
     return (this->_name);
 }
+
 extern "C" std::unique_ptr<IDisplayModule> createLib(void)
 {
     return std::make_unique<Libsdl>();
