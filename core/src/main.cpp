@@ -24,24 +24,25 @@ int main(int ac, char **av)
         return 84;
 
     Display d("./lib/");
-    d.Load("lib_arcade_sfml.so");
+    d.Load("lib_arcade_sdl.so");
     size_t i = 0;
-    while (1) {
+    while (d.isOpen()) {
         d.clear();
-        d.setColor(IDisplayModule::Colors::BLUE);
-        d.putRect(10, 10, 40, 40);
-        d.setColor(IDisplayModule::Colors::GREEN);
-        d.putFillRect(100, 10, 10, 30);
-        d.setColor(IDisplayModule::Colors::YELLOW);
-        d.putPixel(200, 10);
-        d.setColor(IDisplayModule::Colors::RED);
-        d.putCircle(300, 300, 60);
-        d.setColor(IDisplayModule::Colors::MAGENTA);
-        d.putLine(100, 200, 100, 150);
         d.update();
         d.render();
-        sleep(1);
-        d.LoadPreviousLib();
     }
     return 0;
 }
+
+// d.setColor(IDisplayModule::Colors::BLUE);
+// d.putRect(10, 10, 40, 40);
+// d.setColor(IDisplayModule::Colors::GREEN);
+// d.putFillRect(100, 10, 10, 30);
+// d.setColor(IDisplayModule::Colors::YELLOW);
+// d.putPixel(200, 10);
+// d.setColor(IDisplayModule::Colors::RED);
+// d.putCircle(300, 300, 60);
+// d.setColor(IDisplayModule::Colors::MAGENTA);
+// d.putLine(100, 200, 100, 150);
+// sleep(1);
+// d.LoadPreviousLib();

@@ -18,11 +18,11 @@ RM		=	rm -f
 
 CC		=	g++
 
-NAME		=	lib_arcade_opengl.so
+NAME		=	lib_arcade_sdl.so
 
 SRCS_DIR	=	src/
 
-SRCS_FILES	=   Libopengl.cpp \
+SRCS_FILES	=   Libsdl.cpp \
 
 SRCS		= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
