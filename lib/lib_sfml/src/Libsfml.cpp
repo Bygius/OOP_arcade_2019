@@ -284,7 +284,7 @@ void Libsfml::putText(const std::string &text, unsigned int size, float x, float
     str.setFont(font);
     str.setString(text);
     str.setCharacterSize(size);
-    str.setColor(this->_color);
+    str.setFillColor(this->_color);
     str.setPosition(sf::Vector2f(x, y));
     this->_window->draw(str);
 }
