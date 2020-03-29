@@ -217,7 +217,7 @@ void Libncurses::render() const
 
 char Libncurses::getKeyCode() const
 {
-    return ('a');
+    return (getch());
 }
 
 void Libncurses::setColor(IDisplayModule::Colors color)

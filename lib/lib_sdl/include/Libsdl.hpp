@@ -51,13 +51,12 @@ class Libsdl : public IDisplayModule
 
 
     protected:
-        SDL_Window *window;
-        SDL_Renderer *renderer;
-        SDL_Event event;
-        // SDL_WindowEvent event;
-        // SDL_Event event;
-        bool exit;
     private:
+        // std::unique_ptr<SDL_Window> _window;
+        SDL_Window *_window;
+        SDL_Renderer *_renderer;
+        SDL_Event _event;
+        bool exit;
         const std::string _lib_name;
 };
 

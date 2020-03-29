@@ -12,14 +12,17 @@
 Libsdl::Libsdl() : _lib_name("lib_arcade_sdl.so")
 {
     SDL_Init(SDL_INIT_VIDEO);
-    this->window = SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
-    this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
+    TTF_Init();
+    this->_window = SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
+    // this->_window = std::make_unique<SDL_Window>(SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0));
+    this->_renderer = SDL_CreateRenderer(this->_window, -1, SDL_RENDERER_ACCELERATED);
 }
 
 Libsdl::~Libsdl()
 {
-    SDL_DestroyWindow(this->window);
-    SDL_DestroyRenderer(this->renderer);
+    SDL_DestroyWindow(this->_window);
+    SDL_DestroyRenderer(this->_renderer);
+    TTF_Quit();
     SDL_Quit();
 }
 
@@ -30,7 +33,7 @@ void Libsdl::reset()
 bool Libsdl::isOpen() const
 {
     bool value = false;
-    if (this->renderer)
+    if (this->_renderer)
         value = true;
     return (value);
 }
@@ -67,61 +70,54 @@ bool Libsdl::shouldGoToMenu() const
 
 bool Libsdl::shouldExit() const
 {
-    SDL_Event event;
-
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT)
-            return (true);
-    }
+    if (this->_event.type == SDL_QUIT)
+        return (true);
     return (false);
 }
 
 bool Libsdl::isKeyPressed(IDisplayModule::Keys key) const
 {
-    SDL_Event event;
-
-    SDL_PollEvent(&event);
-    if (!event.key.keysym.sym)
+    if (!_event.key.keysym.sym)
         return (false);
-    if (key == RIGHT && event.key.keysym.sym == SDLK_RIGHT)
+    if (key == RIGHT && _event.key.keysym.sym == SDLK_RIGHT)
         return true;
-    if (key == LEFT && event.key.keysym.sym == SDLK_LEFT)
+    if (key == LEFT && _event.key.keysym.sym == SDLK_LEFT)
             return true;
-    if (key == UP && event.key.keysym.sym == SDLK_UP)
+    if (key == UP && _event.key.keysym.sym == SDLK_UP)
         return true;
-    if (key == DOWN && event.key.keysym.sym == SDLK_DOWN)
+    if (key == DOWN && _event.key.keysym.sym == SDLK_DOWN)
         return true;
-    if (key == Z && event.key.keysym.sym == SDLK_z)
+    if (key == Z && _event.key.keysym.sym == SDLK_z)
         return true;
-    if (key == Q && event.key.keysym.sym == SDLK_q)
+    if (key == Q && _event.key.keysym.sym == SDLK_q)
         return true;
-    if (key == S && event.key.keysym.sym == SDLK_s)
+    if (key == S && _event.key.keysym.sym == SDLK_s)
         return true;
-    if (key == D && event.key.keysym.sym == SDLK_d)
+    if (key == D && _event.key.keysym.sym == SDLK_d)
         return true;
-    if (key == A && event.key.keysym.sym == SDLK_a)
+    if (key == A && _event.key.keysym.sym == SDLK_a)
         return true;        
-    if (key == E && event.key.keysym.sym == SDLK_e)
+    if (key == E && _event.key.keysym.sym == SDLK_e)
         return true;
-    if (key == W && event.key.keysym.sym == SDLK_w)
+    if (key == W && _event.key.keysym.sym == SDLK_w)
         return true;
-    if (key == X && event.key.keysym.sym == SDLK_x)
+    if (key == X && _event.key.keysym.sym == SDLK_x)
         return true;
-    if (key == SPACE && event.key.keysym.sym == SDLK_SPACE)
+    if (key == SPACE && _event.key.keysym.sym == SDLK_SPACE)
         return true;
-    if (key == ESCAPE && event.key.keysym.sym == SDLK_ESCAPE)
+    if (key == ESCAPE && _event.key.keysym.sym == SDLK_ESCAPE)
         return true;
-    if (key == J && event.key.keysym.sym == SDLK_j)
+    if (key == J && _event.key.keysym.sym == SDLK_j)
         return true;
-    if (key == K && event.key.keysym.sym == SDLK_k)
+    if (key == K && _event.key.keysym.sym == SDLK_k)
         return true;
-    if (key == U && event.key.keysym.sym == SDLK_u)
+    if (key == U && _event.key.keysym.sym == SDLK_u)
         return true;
-    if (key == I && event.key.keysym.sym == SDLK_i)
+    if (key == I && _event.key.keysym.sym == SDLK_i)
         return true;
-    if (key == M && event.key.keysym.sym == SDLK_m)
+    if (key == M && _event.key.keysym.sym == SDLK_m)
         return true;
-    if (key == R && event.key.keysym.sym == SDLK_r)
+    if (key == R && _event.key.keysym.sym == SDLK_r)
         return true;
     return (false);
 }
@@ -138,23 +134,24 @@ float Libsdl::getDelta() const
 
 void Libsdl::clear() const
 {
-    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
-    SDL_RenderClear(this->renderer);
+    SDL_SetRenderDrawColor(this->_renderer, 0, 0, 0, 255);
+    SDL_RenderClear(this->_renderer);
 }
 
 void Libsdl::update()
 {
-    SDL_PollEvent(&event);
+    SDL_PollEvent(&this->_event);
+    this->shouldExit();
 }
 
 void Libsdl::render() const
 {
-    SDL_RenderPresent(this->renderer);
+    SDL_RenderPresent(this->_renderer);
 }
 
 char Libsdl::getKeyCode() const
 {
-    return ('a');
+    return (_event.key.keysym.sym);
 }
 
 void Libsdl::setColor(IDisplayModule::Colors color)
@@ -162,52 +159,52 @@ void Libsdl::setColor(IDisplayModule::Colors color)
     switch (color)
     {
         case (DEFAULT):
-            SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
             break;
         case (BLACK):
-            SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
+            SDL_SetRenderDrawColor(this->_renderer, 0, 0, 0, 255);
             break;
         case (RED):
-            SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 255, 0, 0, 0.9);
             break;
         case (GREEN):
-            SDL_SetRenderDrawColor(this->renderer, 0, 12, 0, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 0, 12, 0, 0.9);
             break;
         case (YELLOW):
-            SDL_SetRenderDrawColor(this->renderer, 234, 255, 0, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 234, 255, 0, 0.9);
             break;
         case (BLUE):
-            SDL_SetRenderDrawColor(this->renderer, 0, 0, 255, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 0.9);
             break;
         case (MAGENTA):
-            SDL_SetRenderDrawColor(this->renderer, 255, 0, 255, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 255, 0, 255, 0.9);
             break;
         case (CYAN):
-            SDL_SetRenderDrawColor(this->renderer, 0, 255, 255, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 0, 255, 255, 0.9);
             break;
         case (LIGHT_GRAY):
-            SDL_SetRenderDrawColor(this->renderer, 0, 255, 0, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 0, 255, 0, 0.9);
             break;
         case (DARK_GRAY):
-            SDL_SetRenderDrawColor(this->renderer, 211, 211, 211, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 211, 211, 211, 0.9);
             break;
         case (LIGHT_RED):
-            SDL_SetRenderDrawColor(this->renderer, 240, 52, 52, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 240, 52, 52, 0.9);
             break;
         case (LIGHT_GREEN):
-            SDL_SetRenderDrawColor(this->renderer, 0, 255, 0, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 0, 255, 0, 0.9);
             break;
         case (LIGHT_YELLOW):
-            SDL_SetRenderDrawColor(this->renderer, 255, 250, 205, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 255, 250, 205, 0.9);
             break;
         case (LIGHT_BLUE):
-            SDL_SetRenderDrawColor(this->renderer, 0, 191, 255, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 0, 191, 255, 0.9);
             break;
         case (LIGHT_MAGENTA):
-            SDL_SetRenderDrawColor(this->renderer, 238, 130, 238, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 238, 130, 238, 0.9);
             break;
         case (LIGHT_CYAN):
-            SDL_SetRenderDrawColor(this->renderer, 175, 238, 238, 0.9);
+            SDL_SetRenderDrawColor(this->_renderer, 175, 238, 238, 0.9);
             break;
         default:
             printf("Bad color\n");
@@ -217,14 +214,14 @@ void Libsdl::setColor(IDisplayModule::Colors color)
 
 void Libsdl::putPixel(float x, float y) const
 {
-    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 0.9);
-    SDL_RenderDrawPoint(this->renderer, x, y);
+    SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
+    SDL_RenderDrawPoint(this->_renderer, x, y);
 }
 
 void Libsdl::putLine(float x1, float y1, float x2, float y2) const
 {
-    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 0.9);
-    SDL_RenderDrawLine(this->renderer, x1, y1, x2, y2);
+    SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
+    SDL_RenderDrawLine(this->_renderer, x1, y1, x2, y2);
 }
 
 void Libsdl::putRect(float x, float y, float w, float h) const
@@ -236,8 +233,8 @@ void Libsdl::putRect(float x, float y, float w, float h) const
     srcrect.w = w;
     srcrect.h = h;
 
-    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 0.9);
-    SDL_RenderDrawRect(this->renderer, &srcrect);
+    SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
+    SDL_RenderDrawRect(this->_renderer, &srcrect);
 }
 
 void Libsdl::putFillRect(float x, float y, float w, float h) const
@@ -249,13 +246,40 @@ void Libsdl::putFillRect(float x, float y, float w, float h) const
     srcrect.w = w;
     srcrect.h = h;
 
-    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 0.9);
-    SDL_RenderFillRect(this->renderer, &srcrect);
+    SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
+    SDL_RenderFillRect(this->_renderer, &srcrect);
 }
 
 void Libsdl::putCircle(float x, float y, float rad) const
 {
+    int d = rad * 2;
+    int tx = 1;
+    int ty = 1;
+    int error = (tx - d);
+    int x2 = rad - 1;
+    int y2 = 0;
 
+    SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
+    while (x2 >= y2) {
+        SDL_RenderDrawPoint(this->_renderer, x + x2, y - y2);
+        SDL_RenderDrawPoint(this->_renderer, x + x2, y + y2);
+        SDL_RenderDrawPoint(this->_renderer, x - x2, y - y2);
+        SDL_RenderDrawPoint(this->_renderer, x - x2, y + y2);
+        SDL_RenderDrawPoint(this->_renderer, x + y2, y - x2);
+        SDL_RenderDrawPoint(this->_renderer, x + y2, y + x2);
+        SDL_RenderDrawPoint(this->_renderer, x - y2, y - x2);
+        SDL_RenderDrawPoint(this->_renderer, x - y2, y + x2);
+        if (error <= 0) {
+            ++y2;
+            error += ty;
+            ty += 2;
+        }
+        if (error > 0) {
+            --x2;
+            tx += 2;
+            error += (tx - d);
+        }
+    }
 }
 
 void Libsdl::putFillCircle(float x, float y, float rad) const
@@ -267,10 +291,22 @@ void Libsdl::putFillCircle(float x, float y, float rad) const
 
 void Libsdl::putText(const std::string &text, unsigned int size, float x, float y) const
 {
-    TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 24);
-    SDL_Color White = {255, 255, 255};
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "put your text here", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
-    SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    int texture_w = 0;
+    int texture_h = 0;
+
+    TTF_Font *font = TTF_OpenFont("include/arial.ttf", size);
+    if (!font)
+        return;
+    SDL_Color color = { 255, 255, 255 };
+    SDL_Surface * surface = TTF_RenderText_Solid(font, text.c_str(), color);
+    SDL_Texture * texture = SDL_CreateTextureFromSurface(this->_renderer, surface);
+    SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
+    SDL_Rect dstrect = { 0, 0, texture_w, texture_h};
+    SDL_RenderCopy(this->_renderer, texture, NULL, &dstrect);
+    SDL_RenderPresent(this->_renderer);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surface);
+    TTF_CloseFont(font);
 }
 
 const std::string &Libsdl::getLibName() const
