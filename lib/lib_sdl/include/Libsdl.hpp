@@ -58,7 +58,7 @@ class Libsdl : public IDisplayModule
         // SDL_Event event;
         bool exit;
     private:
-        std::string _name;
+        const std::string _lib_name;
 };
 
 

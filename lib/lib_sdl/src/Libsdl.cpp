@@ -9,7 +9,7 @@
 #include <memory>
 #include <math.h>
 
-Libsdl::Libsdl()
+Libsdl::Libsdl() : _lib_name("lib_arcade_sdl.so")
 {
     SDL_Init(SDL_INIT_VIDEO);
     this->window = SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
@@ -275,7 +275,7 @@ void Libsdl::putText(const std::string &text, unsigned int size, float x, float 
 
 const std::string &Libsdl::getLibName() const
 {
-    return (this->_name);
+    return this->_lib_name;
 }
 
 extern "C" std::unique_ptr<IDisplayModule> createLib(void)

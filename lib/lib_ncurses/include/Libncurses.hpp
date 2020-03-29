@@ -49,7 +49,7 @@ class Libncurses : public IDisplayModule
 
     protected:
     private:
-        std::string _name;
+        const std::string _lib_name;
 };
 
 void my_clear();

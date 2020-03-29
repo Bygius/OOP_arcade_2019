@@ -7,7 +7,7 @@
 
 #include "Libsfml.hpp"
 
-Libsfml::Libsfml()
+Libsfml::Libsfml() : _lib_name("lib_arcade_sfml.so")
 {
     this->_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(WIDTH, HEIGHT), "My window");
     this->_color = sf::Color::White;
@@ -291,8 +291,7 @@ void Libsfml::putText(const std::string &text, unsigned int size, float x, float
 
 const std::string &Libsfml::getLibName() const
 {
-    const std::string ret = "sfml";
-    return ret;
+    return this->_lib_name;
 }
 
 extern "C" std::unique_ptr<IDisplayModule> createLib(void)

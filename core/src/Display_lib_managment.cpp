@@ -61,7 +61,7 @@ bool Display::Load(const std::string name)
     std::unique_ptr<IDisplayModule> (*create)();
     create = (std::unique_ptr<IDisplayModule> (*)())dlsym(handle, "createLib");
     this->actual_lib = create();
-    this->current_lib_name = name;
+    this->current_lib_name = this->actual_lib->getLibName();
 
     return EXIT_SUCCESS;
 }

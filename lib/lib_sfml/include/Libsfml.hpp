@@ -21,6 +21,7 @@ class Libsfml : public IDisplayModule
         sf::Color _color;
         sf::Event _event;
         sf::Clock _clock;
+        const std::string _lib_name;
 
     public:
         Libsfml();

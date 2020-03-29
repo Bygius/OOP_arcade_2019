@@ -9,7 +9,7 @@
 #include <memory>
 #include <math.h>
 
-Libncurses::Libncurses()
+Libncurses::Libncurses() : _lib_name("lib_arcade_ncurses.so")
 {
     initscr();
     nodelay(stdscr, true);
@@ -33,8 +33,6 @@ Libncurses::Libncurses()
     init_pair(LIGHT_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
     init_pair(LIGHT_CYAN, COLOR_CYAN, COLOR_BLACK);
     init_pair(WHITE, COLOR_WHITE, COLOR_BLACK);
-
-    this->_name = "nCurses";
 }
 
 Libncurses::~Libncurses()
@@ -393,7 +391,7 @@ void Libncurses::putText(const std::string &text, unsigned int size, float x, fl
 
 const std::string &Libncurses::getLibName() const
 {
-    return (this->_name);
+    return this->_lib_name;
 }
 
 int resize(int x)
