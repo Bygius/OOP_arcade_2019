@@ -130,11 +130,11 @@ bool Libncurses::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == J && t == 106)
         return true;
-    if (key == K && 107)
+    if (key == K && t == 107)
         return true;
-    if (key == U && 117)
+    if (key == U && t == 117)
         return true;
-    if (key == I && 105)
+    if (key == I && t == 105)
         return true;
     if (key == M && t == 97)
         return true;
@@ -179,11 +179,11 @@ bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys key) const
         return true;
     if (key == J && t == 106)
         return true;
-    if (key == K && 107)
+    if (key == K && t == 107)
         return true;
-    if (key == U && 117)
+    if (key == U && t == 117)
         return true;
-    if (key == I && 105)
+    if (key == I && t == 105)
         return true;
     if (key == M && t == 97)
         return true;

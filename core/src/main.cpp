@@ -26,10 +26,19 @@ int main(int ac, char **av)
     Display d("./lib/");
     d.Load("lib_arcade_sdl.so");
     size_t i = 0;
-    while (d.isOpen()) {
+    while (1) {
         d.clear();
         d.update();
+        d.putLine(1, 1, 50, 50);
+        d.putPixel(120, 120);
+        d.putRect(100, 10, 50, 50);
+        d.putFillRect(200, 200, 100, 50);
+        // d.putText("a", 5, 10, 10);
+        // if (d.isKeyPressed(IDisplayModule::Keys::A))
+        //     break;
         d.render();
+        if (d.shouldExit() == true)
+            break;
     }
     return 0;
 }
