@@ -107,9 +107,9 @@ bool Libsfml::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == I && sf::Keyboard::isKeyPressed(sf::Keyboard::I))
         return true;
-    if (key == ENTER && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+    if (key == ENTER && sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
         return true;
-    if (key == BACKSPACE && sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace))
+    if (key == BACKSPACE && sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
         return true;
     if (key == KEYS_END && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         return true;

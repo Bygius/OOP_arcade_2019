@@ -6,24 +6,24 @@
 ##
 
 INC_DIR		= include/
+INT_DIR		= ../../include/
 
-CFLAGS		+= -I $(INC_DIR)
-CFLAGS		+= -Wall -Wextra
+CXXFLAGS		+= -I $(INC_DIR)
+CXXFLAGS		+= -I $(INT_DIR)
+CXXFLAGS		+= -Wall -Wextra -fpic
 
 RM		= rm -f
 
 CC		=	gcc
 
-NAME		=	lib_arcade_gameone.so
+NAME		=	lib_arcade_snake.so
 
 SRCS_DIR	=	src/
-SRCS_FILES	=	main.c 					
+SRCS_FILES	=	Snake.cpp \
 
 SRCS		= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
-OBJS		= $(SRCS:.c=.o)
-
-CFLAGS  +=      -Wall -Wextra -fpic -I $(DIR_INC)
+OBJS		= $(SRCS:.cpp=.o)
 
 MAKEFLAGS +=	--no-print-directory
 

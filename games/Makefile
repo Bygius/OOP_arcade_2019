@@ -12,24 +12,24 @@ GAME_THREE		=	game_three/
 
 all:
 	make -C	$(GAME_ONE)
-	make -C	$(GAME_TWO)
-	make -C	$(GAME_THREE)
+	# make -C	$(GAME_TWO)
+	# make -C	$(GAME_THREE)
 
 clean:
 	make -C	$(GAME_ONE)
-	make -C	$(GAME_TWO)
-	make -C	$(GAME_THREE)
+	# make -C	$(GAME_TWO)
+	# make -C	$(GAME_THREE)
 
 fclean:
 	make -C	$(GAME_ONE)
-	make -C	$(GAME_TWO)
-	make -C	$(GAME_THREE)
-	rm -f game_one.so game_two.so game_three.so
+	# make -C	$(GAME_TWO)
+	# make -C	$(GAME_THREE)
+	rm -f lib_arcade_snake.so lib_arcade_nibbler.so lib_arcade_centiped.so
 
 re:
 	make -C	$(GAME_ONE) re
-	make -C	$(GAME_TWO) re
-	make -C	$(GAME_THREE) re
+	# make -C	$(GAME_TWO) re
+	# make -C	$(GAME_THREE) re
 
 
 .PHONY: all clean fclean re

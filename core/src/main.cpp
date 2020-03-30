@@ -13,7 +13,6 @@
 #include "../../include/Arcade_interfaces.hpp"
 #include <unistd.h>
 #include <iostream>
-
 #include <string.h>
 #include "Lib.hpp"
 #include "Display.hpp"
@@ -24,7 +23,7 @@ int main(int ac, char **av)
         return 84;
 
     Display d("./lib/");
-    d.Load("lib_arcade_sdl.so");
+    d.Load("lib_arcade_sfml.so");
     size_t i = 0;
     while (1) {
         d.clear();
