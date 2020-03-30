@@ -23,30 +23,34 @@ void Display::reset()
     this->actual_lib->reset();
 }
 
+void Display::open()
+{
+}
+
 bool Display::isOpen() const
 {
     return this->actual_lib->isOpen();
 }
 
-bool Display::switchToNext_lib() const
+bool Display::switchToNextLib() const
 {
-    return this->actual_lib->switchToNext_lib();
+    return this->actual_lib->switchToNextLib();
 }
 
-bool Display::switchToPrevious_lib() const
+bool Display::switchToPreviousLib() const
 {
-    return this->actual_lib->switchToPrevious_lib();
+    return this->actual_lib->switchToPreviousLib();
 }
 
-bool Display::switchToNext_game() const
+bool Display::switchToNextGame() const
 {
-    return this->actual_lib->switchToNext_game();
+    return this->actual_lib->switchToNextGame();
 
 }
 
-bool Display::switchToPrevious_game() const
+bool Display::switchToPreviousGame() const
 {
-    return this->actual_lib->switchToPrevious_game();
+    return this->actual_lib->switchToPreviousGame();
 }
 
 bool Display::shouldBeRestarted() const

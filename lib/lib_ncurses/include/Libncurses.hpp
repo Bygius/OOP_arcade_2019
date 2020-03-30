@@ -18,12 +18,13 @@ class Libncurses : public IDisplayModule
         ~Libncurses();
 
         void reset();
+        void open();
         bool isOpen() const;
 
-        bool switchToNext_lib() const;
-        bool switchToPrevious_lib() const;
-        bool switchToNext_game() const;
-        bool switchToPrevious_game() const;
+        bool switchToNextLib() const;
+        bool switchToPreviousLib() const;
+        bool switchToNextGame() const;
+        bool switchToPreviousGame() const;
         bool shouldBeRestarted() const;
         bool shouldGoToMenu() const;
         bool shouldExit() const;

@@ -29,6 +29,10 @@ Libsdl::~Libsdl()
 void Libsdl::reset()
 {
 }
+
+void Libsdl::open()
+{
+}
         
 bool Libsdl::isOpen() const
 {
@@ -38,22 +42,22 @@ bool Libsdl::isOpen() const
     return (value);
 }
 
-bool Libsdl::switchToNext_lib() const
+bool Libsdl::switchToNextLib() const
 {
     return (false);
 }
 
-bool Libsdl::switchToPrevious_lib() const
+bool Libsdl::switchToPreviousLib() const
 {
     return (false);
 }
 
-bool Libsdl::switchToNext_game() const
+bool Libsdl::switchToNextGame() const
 {
     return (false);
 }
 
-bool Libsdl::switchToPrevious_game() const
+bool Libsdl::switchToPreviousGame() const
 {
     return (false);
 }
@@ -105,8 +109,6 @@ bool Libsdl::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == SPACE && _event.key.keysym.sym == SDLK_SPACE)
         return true;
-    if (key == ESCAPE && _event.key.keysym.sym == SDLK_ESCAPE)
-        return true;
     if (key == J && _event.key.keysym.sym == SDLK_j)
         return true;
     if (key == K && _event.key.keysym.sym == SDLK_k)
@@ -115,9 +117,9 @@ bool Libsdl::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == I && _event.key.keysym.sym == SDLK_i)
         return true;
-    if (key == M && _event.key.keysym.sym == SDLK_m)
+    if (key == ENTER && _event.key.keysym.sym == SDLK_RETURN)
         return true;
-    if (key == R && _event.key.keysym.sym == SDLK_r)
+    if (key == BACKSPACE && _event.key.keysym.sym == SDLK_BACKSPACE)
         return true;
     return (false);
 }

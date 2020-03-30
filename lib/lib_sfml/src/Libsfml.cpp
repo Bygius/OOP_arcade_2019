@@ -18,27 +18,31 @@ void Libsfml::reset()
     this->_color = sf::Color::White;
 }
 
+void Libsfml::open()
+{
+}
+
 bool Libsfml::isOpen() const
 {
     return (this->_window->isOpen());
 }
 
-bool Libsfml::switchToNext_lib() const
+bool Libsfml::switchToNextLib() const
 {
     return false;
 }
 
-bool Libsfml::switchToPrevious_lib() const
+bool Libsfml::switchToPreviousLib() const
 {
     return false;
 }
 
-bool Libsfml::switchToNext_game() const
+bool Libsfml::switchToNextGame() const
 {
     return false;
 }
 
-bool Libsfml::switchToPrevious_game() const
+bool Libsfml::switchToPreviousGame() const
 {
     return false;
 }
@@ -95,8 +99,6 @@ bool Libsfml::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == SPACE && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         return true;
-    if (key == ESCAPE && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        return true;
     if (key == J && sf::Keyboard::isKeyPressed(sf::Keyboard::J))
         return true;
     if (key == K && sf::Keyboard::isKeyPressed(sf::Keyboard::K))
@@ -105,9 +107,9 @@ bool Libsfml::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == I && sf::Keyboard::isKeyPressed(sf::Keyboard::I))
         return true;
-    if (key == M && sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+    if (key == ENTER && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         return true;
-    if (key == R && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+    if (key == BACKSPACE && sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace))
         return true;
     if (key == KEYS_END && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         return true;

@@ -47,6 +47,10 @@ void Libncurses::reset()
     nodelay(stdscr, true);
     curs_set(0);
 }
+
+void Libncurses::open()
+{
+}
         
 bool Libncurses::isOpen() const
 {
@@ -59,22 +63,22 @@ bool Libncurses::isOpen() const
     return (value);
 }
 
-bool Libncurses::switchToNext_lib() const
+bool Libncurses::switchToNextLib() const
 {
     return (false);
 }
 
-bool Libncurses::switchToPrevious_lib() const
+bool Libncurses::switchToPreviousLib() const
 {
     return (false);
 }
 
-bool Libncurses::switchToNext_game() const
+bool Libncurses::switchToNextGame() const
 {
     return (false);
 }
 
-bool Libncurses::switchToPrevious_game() const
+bool Libncurses::switchToPreviousGame() const
 {
     return (false);
 }
@@ -124,8 +128,6 @@ bool Libncurses::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == SPACE && t == 32)
         return true;
-    if (key == ESCAPE && t == 27)
-        return true;
     if (key == J && t == 106)
         return true;
     if (key == K && t == 107)
@@ -134,9 +136,9 @@ bool Libncurses::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == I && t == 105)
         return true;
-    if (key == M && t == 97)
+    if (key == ENTER && t == 8)
         return true;
-    if (key == R && t == 114)
+    if (key == BACKSPACE && t == 10)
         return true;
     if (key == KEYS_END && t == 27)
         return true;
@@ -173,8 +175,6 @@ bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys key) const
         return true;
     if (key == SPACE && t == 32)
         return true;
-    if (key == ESCAPE && t == 27)
-        return true;
     if (key == J && t == 106)
         return true;
     if (key == K && t == 107)
@@ -183,9 +183,9 @@ bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys key) const
         return true;
     if (key == I && t == 105)
         return true;
-    if (key == M && t == 97)
+    if (key == BACKSPACE && t == 10)
         return true;
-    if (key == R && t == 114)
+    if (key == KEYS_END && t == 27)
         return true;
     if (key == KEYS_END && t == 27)
         return true;
