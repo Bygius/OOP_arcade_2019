@@ -16,14 +16,14 @@ all:
 	make -C	$(GAME_THREE)
 
 clean:
-	make -C	$(GAME_ONE)
-	make -C	$(GAME_TWO)
-	make -C	$(GAME_THREE)
+	make -C	$(GAME_ONE) clean
+	make -C	$(GAME_TWO) clean
+	make -C	$(GAME_THREE) clean
 
 fclean:
-	make -C	$(GAME_ONE)
-	make -C	$(GAME_TWO)
-	make -C	$(GAME_THREE)
+	make -C	$(GAME_ONE) fclean
+	make -C	$(GAME_TWO) fclean
+	make -C	$(GAME_THREE) fclean
 	rm -f lib_arcade_nibbler.so lib_arcade_pacman.so lib_arcade_centiped.so
 
 re:

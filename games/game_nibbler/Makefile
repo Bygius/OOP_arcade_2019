@@ -14,7 +14,7 @@ CXXFLAGS		+= -Wall -Wextra -fpic
 
 RM		= rm -f
 
-CC		=	gcc
+CC		=	g++
 
 NAME		=	lib_arcade_nibbler.so
 
