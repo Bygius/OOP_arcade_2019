@@ -19,17 +19,11 @@ Libsdl::Libsdl() : _lib_name("lib_arcade_sdl.so")
     this->_exit = false;
 }
 
-Libsdl::~Libsdl()
-{
-    TTF_CloseFont(this->_font);
-    SDL_DestroyWindow(this->_window);
-    SDL_DestroyRenderer(this->_renderer);
-    TTF_Quit();
-    SDL_Quit();
-}
-
 void Libsdl::reset()
 {
+    this->_font = TTF_OpenFont("include/arial.ttf", 24);
+    this->_color = { 255, 255, 255, 1};
+    this->_exit = false;
 }
 
 void Libsdl::open()
@@ -37,6 +31,15 @@ void Libsdl::open()
     this->_window = SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
     // this->_window = std::make_unique<SDL_Window>(SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0));
     this->_renderer = SDL_CreateRenderer(this->_window, -1, SDL_RENDERER_ACCELERATED);
+}
+
+void Libsdl::close()
+{
+    TTF_CloseFont(this->_font);
+    SDL_DestroyWindow(this->_window);
+    SDL_DestroyRenderer(this->_renderer);
+    TTF_Quit();
+    SDL_Quit();
 }
         
 bool Libsdl::isOpen() const

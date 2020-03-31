@@ -18,10 +18,10 @@ class Libsdl : public IDisplayModule
 {
     public:
         Libsdl();
-        ~Libsdl();
 
         void reset();
         void open();
+        void close();
         bool isOpen() const;
 
         bool switchToNextLib() const;

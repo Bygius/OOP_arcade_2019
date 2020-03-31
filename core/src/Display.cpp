@@ -28,6 +28,11 @@ void Display::open()
     this->actual_lib->open();
 }
 
+void Display::close()
+{
+    this->actual_lib->close();
+}
+
 bool Display::isOpen() const
 {
     return this->actual_lib->isOpen();

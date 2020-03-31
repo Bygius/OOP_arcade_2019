@@ -28,6 +28,7 @@ class Libsfml : public IDisplayModule
         
         void reset();
         void open();
+        void close();
         bool isOpen() const;
 
         bool switchToNextLib() const;

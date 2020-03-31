@@ -71,6 +71,8 @@ class IDisplayModule {
         virtual void reset() = 0;
         // Opens / inits the window
         virtual void open() = 0;
+        // Closes / destroys the window
+        virtual void close() = 0;
         // Check if the window is open
         virtual bool isOpen() const = 0;
 

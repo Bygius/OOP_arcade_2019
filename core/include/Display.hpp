@@ -20,6 +20,7 @@ class Display : public IDisplayModule{
         ~Display();
         void reset();
         void open();
+        void close();
         bool isOpen() const;
 
         bool switchToNextLib() const;

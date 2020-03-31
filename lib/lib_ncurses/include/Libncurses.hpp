@@ -16,10 +16,10 @@ class Libncurses : public IDisplayModule
 {
     public:
         Libncurses();
-        ~Libncurses();
 
         void reset();
         void open();
+        void close();
         bool isOpen() const;
 
         bool switchToNextLib() const;
