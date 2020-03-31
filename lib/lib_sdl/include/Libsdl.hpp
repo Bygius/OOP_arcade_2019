@@ -57,7 +57,6 @@ class Libsdl : public IDisplayModule
         SDL_Window *_window;
         SDL_Renderer *_renderer;
         SDL_Event _event;
-        TTF_Font *_font;
         SDL_Color _color;
         bool _exit;
         const std::string _lib_name;

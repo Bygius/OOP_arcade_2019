@@ -14,14 +14,12 @@ Libsdl::Libsdl() : _lib_name("lib_arcade_sdl.so")
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
 
-    this->_font = TTF_OpenFont("include/arial.ttf", 24);
     this->_color = { 255, 255, 255, 1};
     this->_exit = false;
 }
 
 void Libsdl::reset()
 {
-    this->_font = TTF_OpenFont("include/arial.ttf", 24);
     this->_color = { 255, 255, 255, 1};
     this->_exit = false;
 }
@@ -35,7 +33,6 @@ void Libsdl::open()
 
 void Libsdl::close()
 {
-    TTF_CloseFont(this->_font);
     SDL_DestroyWindow(this->_window);
     SDL_DestroyRenderer(this->_renderer);
     TTF_Quit();
@@ -320,19 +317,18 @@ void Libsdl::putText(const std::string &text, unsigned int size, float x, float 
     // TTF_Font *_fonta = TTF_OpenFont("include/arial.ttf", 24);;
     SDL_Surface *surface;
     SDL_Texture *texture;
-    SDL_Color test = { 255, 255, 255};
+    TTF_Font *_font = TTF_OpenFont("include/arial.ttf", size);
 
-    surface = TTF_RenderText_Solid(this->_font, text.c_str(), test);
+    surface = TTF_RenderText_Solid(_font, text.c_str(), this->_color);
     texture = SDL_CreateTextureFromSurface(this->_renderer, surface);
 
     SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
-    SDL_Rect dstrect = { 0, 0, texture_w, texture_h};
+    SDL_Rect dstrect = {x, y, texture_w, texture_h};
 
     SDL_FreeSurface(surface);
     SDL_RenderCopy(this->_renderer, texture, NULL, &dstrect);
     SDL_DestroyTexture(texture);
-    // TTF_CloseFont(_fonta);
-    // SDL_RenderPresent(this->_renderer);
+    TTF_CloseFont(_font);
 
 }
 

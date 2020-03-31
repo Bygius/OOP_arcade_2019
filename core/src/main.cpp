@@ -30,6 +30,8 @@ int main(int ac, char **av)
     while (d.isOpen()) {
         d.clear();
         d.update();
+        if (d.shouldExit())
+            d.close();
         d.setColor(IDisplayModule::Colors::BLUE);
         d.putRect(10, 10, 40, 40);
         d.setColor(IDisplayModule::Colors::GREEN);
@@ -40,6 +42,8 @@ int main(int ac, char **av)
         d.putCircle(300, 300, 60);
         d.setColor(IDisplayModule::Colors::MAGENTA);
         d.putLine(100, 200, 100, 150);
+        d.setColor(IDisplayModule::CYAN);
+        d.putText("TA MERE LOL", 40, 300, 100);
         if (d.isKeyPressed(IDisplayModule::RIGHT)) {
             d.close();
             d.LoadNextLib();
