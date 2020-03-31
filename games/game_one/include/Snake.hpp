@@ -15,8 +15,9 @@ class Snake : public IGameModule
     private:
         int x1;
         int y1;
+        IDisplayModule &_lib;
     public:
-        Snake();
+        Snake(IDisplayModule &);
         virtual ~Snake() = default;
 
         void reset();

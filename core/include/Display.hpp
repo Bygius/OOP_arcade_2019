@@ -54,7 +54,7 @@ class Display : public IDisplayModule{
         bool LoadPreviousLib(void);
         bool LoadNextLib(void);
 
-    private :
+    public:
         std::unique_ptr<IDisplayModule> actual_lib;
         const std::string lib_path;
         std::vector<std::string> lib_list;

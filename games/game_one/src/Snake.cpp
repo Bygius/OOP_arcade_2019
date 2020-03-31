@@ -7,7 +7,7 @@
 
 #include "Snake.hpp"
 
-Snake::Snake()
+Snake::Snake(IDisplayModule &lib) : _lib(lib)
 {
     this->x1 = 0;
     this->y1 = 0;
