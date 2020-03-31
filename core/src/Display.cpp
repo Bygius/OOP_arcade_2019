@@ -25,6 +25,7 @@ void Display::reset()
 
 void Display::open()
 {
+    this->actual_lib->open();
 }
 
 bool Display::isOpen() const
