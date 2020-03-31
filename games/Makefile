@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-GAME_ONE		=	game_one/
+GAME_ONE		=	game_nibbler/
 GAME_TWO		=	game_two/
 GAME_THREE		=	game_three/
 
@@ -24,7 +24,7 @@ fclean:
 	make -C	$(GAME_ONE)
 	# make -C	$(GAME_TWO)
 	# make -C	$(GAME_THREE)
-	rm -f lib_arcade_snake.so lib_arcade_nibbler.so lib_arcade_centiped.so
+	rm -f lib_arcade_nibbler.so lib_arcade_nibbler.so lib_arcade_centiped.so
 
 re:
 	make -C	$(GAME_ONE) re

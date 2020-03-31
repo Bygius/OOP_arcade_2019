@@ -15,7 +15,6 @@
 #include <string.h>
 #include "Lib.hpp"
 #include "Display.hpp"
-#include "../../games/game_one/include/Snake.hpp"
 
 int main(int ac, char **av)
 {

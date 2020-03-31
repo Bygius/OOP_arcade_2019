@@ -2,23 +2,23 @@
 ** EPITECH PROJECT, 2020
 ** peter bessone
 ** File description:
-** Snake
+** Nibbler
 */
 
-#ifndef SNAKE_HPP_
-#define SNAKE_HPP_
+#ifndef NIBBLER_HPP_
+#define NIBBLER_HPP_
 
 #include "Arcade_interfaces.hpp"
 
-class Snake : public IGameModule
+class Nibbler : public IGameModule
 {
     private:
         int x1;
         int y1;
         IDisplayModule &_lib;
     public:
-        Snake(IDisplayModule &);
-        virtual ~Snake() = default;
+        Nibbler(IDisplayModule &);
+        virtual ~Nibbler() = default;
 
         void reset();
         bool loadFromFile(const std::string &filepath);
@@ -33,4 +33,4 @@ class Snake : public IGameModule
         const std::string &getLibName() const;
 };
 
-#endif /* !SNAKE_HPP_ */
+#endif /* !Nibbler_HPP_ */
