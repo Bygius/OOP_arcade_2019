@@ -23,7 +23,7 @@ int main(int ac, char **av)
         return 84;
 
     Display d("./lib/");
-    d.Load("lib_arcade_sfml.so");
+    d.Load("lib_arcade_sdl.so");
     
     size_t i = 0;
     d.open();

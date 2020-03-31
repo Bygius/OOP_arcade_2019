@@ -13,13 +13,15 @@ Libsdl::Libsdl() : _lib_name("lib_arcade_sdl.so")
 {
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
-    this->_window = SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
-    // this->_window = std::make_unique<SDL_Window>(SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0));
-    this->_renderer = SDL_CreateRenderer(this->_window, -1, SDL_RENDERER_ACCELERATED);
+
+    this->_font = TTF_OpenFont("include/arial.ttf", 24);
+    this->_color = { 255, 255, 255, 1};
+    this->_exit = false;
 }
 
 Libsdl::~Libsdl()
 {
+    TTF_CloseFont(this->_font);
     SDL_DestroyWindow(this->_window);
     SDL_DestroyRenderer(this->_renderer);
     TTF_Quit();
@@ -32,49 +34,65 @@ void Libsdl::reset()
 
 void Libsdl::open()
 {
+    this->_window = SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
+    // this->_window = std::make_unique<SDL_Window>(SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0));
+    this->_renderer = SDL_CreateRenderer(this->_window, -1, SDL_RENDERER_ACCELERATED);
 }
         
 bool Libsdl::isOpen() const
 {
-    bool value = false;
-    if (this->_renderer)
-        value = true;
+    bool value = true;
+
+    if (this->_exit == true)
+        value = false;
     return (value);
 }
 
 bool Libsdl::switchToNextLib() const
 {
+    if (_event.key.keysym.sym == SDLK_n)
+        return (true);
     return (false);
 }
 
 bool Libsdl::switchToPreviousLib() const
 {
+    if (_event.key.keysym.sym == SDLK_b)
+        return (true);
     return (false);
 }
 
 bool Libsdl::switchToNextGame() const
 {
+    if (_event.key.keysym.sym == SDLK_p)
+        return (true);
     return (false);
 }
 
 bool Libsdl::switchToPreviousGame() const
 {
+    if (_event.key.keysym.sym == SDLK_o)
+        return (true);
     return (false);
 }
 
 bool Libsdl::shouldBeRestarted() const
 {
+    if (_event.key.keysym.sym == SDLK_r)
+        return (true);
     return (false);
 }
 
 bool Libsdl::shouldGoToMenu() const
 {
+    if (_event.key.keysym.sym == SDLK_m)
+        return (true);
     return (false);
 }
 
 bool Libsdl::shouldExit() const
 {
-    if (this->_event.type == SDL_QUIT)
+    if (this->_event.type == SDL_QUIT || _event.key.keysym.sym == SDLK_ESCAPE)
         return (true);
     return (false);
 }
@@ -143,7 +161,9 @@ void Libsdl::clear() const
 void Libsdl::update()
 {
     SDL_PollEvent(&this->_event);
-    this->shouldExit();
+    if (this->shouldExit())
+        this->_exit = true;
+
 }
 
 void Libsdl::render() const
@@ -161,68 +181,67 @@ void Libsdl::setColor(IDisplayModule::Colors color)
     switch (color)
     {
         case (DEFAULT):
-            SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
+            this->_color = {255, 255, 255, 1};
             break;
         case (BLACK):
-            SDL_SetRenderDrawColor(this->_renderer, 0, 0, 0, 255);
+            this->_color = {0, 0, 0, 1};
             break;
         case (RED):
-            SDL_SetRenderDrawColor(this->_renderer, 255, 0, 0, 0.9);
+            this->_color = {255, 0, 0, 1};
             break;
         case (GREEN):
-            SDL_SetRenderDrawColor(this->_renderer, 0, 12, 0, 0.9);
+            this->_color = {0, 128, 0, 1};
             break;
         case (YELLOW):
-            SDL_SetRenderDrawColor(this->_renderer, 234, 255, 0, 0.9);
+            this->_color = {234, 255, 0, 1};
             break;
         case (BLUE):
-            SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 0.9);
+            this->_color = {0, 0, 255, 1};
             break;
         case (MAGENTA):
-            SDL_SetRenderDrawColor(this->_renderer, 255, 0, 255, 0.9);
+            this->_color = {255, 0, 255, 1};
             break;
         case (CYAN):
-            SDL_SetRenderDrawColor(this->_renderer, 0, 255, 255, 0.9);
+            this->_color = {0, 255, 255, 1};
             break;
         case (LIGHT_GRAY):
-            SDL_SetRenderDrawColor(this->_renderer, 0, 255, 0, 0.9);
+            this->_color = {0, 255, 0, 1};
             break;
         case (DARK_GRAY):
-            SDL_SetRenderDrawColor(this->_renderer, 211, 211, 211, 0.9);
+            this->_color = {211, 211, 211, 1};
             break;
         case (LIGHT_RED):
-            SDL_SetRenderDrawColor(this->_renderer, 240, 52, 52, 0.9);
+            this->_color = {240, 52, 52, 1};
             break;
         case (LIGHT_GREEN):
-            SDL_SetRenderDrawColor(this->_renderer, 0, 255, 0, 0.9);
+            this->_color = {0, 255, 0, 1};
             break;
         case (LIGHT_YELLOW):
-            SDL_SetRenderDrawColor(this->_renderer, 255, 250, 205, 0.9);
+            this->_color = {255, 250, 205, 1};
             break;
         case (LIGHT_BLUE):
-            SDL_SetRenderDrawColor(this->_renderer, 0, 191, 255, 0.9);
+            this->_color = {0, 191, 255, 1};
             break;
         case (LIGHT_MAGENTA):
-            SDL_SetRenderDrawColor(this->_renderer, 238, 130, 238, 0.9);
+            this->_color = {238, 130, 238, 1};
             break;
         case (LIGHT_CYAN):
-            SDL_SetRenderDrawColor(this->_renderer, 175, 238, 238, 0.9);
+            this->_color = {175, 238, 238, 1};
             break;
         default:
             printf("Bad color\n");
             break;
     }  
+    SDL_SetRenderDrawColor(this->_renderer, this->_color.r, this->_color.g, this->_color.b, this->_color.a);
 }
 
 void Libsdl::putPixel(float x, float y) const
 {
-    SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
     SDL_RenderDrawPoint(this->_renderer, x, y);
 }
 
 void Libsdl::putLine(float x1, float y1, float x2, float y2) const
 {
-    SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
     SDL_RenderDrawLine(this->_renderer, x1, y1, x2, y2);
 }
 
@@ -235,7 +254,6 @@ void Libsdl::putRect(float x, float y, float w, float h) const
     srcrect.w = w;
     srcrect.h = h;
 
-    SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
     SDL_RenderDrawRect(this->_renderer, &srcrect);
 }
 
@@ -248,38 +266,38 @@ void Libsdl::putFillRect(float x, float y, float w, float h) const
     srcrect.w = w;
     srcrect.h = h;
 
-    SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
+    // SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
     SDL_RenderFillRect(this->_renderer, &srcrect);
 }
 
 void Libsdl::putCircle(float x, float y, float rad) const
 {
-    int d = rad * 2;
+    int diameter = (rad * 2);
+    int xValue = rad - 1;
+    int yValue = 0;
     int tx = 1;
-    int ty = 1;
-    int error = (tx - d);
-    int x2 = rad - 1;
-    int y2 = 0;
-
-    SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
-    while (x2 >= y2) {
-        SDL_RenderDrawPoint(this->_renderer, x + x2, y - y2);
-        SDL_RenderDrawPoint(this->_renderer, x + x2, y + y2);
-        SDL_RenderDrawPoint(this->_renderer, x - x2, y - y2);
-        SDL_RenderDrawPoint(this->_renderer, x - x2, y + y2);
-        SDL_RenderDrawPoint(this->_renderer, x + y2, y - x2);
-        SDL_RenderDrawPoint(this->_renderer, x + y2, y + x2);
-        SDL_RenderDrawPoint(this->_renderer, x - y2, y - x2);
-        SDL_RenderDrawPoint(this->_renderer, x - y2, y + x2);
+    int ty = 0;
+    int error = (tx - diameter);
+    x = x + rad;
+    y = y + rad;
+    while (xValue >= yValue) {
+        SDL_RenderDrawPoint(this->_renderer, x + xValue, y - yValue);
+        SDL_RenderDrawPoint(this->_renderer, x + xValue, y + yValue);
+        SDL_RenderDrawPoint(this->_renderer, x - xValue, y - yValue);
+        SDL_RenderDrawPoint(this->_renderer, x - xValue, y + yValue);
+        SDL_RenderDrawPoint(this->_renderer, x + yValue, y - xValue);
+        SDL_RenderDrawPoint(this->_renderer, x + yValue, y + xValue);
+        SDL_RenderDrawPoint(this->_renderer, x - yValue, y - xValue);
+        SDL_RenderDrawPoint(this->_renderer, x - yValue, y + xValue);
         if (error <= 0) {
-            ++y2;
+            ++yValue;
             error += ty;
             ty += 2;
         }
         if (error > 0) {
-            --x2;
+            --xValue;
             tx += 2;
-            error += (tx - d);
+            error += (tx - diameter);
         }
     }
 }
@@ -296,19 +314,23 @@ void Libsdl::putText(const std::string &text, unsigned int size, float x, float 
     int texture_w = 0;
     int texture_h = 0;
 
-    TTF_Font *font = TTF_OpenFont("include/arial.ttf", size);
-    if (!font)
-        return;
-    SDL_Color color = { 255, 255, 255 };
-    SDL_Surface * surface = TTF_RenderText_Solid(font, text.c_str(), color);
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(this->_renderer, surface);
+    // TTF_Font *_fonta = TTF_OpenFont("include/arial.ttf", 24);;
+    SDL_Surface *surface;
+    SDL_Texture *texture;
+    SDL_Color test = { 255, 255, 255};
+
+    surface = TTF_RenderText_Solid(this->_font, text.c_str(), test);
+    texture = SDL_CreateTextureFromSurface(this->_renderer, surface);
+
     SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
     SDL_Rect dstrect = { 0, 0, texture_w, texture_h};
-    SDL_RenderCopy(this->_renderer, texture, NULL, &dstrect);
-    SDL_RenderPresent(this->_renderer);
-    SDL_DestroyTexture(texture);
+
     SDL_FreeSurface(surface);
-    TTF_CloseFont(font);
+    SDL_RenderCopy(this->_renderer, texture, NULL, &dstrect);
+    SDL_DestroyTexture(texture);
+    // TTF_CloseFont(_fonta);
+    // SDL_RenderPresent(this->_renderer);
+
 }
 
 const std::string &Libsdl::getLibName() const

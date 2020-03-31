@@ -11,9 +11,29 @@
 
 Libncurses::Libncurses() : _lib_name("lib_arcade_ncurses.so")
 {
+}
+
+Libncurses::~Libncurses()
+{
+    endwin();
+}
+
+void Libncurses::reset()
+{
+    // endwin();
+    // initscr();
+    // this->_win = newwin(HEIGHT, WIDTH, 0, 0);
+    // curs_set(0);
+}
+
+void Libncurses::open()
+{
     initscr();
-    nodelay(stdscr, true);
+    nodelay(stdscr, 1);
     curs_set(0);
+    keypad(stdscr, TRUE);
+    wresize(stdscr, HEIGHT, WIDTH);
+    // resizeterm(HEIGHT, WIDTH);
 
     start_color();
     init_pair(DEFAULT, COLOR_WHITE, COLOR_BLACK);
@@ -34,29 +54,12 @@ Libncurses::Libncurses() : _lib_name("lib_arcade_ncurses.so")
     init_pair(LIGHT_CYAN, COLOR_CYAN, COLOR_BLACK);
     init_pair(WHITE, COLOR_WHITE, COLOR_BLACK);
 }
-
-Libncurses::~Libncurses()
-{
-    endwin();
-}
-
-void Libncurses::reset()
-{
-    endwin();
-    initscr();
-    nodelay(stdscr, true);
-    curs_set(0);
-}
-
-void Libncurses::open()
-{
-}
         
 bool Libncurses::isOpen() const
 {
     bool value;
 
-    if (stdscr == NULL)
+    if (stdscr == NULL || this->_exit == true)
         value = false;
     else
         value = true;
@@ -65,36 +68,64 @@ bool Libncurses::isOpen() const
 
 bool Libncurses::switchToNextLib() const
 {
+    int t = getch();
+
+    if (t == 110)
+        return (true);
     return (false);
 }
 
 bool Libncurses::switchToPreviousLib() const
 {
+    int t = getch();
+
+    if (t == 98)
+        return (true);
     return (false);
 }
 
 bool Libncurses::switchToNextGame() const
 {
+    int t = getch();
+
+    if (t == 112)
+        return (true);
     return (false);
 }
 
 bool Libncurses::switchToPreviousGame() const
 {
+    int t = getch();
+
+    if (t == 11)
+        return (true);
     return (false);
 }
 
 bool Libncurses::shouldBeRestarted() const
 {
+    int t = getch();
+
+    if (t == 114)
+        return (true);
     return (false);
 }
 
 bool Libncurses::shouldGoToMenu() const
 {
+    int t = getch();
+
+    if (t == 109)
+        return (true);
     return (false);
 }
 
 bool Libncurses::shouldExit() const
 {
+    int t = getch();
+
+    if (t == 27)
+        return (true);
     return (false);
 }
 
@@ -208,6 +239,8 @@ void Libncurses::clear() const
 
 void Libncurses::update()
 {
+    nanosleep((const struct timespec[]){{0, 50000000L}}, NULL);
+    this->_exit = this->shouldExit();
     refresh();
 }
 
