@@ -23,6 +23,11 @@ void Libsfml::open()
     this->_window->setFramerateLimit(60);
 }
 
+void Libsfml::close()
+{
+    this->_window->close();
+}
+
 bool Libsfml::isOpen() const
 {
     return (this->_window->isOpen());
@@ -73,7 +78,6 @@ bool Libsfml::shouldGoToMenu() const
 bool Libsfml::shouldExit() const
 {
     if (this->_event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-        this->_window->close();
         return true;
     }
     return false;

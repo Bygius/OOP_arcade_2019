@@ -45,9 +45,9 @@ int main(int ac, char **av)
             d.LoadNextLib();
             d.open();
         }
-
         d.render();
     }
+    d.close();
     return 0;
 }
 
