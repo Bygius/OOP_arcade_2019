@@ -6,8 +6,8 @@
 */
 
 #include "Libncurses.hpp"
-#include <memory>
 #include <math.h>
+#include <memory>
 
 Libncurses::Libncurses() : _lib_name("lib_arcade_ncurses.so")
 {
@@ -58,7 +58,7 @@ void Libncurses::close()
 {
     endwin();
 }
-        
+
 bool Libncurses::isOpen() const
 {
     bool value;
@@ -124,7 +124,7 @@ bool Libncurses::isKeyPressed(IDisplayModule::Keys key) const
     if (key == RIGHT && this->_input == KEY_RIGHT)
         return true;
     if (key == LEFT && this->_input == KEY_LEFT)
-            return true;
+        return true;
     if (key == UP && this->_input == KEY_UP)
         return true;
     if (key == DOWN && this->_input == KEY_DOWN)
@@ -169,7 +169,7 @@ bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys key) const
     if (key == RIGHT && this->_input == KEY_RIGHT)
         return true;
     if (key == LEFT && this->_input == KEY_LEFT)
-            return true;
+        return true;
     if (key == UP && this->_input == KEY_UP)
         return true;
     if (key == DOWN && this->_input == KEY_DOWN)
@@ -255,62 +255,25 @@ char Libncurses::getKeyCode() const
 
 void Libncurses::setColor(IDisplayModule::Colors color)
 {
-    
-    switch (color)
-    {
-        case (DEFAULT):
-            attron(COLOR_PAIR(DEFAULT));
-            break;
-        case (BLACK):
-            attron(COLOR_PAIR(BLACK));
-            break;
-        case (RED):
-            attron(COLOR_PAIR(RED));
-            break;
-        case (GREEN):
-            attron(COLOR_PAIR(GREEN));
-            break;
-        case (YELLOW):
-            attron(COLOR_PAIR(YELLOW));
-            break;
-        case (BLUE):
-            attron(COLOR_PAIR(BLUE));
-            break;
-        case (MAGENTA):
-            attron(COLOR_PAIR(MAGENTA));
-            break;
-        case (CYAN):
-            attron(COLOR_PAIR(CYAN));
-            break;
-        case (LIGHT_GRAY):
-            attron(COLOR_PAIR(LIGHT_GRAY));
-            break;
-        case (DARK_GRAY):
-            attron(COLOR_PAIR(DARK_GRAY));
-            break;
-        case (LIGHT_RED):
-            attron(COLOR_PAIR(LIGHT_RED));
-            break;
-        case (LIGHT_GREEN):
-            attron(COLOR_PAIR(LIGHT_GREEN));
-            break;
-        case (LIGHT_YELLOW):
-            attron(COLOR_PAIR(LIGHT_YELLOW));
-            break;
-        case (LIGHT_BLUE):
-            attron(COLOR_PAIR(LIGHT_BLUE));
-            break;
-        case (LIGHT_MAGENTA):
-            attron(COLOR_PAIR(LIGHT_MAGENTA));
-            break;
-        case (LIGHT_CYAN):
-            attron(COLOR_PAIR(LIGHT_CYAN));
-            break;
-        default:
-            printf("Bad color\n");
-            break;
+    switch (color) {
+        case (DEFAULT): attron(COLOR_PAIR(DEFAULT)); break;
+        case (BLACK): attron(COLOR_PAIR(BLACK)); break;
+        case (RED): attron(COLOR_PAIR(RED)); break;
+        case (GREEN): attron(COLOR_PAIR(GREEN)); break;
+        case (YELLOW): attron(COLOR_PAIR(YELLOW)); break;
+        case (BLUE): attron(COLOR_PAIR(BLUE)); break;
+        case (MAGENTA): attron(COLOR_PAIR(MAGENTA)); break;
+        case (CYAN): attron(COLOR_PAIR(CYAN)); break;
+        case (LIGHT_GRAY): attron(COLOR_PAIR(LIGHT_GRAY)); break;
+        case (DARK_GRAY): attron(COLOR_PAIR(DARK_GRAY)); break;
+        case (LIGHT_RED): attron(COLOR_PAIR(LIGHT_RED)); break;
+        case (LIGHT_GREEN): attron(COLOR_PAIR(LIGHT_GREEN)); break;
+        case (LIGHT_YELLOW): attron(COLOR_PAIR(LIGHT_YELLOW)); break;
+        case (LIGHT_BLUE): attron(COLOR_PAIR(LIGHT_BLUE)); break;
+        case (LIGHT_MAGENTA): attron(COLOR_PAIR(LIGHT_MAGENTA)); break;
+        case (LIGHT_CYAN): attron(COLOR_PAIR(LIGHT_CYAN)); break;
+        default: printf("Bad color\n"); break;
     }
-    
 }
 
 void Libncurses::putPixel(float x, float y) const
@@ -320,30 +283,38 @@ void Libncurses::putPixel(float x, float y) const
 
 void Libncurses::putLine(float x1, float y1, float x2, float y2) const
 {
-    int x_one = (int)resize(x1);
-    int x_two = (int)resize(x2);
-    int y_one = (int)resize(y1) / 2;
-    int y_two = (int)resize(y2) / 2;
-    int n = 0;
+    bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
+    float dx, dy, error;
+    int ystep, y, max;
 
-    if (y_two != y_one && x_one == x_two) {
-        if (y_one < y_two)
-            n = y_two - y_one;
-        else
-            n = y_one - y_two;
-        mvvline(y_one, x_one, '|', n);
-    } else if (x_one != x_two && y_one == y_two) {
-        if (x_one < x_two)
-            n = x_two - x_one;
-        else
-            n = x_one - x_two;
-        mvhline(y_one, x_one, '_', n);
-    } else {
-        printf("Bad coord");
+    if (steep) {
+        std::swap(x1, y1);
+        std::swap(x2, y2);
     }
-    return;
-}
+    if (x1 > x2) {
+        std::swap(x1, x2);
+        std::swap(y1, y2);
+    }
+    dx = x2 - x1;
+    dy = fabs(y2 - y1);
+    error = dx / 2.0;
+    ystep = (y1 < y2) ? 1 : -1;
+    y = (int) y1;
+    max = (int) x2;
+    for (int x = (int) x1; x <= max; x++) {
+        if (steep) {
+            putPixel(y, x);
+        } else {
+            putPixel(x, y);
+        }
 
+        error -= dy;
+        if (error < 0) {
+            y += ystep;
+            error += dx;
+        }
+    }
+}
 
 void Libncurses::putRect(float x, float y, float w, float h) const
 {
@@ -367,7 +338,7 @@ void Libncurses::putFillRect(float x, float y, float w, float h) const
     y = resize(y) / 2;
     w = resize(w);
     h = resize(h) / 2;
-    for (i = y; i <= y + h ; i ++)
+    for (i = y; i <= y + h; i++)
         mvhline(i, x, 'X', w);
 }
 
@@ -410,7 +381,8 @@ void Libncurses::putFillCircle(float x, float y, float rad) const
     (void) rad;
 }
 
-void Libncurses::putText(const std::string &text, unsigned int size, float x, float y) const
+void Libncurses::putText(
+    const std::string &text, unsigned int size, float x, float y) const
 {
     (void) size;
 
