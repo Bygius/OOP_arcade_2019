@@ -15,9 +15,9 @@ class Pacman : public IGameModule
     private:
         int x1;
         int y1;
-        IDisplayModule &_lib;
+
     public:
-        Pacman(IDisplayModule &);
+        Pacman();
         virtual ~Pacman() = default;
 
         void reset();

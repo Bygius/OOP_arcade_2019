@@ -6,8 +6,9 @@
 */
 
 #include "Centiped.hpp"
+#include <memory>
 
-Centiped::Centiped(IDisplayModule &lib) : _lib(lib)
+Centiped::Centiped()
 {
     this->x1 = 0;
     this->y1 = 0;
@@ -66,4 +67,9 @@ void Centiped::render(IDisplayModule &lib) const
 const std::string &Centiped::getLibName() const
 {
 
+}
+
+extern "C" std::unique_ptr<IGameModule> createLib(void)
+{
+    return std::make_unique<Centiped>();
 }

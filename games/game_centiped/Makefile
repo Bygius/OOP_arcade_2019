@@ -10,7 +10,7 @@ INT_DIR		= ../../include/
 
 CXXFLAGS		+= -I $(INC_DIR)
 CXXFLAGS		+= -I $(INT_DIR)
-CXXFLAGS		+= -Wall -Wextra -fpic
+CXXFLAGS		+= -Wall -Wextra -fpic -rdynamic
 
 RM		= rm -f
 

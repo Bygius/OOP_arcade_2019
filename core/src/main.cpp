@@ -77,8 +77,9 @@ int main(int ac, char **av)
          return 84;
 
     std::unique_ptr<DLLoader<IDisplayModule>> display_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/lib_arcade_sfml.so");
-    std::unique_ptr<DLLoader<IGameModule>> game_loader = std::make_unique<DLLoader<IGameModule>>("./games/lib_arcade_snake.so");
+    std::unique_ptr<DLLoader<IGameModule>> game_loader = std::make_unique<DLLoader<IGameModule>>("./games/lib_arcade_nibbler.so");
     std::unique_ptr<IDisplayModule> d = display_loader->getInstance();
+    std::unique_ptr<IGameModule> g = game_loader->getInstance();
 
     // Display d("./lib/");
     // d.Load("lib_arcade_ncurses.so");
@@ -107,7 +108,7 @@ int main(int ac, char **av)
         d->putLine(100, 200, 100, 150);
         d->setColor(IDisplayModule::CYAN);
         d->putText("TA MERE LOL", 40, 300, 100);
-
+        g->render(*d);
         d->render();
 
     }

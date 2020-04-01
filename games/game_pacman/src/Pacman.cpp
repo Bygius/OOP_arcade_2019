@@ -6,8 +6,9 @@
 */
 
 #include "Pacman.hpp"
+#include <memory>
 
-Pacman::Pacman(IDisplayModule &lib) : _lib(lib)
+Pacman::Pacman()
 {
     this->x1 = 0;
     this->y1 = 0;
@@ -66,4 +67,9 @@ void Pacman::render(IDisplayModule &lib) const
 const std::string &Pacman::getLibName() const
 {
 
+}
+
+extern "C" std::unique_ptr<IGameModule> createLib(void)
+{
+    return std::make_unique<Pacman>();
 }

@@ -15,9 +15,9 @@ class Nibbler : public IGameModule
     private:
         int x1;
         int y1;
-        IDisplayModule &_lib;
+
     public:
-        Nibbler(IDisplayModule &);
+        Nibbler();
         virtual ~Nibbler() = default;
 
         void reset();

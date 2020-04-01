@@ -15,9 +15,9 @@ class Centiped : public IGameModule
     private:
         int x1;
         int y1;
-        IDisplayModule &_lib;
+
     public:
-        Centiped(IDisplayModule &);
+        Centiped();
         virtual ~Centiped() = default;
 
         void reset();

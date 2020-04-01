@@ -6,8 +6,9 @@
 */
 
 #include "Nibbler.hpp"
+#include <memory>
 
-Nibbler::Nibbler(IDisplayModule &lib) : _lib(lib)
+Nibbler::Nibbler()
 {
     this->x1 = 0;
     this->y1 = 0;
@@ -60,10 +61,15 @@ void Nibbler::update(const IDisplayModule &lib)
 
 void Nibbler::render(IDisplayModule &lib) const
 {
-    lib.putRect(this->x1, this->y1, 50, 50);
+    lib.putText("jeu", 30, 0, 0);
 }
 
 const std::string &Nibbler::getLibName() const
 {
 
+}
+
+extern "C" std::unique_ptr<IGameModule> createLib(void)
+{
+    return std::make_unique<Nibbler>();
 }
