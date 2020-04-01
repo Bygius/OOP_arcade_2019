@@ -20,16 +20,13 @@ template<typename T>
 DLLoader<T>::~DLLoader()
 {
     closeLibrary();
-    //dlclose(_handle);
-    std::cout << "closed\n";
 }
 
 template<typename T>
 std::unique_ptr<T> DLLoader<T>::getInstance()
 {
-    //void *sym;
     std::unique_ptr<T> ret;
-    std::unique_ptr<T> (*create)();// = nullptr;
+    std::unique_ptr<T> (*create)();
 
     if (isLoaded() == false)
         loadLibrary();
@@ -37,7 +34,7 @@ std::unique_ptr<T> DLLoader<T>::getInstance()
     if (create == nullptr) {
          std::cout << this->_lib_name << "\n";
          std::cout << "Cannot open library: " << dlerror() << '\n';
-         exit(41);
+         exit(84);
     }
     ret = create();
         //throw
@@ -53,7 +50,7 @@ void DLLoader<T>::loadLibrary(void)
 
     if (!_handle) {
         std::cout << "Cannot open library: " << dlerror() << '\n';
-        exit(82);
+        exit(84);
 
     }
 }
@@ -64,7 +61,6 @@ void DLLoader<T>::closeLibrary()
     if (isLoaded() == true)
         dlclose(_handle);
     _handle = NULL;
-
 }
 
 
@@ -73,7 +69,6 @@ void DLLoader<T>::loadLibrary(const std::string &lib_name)
 {
     if (isLoaded() == true)
     {
-    //    exit(22);
        closeLibrary();
     }
     _handle = dlopen(lib_name.c_str(), RTLD_LAZY | RTLD_GLOBAL);

@@ -50,11 +50,11 @@ void loadNextLibrary(std::unique_ptr<DLLoader<T>> &loader, std::unique_ptr<T> &m
         return;
     if (pos == list.end()-1 || pos == list.end()) {
         reloadLibrary(loader, module, list.front().c_str());
-        std::cout << list.front().c_str() << "\n";
+        //std::cout << list.front().c_str() << "\n";
     } else {
         pos++;
         reloadLibrary(loader, module, pos->c_str());
-        std::cout << "--> " << pos->c_str() << "\n";
+        //std::cout << "--> " << pos->c_str() << "\n";
 
     }
 
@@ -83,9 +83,9 @@ int main(int ac, char **av)
         if (d->isKeyPressed(IDisplayModule::D) == true) {
             loadNextLibrary(display_loader, d);
         }
-        if (d->shouldExit() == true) {
-            break;
-        }
+        // if (d->shouldExit() == true) {
+        //     break;
+        // }
     }
     //     //sleep(1);
     //     //d_loader->loadLibrary("./lib/lib_arcade_ncurses.so");
