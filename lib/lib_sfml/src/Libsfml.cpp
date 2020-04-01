@@ -9,7 +9,6 @@
 
 Libsfml::Libsfml() : _lib_name("lib_arcade_sfml.so")
 {
-    this->_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(WIDTH, HEIGHT), "My window");
     this->_color = sf::Color::White;
 }
 
@@ -20,6 +19,13 @@ void Libsfml::reset()
 
 void Libsfml::open()
 {
+    this->_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(WIDTH, HEIGHT), "My window");
+    this->_window->setFramerateLimit(60);
+}
+
+void Libsfml::close()
+{
+    this->_window->close();
 }
 
 bool Libsfml::isOpen() const
@@ -29,41 +35,49 @@ bool Libsfml::isOpen() const
 
 bool Libsfml::switchToNextLib() const
 {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
+        return true;
     return false;
 }
 
 bool Libsfml::switchToPreviousLib() const
 {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+        return true;
     return false;
 }
 
 bool Libsfml::switchToNextGame() const
 {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+        return true;
     return false;
 }
 
 bool Libsfml::switchToPreviousGame() const
 {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::O))
+        return true;
     return false;
 }
 
 bool Libsfml::shouldBeRestarted() const
 {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+        return true;
     return false;
 }
 
 bool Libsfml::shouldGoToMenu() const
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
         return true;
-    }
     return false;
 }
 
 bool Libsfml::shouldExit() const
 {
-    if (this->_event.type == sf::Event::Closed) {
-        this->_window->close();
+    if (this->_event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
         return true;
     }
     return false;
@@ -111,7 +125,7 @@ bool Libsfml::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == BACKSPACE && sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
         return true;
-    if (key == KEYS_END && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    if (key == KEYS_END && sf::Keyboard::isKeyPressed(sf::Keyboard::End))
         return true;
     return false;
 }
@@ -281,7 +295,7 @@ void Libsfml::putFillCircle(float x, float y, float rad) const
 void Libsfml::putText(const std::string &text, unsigned int size, float x, float y) const
 {
     sf::Font font;
-    font.loadFromFile("../Fonts/AndBasR.ttf");
+    font.loadFromFile("include/arial.ttf");
     sf::Text str;
     str.setFont(font);
     str.setString(text);

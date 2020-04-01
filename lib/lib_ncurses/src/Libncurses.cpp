@@ -11,9 +11,25 @@
 
 Libncurses::Libncurses() : _lib_name("lib_arcade_ncurses.so")
 {
+
+}
+
+void Libncurses::reset()
+{
+    // endwin();
+    // initscr();
+    // this->_win = newwin(HEIGHT, WIDTH, 0, 0);
+    // curs_set(0);
+}
+
+void Libncurses::open()
+{
     initscr();
-    nodelay(stdscr, true);
+    nodelay(stdscr, 1);
     curs_set(0);
+    keypad(stdscr, TRUE);
+    wresize(stdscr, HEIGHT, WIDTH);
+    // resizeterm(HEIGHT, WIDTH);
 
     start_color();
     init_pair(DEFAULT, COLOR_WHITE, COLOR_BLACK);
@@ -35,28 +51,16 @@ Libncurses::Libncurses() : _lib_name("lib_arcade_ncurses.so")
     init_pair(WHITE, COLOR_WHITE, COLOR_BLACK);
 }
 
-Libncurses::~Libncurses()
+void Libncurses::close()
 {
     endwin();
-}
-
-void Libncurses::reset()
-{
-    endwin();
-    initscr();
-    nodelay(stdscr, true);
-    curs_set(0);
-}
-
-void Libncurses::open()
-{
 }
         
 bool Libncurses::isOpen() const
 {
     bool value;
 
-    if (stdscr == NULL)
+    if (stdscr == NULL || this->_exit == true)
         value = false;
     else
         value = true;
@@ -65,36 +69,64 @@ bool Libncurses::isOpen() const
 
 bool Libncurses::switchToNextLib() const
 {
+    int t = getch();
+
+    if (t == 110)
+        return (true);
     return (false);
 }
 
 bool Libncurses::switchToPreviousLib() const
 {
+    int t = getch();
+
+    if (t == 98)
+        return (true);
     return (false);
 }
 
 bool Libncurses::switchToNextGame() const
 {
+    int t = getch();
+
+    if (t == 112)
+        return (true);
     return (false);
 }
 
 bool Libncurses::switchToPreviousGame() const
 {
+    int t = getch();
+
+    if (t == 11)
+        return (true);
     return (false);
 }
 
 bool Libncurses::shouldBeRestarted() const
 {
+    int t = getch();
+
+    if (t == 114)
+        return (true);
     return (false);
 }
 
 bool Libncurses::shouldGoToMenu() const
 {
+    int t = getch();
+
+    if (t == 109)
+        return (true);
     return (false);
 }
 
 bool Libncurses::shouldExit() const
 {
+    int t = getch();
+
+    if (t == 27)
+        return (true);
     return (false);
 }
 
@@ -201,13 +233,26 @@ void my_clear()
     clear();
 }
 
+static float count_second(clock_t backup_clock)
+{
+    double result = 0;
+    result = clock() - backup_clock;
+    result *= 0.000001;
+    return (result);
+}
+
 void Libncurses::clear() const
 {
-    my_clear();
+    static clock_t _clock = clock();
+    if (count_second(_clock) >= 0.1) {
+        my_clear();
+        _clock = clock();
+    }
 }
 
 void Libncurses::update()
 {
+    this->_exit = this->shouldExit();
     refresh();
 }
 

@@ -7,6 +7,11 @@
 #include <dlfcn.h>
 #include "../include/Core.hpp"
 #include "../../include/Arcade_interfaces.hpp"
+//#include "../../lib/lib_one/include/Libsfml.hpp"
+
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <vector>
 #include <unistd.h>
 #include <iostream>
 #include <algorithm>
@@ -75,51 +80,38 @@ int main(int ac, char **av)
     std::unique_ptr<DLLoader<IGameModule>> game_loader = std::make_unique<DLLoader<IGameModule>>("./games/lib_arcade_snake.so");
     std::unique_ptr<IDisplayModule> d = display_loader->getInstance();
 
-    while (1) {
-        d->clear();
-        d->putLine(20, 30, 20, 50);
-        d->update();
-        d->render();
-        if (d->isKeyPressed(IDisplayModule::D) == true) {
-            loadNextLibrary(display_loader, d);
-        }
-        // if (d->shouldExit() == true) {
-        //     break;
-        // }
-    }
-    //     //sleep(1);
-    //     //d_loader->loadLibrary("./lib/lib_arcade_ncurses.so");
-    //     //d = d_loader->getInstance();
-    // }
-    //     d.putLine(20, 30, 20, 50);
-    //     d.putPixel(120, 120);
-    //     d.putRect(100, 10, 50, 50);
-    //     d.putFillRect(200, 200, 100, 50);
-    //     // d.putText("a", 5, 10, 10);
-    //     if (d.isKeyPressed(IDisplayModule::Keys::A))
+    // Display d("./lib/");
+    // d.Load("lib_arcade_ncurses.so");
+    
+    // size_t i = 0;
+    // d.open();
+    // while (d.isOpen()) {
+    //     d.clear();
+    //     d.update();
+    //     if (d.shouldExit())
+    //         d.close();
+    //     d.setColor(IDisplayModule::Colors::BLUE);
+    //     d.putRect(10, 10, 40, 40);
+    //     d.setColor(IDisplayModule::Colors::GREEN);
+    //     d.putFillRect(100, 10, 10, 30);
+    //     d.setColor(IDisplayModule::Colors::YELLOW);
+    //     d.putPixel(200, 10);
+    //     d.setColor(IDisplayModule::Colors::RED);
+    //     d.putCircle(300, 300, 60);
+    //     d.setColor(IDisplayModule::Colors::MAGENTA);
+    //     d.putLine(100, 200, 100, 150);
+    //     d.setColor(IDisplayModule::CYAN);
+    //     d.putText("TA MERE LOL", 40, 300, 100);
+    //     if (d.isKeyPressed(IDisplayModule::RIGHT)) {
+    //         d.close();
     //         d.LoadNextLib();
-    //     //     break;
+    //         d.open();
+    //     }
     //     d.render();
-    //     if (d.shouldExit() == true)
-    //         break;
     // }
+    // d.close();
     // return 0;
-    //DLLoader<IDisplayModule> *libLoader = std::make_unique DLLoader<IDisplayModule>("test"); // (DLLoader<IDisplayModule>("./lib/lib_arcade_sfml.so"))
-    //std::unique_ptr<DLLoader<IDisplayModule>> loader = std::make_unique<DLLoader<IDisplayModule>>("test");
-
-
-    //DLLoader<IDisplayModule>("test");
 }
 
-// d.setColor(IDisplayModule::Colors::BLUE);
-// d.putRect(10, 10, 40, 40);
-// d.setColor(IDisplayModule::Colors::GREEN);
-// d.putFillRect(100, 10, 10, 30);
-// d.setColor(IDisplayModule::Colors::YELLOW);
-// d.putPixel(200, 10);
-// d.setColor(IDisplayModule::Colors::RED);
-// d.putCircle(300, 300, 60);
-// d.setColor(IDisplayModule::Colors::MAGENTA);
-// d.putLine(100, 200, 100, 150);
-// sleep(1);
+
 // d.LoadPreviousLib();

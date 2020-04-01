@@ -20,6 +20,7 @@ class Display : public IDisplayModule{
         ~Display();
         void reset();
         void open();
+        void close();
         bool isOpen() const;
 
         bool switchToNextLib() const;
@@ -54,7 +55,7 @@ class Display : public IDisplayModule{
         bool LoadPreviousLib(void);
         bool LoadNextLib(void);
 
-    private :
+    public:
         std::unique_ptr<IDisplayModule> actual_lib;
         const std::string lib_path;
         std::vector<std::string> lib_list;

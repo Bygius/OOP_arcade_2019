@@ -8,6 +8,7 @@
 #ifndef LIBNCURSES_HPP_
 #define LIBNCURSES_HPP_
 
+#include <time.h>
 #include <curses.h>
 #include "Arcade_interfaces.hpp"
 
@@ -15,10 +16,10 @@ class Libncurses : public IDisplayModule
 {
     public:
         Libncurses();
-        ~Libncurses();
 
         void reset();
         void open();
+        void close();
         bool isOpen() const;
 
         bool switchToNextLib() const;
@@ -51,10 +52,14 @@ class Libncurses : public IDisplayModule
     protected:
     private:
         const std::string _lib_name;
+        char t;
+        WINDOW *_win;
+        bool _exit;
 };
 
 void my_clear();
 int resize(int x);
 void print_circle(int x, int y, int radius);
+void my_sleep();
 
 #endif /* !LIBNCURSES_HPP_ */

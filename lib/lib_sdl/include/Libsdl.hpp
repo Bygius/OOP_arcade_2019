@@ -18,10 +18,10 @@ class Libsdl : public IDisplayModule
 {
     public:
         Libsdl();
-        ~Libsdl();
 
         void reset();
         void open();
+        void close();
         bool isOpen() const;
 
         bool switchToNextLib() const;
@@ -50,14 +50,15 @@ class Libsdl : public IDisplayModule
         void putText(const std::string &text, unsigned int size, float x, float y) const;
         const std::string &getLibName() const;
 
-
+        void set_exit(bool value);
     protected:
     private:
         // std::unique_ptr<SDL_Window> _window;
         SDL_Window *_window;
         SDL_Renderer *_renderer;
         SDL_Event _event;
-        bool exit;
+        SDL_Color _color;
+        bool _exit;
         const std::string _lib_name;
 };
 
