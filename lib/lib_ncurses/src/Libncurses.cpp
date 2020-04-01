@@ -230,7 +230,7 @@ static float count_second(clock_t backup_clock)
 void Libncurses::clear() const
 {
     static clock_t _clock = clock();
-    if (count_second(_clock) >= 0.01) {
+    if (count_second(_clock) >= 0.1) {
         my_clear();
         _clock = clock();
     }

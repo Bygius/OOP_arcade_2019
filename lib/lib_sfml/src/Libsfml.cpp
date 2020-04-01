@@ -21,6 +21,7 @@ void Libsfml::open()
 {
     this->_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(WIDTH, HEIGHT), "My window");
     this->_window->setFramerateLimit(60);
+    this->_window->pollEvent(this->_event);
 }
 
 void Libsfml::close()

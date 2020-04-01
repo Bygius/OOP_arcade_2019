@@ -29,6 +29,7 @@ void Libsdl::open()
     this->_window = SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
     // this->_window = std::make_unique<SDL_Window>(SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0));
     this->_renderer = SDL_CreateRenderer(this->_window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_PollEvent(&this->_event);
 }
 
 void Libsdl::close()
