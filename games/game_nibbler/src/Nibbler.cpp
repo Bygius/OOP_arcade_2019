@@ -21,6 +21,7 @@ void Nibbler::reset()
 
 bool Nibbler::loadFromFile(const std::string &filepath)
 {
+    (void)filepath;
     return false;
 }
 
@@ -31,6 +32,7 @@ bool Nibbler::loadFromFile()
 
 bool Nibbler::saveToFile(const std::string &filepath) const
 {
+    (void)filepath;
     return false;
 }
 
@@ -41,7 +43,7 @@ bool Nibbler::saveToFile() const
 
 void Nibbler::setPlayerName(const std::string &name)
 {
-
+    (void)name;
 }
 
 std::pair<std::string, int> Nibbler::getScore() const
@@ -56,7 +58,7 @@ std::vector<std::pair<std::string, int>> Nibbler::getBestScores() const
 
 void Nibbler::update(const IDisplayModule &lib)
 {
-
+    (void)lib;
 }
 
 void Nibbler::render(IDisplayModule &lib) const

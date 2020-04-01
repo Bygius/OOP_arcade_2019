@@ -371,11 +371,6 @@ void Libncurses::putFillRect(float x, float y, float w, float h) const
         mvhline(i, x, 'X', w);
 }
 
-void print_circle(int x, int y, int radius)
-{
-    mvprintw(0-y, 0+x, "*");
-}
-
 void Libncurses::putCircle(float x, float y, float rad) const
 {
     int diameter = (rad * 2);

@@ -133,6 +133,7 @@ bool Libsfml::isKeyPressed(IDisplayModule::Keys key) const
 
 bool Libsfml::isKeyPressedOnce(IDisplayModule::Keys key) const
 {
+    (void)key;
     return false;
 }
 

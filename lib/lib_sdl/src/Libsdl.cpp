@@ -324,7 +324,7 @@ void Libsdl::putText(const std::string &text, unsigned int size, float x, float 
     texture = SDL_CreateTextureFromSurface(this->_renderer, surface);
 
     SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
-    SDL_Rect dstrect = {x, y, texture_w, texture_h};
+    SDL_Rect dstrect = {(int)x, (int)y, texture_w, texture_h};
 
     SDL_FreeSurface(surface);
     SDL_RenderCopy(this->_renderer, texture, NULL, &dstrect);

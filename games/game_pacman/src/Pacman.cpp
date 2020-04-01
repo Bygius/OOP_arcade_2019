@@ -21,6 +21,7 @@ void Pacman::reset()
 
 bool Pacman::loadFromFile(const std::string &filepath)
 {
+    (void)filepath;
     return false;
 }
 
@@ -31,6 +32,7 @@ bool Pacman::loadFromFile()
 
 bool Pacman::saveToFile(const std::string &filepath) const
 {
+    (void)filepath;
     return false;
 }
 
@@ -41,7 +43,7 @@ bool Pacman::saveToFile() const
 
 void Pacman::setPlayerName(const std::string &name)
 {
-
+    (void)name;
 }
 
 std::pair<std::string, int> Pacman::getScore() const
@@ -56,7 +58,7 @@ std::vector<std::pair<std::string, int>> Pacman::getBestScores() const
 
 void Pacman::update(const IDisplayModule &lib)
 {
-
+    (void)lib;
 }
 
 void Pacman::render(IDisplayModule &lib) const

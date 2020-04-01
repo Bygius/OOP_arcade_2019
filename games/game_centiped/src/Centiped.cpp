@@ -21,6 +21,7 @@ void Centiped::reset()
 
 bool Centiped::loadFromFile(const std::string &filepath)
 {
+    (void)filepath;
     return false;
 }
 
@@ -31,6 +32,7 @@ bool Centiped::loadFromFile()
 
 bool Centiped::saveToFile(const std::string &filepath) const
 {
+    (void)filepath;
     return false;
 }
 
@@ -41,7 +43,7 @@ bool Centiped::saveToFile() const
 
 void Centiped::setPlayerName(const std::string &name)
 {
-
+    (void)name;
 }
 
 std::pair<std::string, int> Centiped::getScore() const
@@ -56,7 +58,7 @@ std::vector<std::pair<std::string, int>> Centiped::getBestScores() const
 
 void Centiped::update(const IDisplayModule &lib)
 {
-
+    (void)lib;
 }
 
 void Centiped::render(IDisplayModule &lib) const
