@@ -238,6 +238,7 @@ void Libncurses::clear() const
 
 void Libncurses::update()
 {
+    noecho();
     this->_input = getch();
     this->_exit = this->shouldExit();
     refresh();
