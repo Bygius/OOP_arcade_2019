@@ -12,6 +12,11 @@ Libsfml::Libsfml() : _lib_name("lib_arcade_sfml.so")
     this->_color = sf::Color::White;
 }
 
+Libsfml::~Libsfml()
+{
+    close();
+}
+
 void Libsfml::reset()
 {
     this->_color = sf::Color::White;

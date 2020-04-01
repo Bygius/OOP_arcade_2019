@@ -18,6 +18,11 @@ Libsdl::Libsdl() : _lib_name("lib_arcade_sdl.so")
     this->_exit = false;
 }
 
+Libsdl::~Libsdl()
+{
+    close();
+}
+
 void Libsdl::reset()
 {
     this->_color = { 255, 255, 255, 1};

@@ -15,6 +15,11 @@ Libncurses::Libncurses() : _lib_name("lib_arcade_ncurses.so")
     this->_input = '\0';
 }
 
+Libncurses::~Libncurses()
+{
+    close();
+}
+
 void Libncurses::reset()
 {
     this->_exit = false;

@@ -25,6 +25,7 @@ class Libsfml : public IDisplayModule
 
     public:
         Libsfml();
+        ~Libsfml();
         
         void reset();
         void open();

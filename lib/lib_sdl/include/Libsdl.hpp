@@ -18,6 +18,7 @@ class Libsdl : public IDisplayModule
 {
     public:
         Libsdl();
+        ~Libsdl();
 
         void reset();
         void open();

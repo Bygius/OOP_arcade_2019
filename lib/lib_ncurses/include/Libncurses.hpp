@@ -16,6 +16,7 @@ class Libncurses : public IDisplayModule
 {
     public:
         Libncurses();
+        ~Libncurses();
 
         void reset();
         void open();
