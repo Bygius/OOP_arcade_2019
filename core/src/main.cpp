@@ -76,7 +76,7 @@ int main(int ac, char **av)
     if (av[1] == NULL)
          return 84;
 
-    std::unique_ptr<DLLoader<IDisplayModule>> display_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/lib_arcade_ncurses.so");
+    std::unique_ptr<DLLoader<IDisplayModule>> display_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/lib_arcade_sfml.so");
     std::unique_ptr<DLLoader<IGameModule>> game_loader = std::make_unique<DLLoader<IGameModule>>("./games/lib_arcade_snake.so");
     std::unique_ptr<IDisplayModule> d = display_loader->getInstance();
 
@@ -84,33 +84,35 @@ int main(int ac, char **av)
     // d.Load("lib_arcade_ncurses.so");
     
     // size_t i = 0;
-    // d.open();
-    // while (d.isOpen()) {
-    //     d.clear();
-    //     d.update();
-    //     if (d.shouldExit())
-    //         d.close();
-    //     d.setColor(IDisplayModule::Colors::BLUE);
-    //     d.putRect(10, 10, 40, 40);
-    //     d.setColor(IDisplayModule::Colors::GREEN);
-    //     d.putFillRect(100, 10, 10, 30);
-    //     d.setColor(IDisplayModule::Colors::YELLOW);
-    //     d.putPixel(200, 10);
-    //     d.setColor(IDisplayModule::Colors::RED);
-    //     d.putCircle(300, 300, 60);
-    //     d.setColor(IDisplayModule::Colors::MAGENTA);
-    //     d.putLine(100, 200, 100, 150);
-    //     d.setColor(IDisplayModule::CYAN);
-    //     d.putText("TA MERE LOL", 40, 300, 100);
-    //     if (d.isKeyPressed(IDisplayModule::RIGHT)) {
-    //         d.close();
-    //         d.LoadNextLib();
-    //         d.open();
-    //     }
-    //     d.render();
-    // }
-    // d.close();
-    // return 0;
+    d->open();
+    while (d->isOpen()) {
+        d->clear();
+        d->update();
+        if (d->isKeyPressed(IDisplayModule::RIGHT)) {
+            d->close();
+            loadNextLibrary(display_loader, d);
+            d->open();
+        }
+        if (d->shouldExit())
+            d->close();
+        d->setColor(IDisplayModule::Colors::BLUE);
+        d->putRect(10, 10, 40, 40);
+        d->setColor(IDisplayModule::Colors::GREEN);
+        d->putFillRect(100, 10, 10, 30);
+        d->setColor(IDisplayModule::Colors::YELLOW);
+        d->putPixel(200, 10);
+        d->setColor(IDisplayModule::Colors::RED);
+        d->putCircle(300, 300, 60);
+        d->setColor(IDisplayModule::Colors::MAGENTA);
+        d->putLine(100, 200, 100, 150);
+        d->setColor(IDisplayModule::CYAN);
+        d->putText("TA MERE LOL", 40, 300, 100);
+
+        d->render();
+
+    }
+    //d->close();
+    return 0;
 }
 
 
