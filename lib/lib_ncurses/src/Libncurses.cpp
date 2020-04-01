@@ -12,11 +12,13 @@
 Libncurses::Libncurses() : _lib_name("lib_arcade_ncurses.so")
 {
     this->_exit = false;
+    this->_input = '\0';
 }
 
 void Libncurses::reset()
 {
     this->_exit = false;
+    this->_input = '\0';
     // endwin();
     // initscr();
     // this->_win = newwin(HEIGHT, WIDTH, 0, 0);
@@ -70,159 +72,142 @@ bool Libncurses::isOpen() const
 
 bool Libncurses::switchToNextLib() const
 {
-    int t = getch();
-
-    if (t == 110)
+    if (this->_input == 110)
         return (true);
     return (false);
 }
 
 bool Libncurses::switchToPreviousLib() const
 {
-    int t = getch();
-
-    if (t == 98)
+    if (this->_input == 98)
         return (true);
     return (false);
 }
 
 bool Libncurses::switchToNextGame() const
 {
-    int t = getch();
-
-    if (t == 112)
+    if (this->_input == 112)
         return (true);
     return (false);
 }
 
 bool Libncurses::switchToPreviousGame() const
 {
-    int t = getch();
-
-    if (t == 11)
+    if (this->_input == 11)
         return (true);
     return (false);
 }
 
 bool Libncurses::shouldBeRestarted() const
 {
-    int t = getch();
-
-    if (t == 114)
+    if (this->_input == 114)
         return (true);
     return (false);
 }
 
 bool Libncurses::shouldGoToMenu() const
 {
-    int t = getch();
-
-    if (t == 109)
+    if (this->_input == 109)
         return (true);
     return (false);
 }
 
 bool Libncurses::shouldExit() const
 {
-    int t = getch();
-
-    if (t == 27)
+    if (this->_input == 27)
         return (true);
     return (false);
 }
 
 bool Libncurses::isKeyPressed(IDisplayModule::Keys key) const
 {
-    int t = getch();
-
-    if (key == RIGHT && t == KEY_RIGHT)
+    if (key == RIGHT && this->_input == KEY_RIGHT)
         return true;
-    if (key == LEFT && t == KEY_LEFT)
+    if (key == LEFT && this->_input == KEY_LEFT)
             return true;
-    if (key == UP && t == KEY_UP)
+    if (key == UP && this->_input == KEY_UP)
         return true;
-    if (key == DOWN && t == KEY_DOWN)
+    if (key == DOWN && this->_input == KEY_DOWN)
         return true;
-    if (key == Z && t == 122)
+    if (key == Z && this->_input == 122)
         return true;
-    if (key == Q && t == 113)
+    if (key == Q && this->_input == 113)
         return true;
-    if (key == S && t == 115)
+    if (key == S && this->_input == 115)
         return true;
-    if (key == D && t == 100)
+    if (key == D && this->_input == 100)
         return true;
-    if (key == A && t == 97)
+    if (key == A && this->_input == 97)
         return true;
-    if (key == E && t == 101)
+    if (key == E && this->_input == 101)
         return true;
-    if (key == W && t == 119)
+    if (key == W && this->_input == 119)
         return true;
-    if (key == X && t == 120)
+    if (key == X && this->_input == 120)
         return true;
-    if (key == SPACE && t == 32)
+    if (key == SPACE && this->_input == 32)
         return true;
-    if (key == J && t == 106)
+    if (key == J && this->_input == 106)
         return true;
-    if (key == K && t == 107)
+    if (key == K && this->_input == 107)
         return true;
-    if (key == U && t == 117)
+    if (key == U && this->_input == 117)
         return true;
-    if (key == I && t == 105)
+    if (key == I && this->_input == 105)
         return true;
-    if (key == ENTER && t == 8)
+    if (key == ENTER && this->_input == 8)
         return true;
-    if (key == BACKSPACE && t == 10)
+    if (key == BACKSPACE && this->_input == 10)
         return true;
-    if (key == KEYS_END && t == 27)
+    if (key == KEYS_END && this->_input == 27)
         return true;
     return (false);
 }
 
 bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys key) const
 {
-    int t = getch();
-
-    if (key == RIGHT && t == KEY_RIGHT)
+    if (key == RIGHT && this->_input == KEY_RIGHT)
         return true;
-    if (key == LEFT && t == KEY_LEFT)
+    if (key == LEFT && this->_input == KEY_LEFT)
             return true;
-    if (key == UP && t == KEY_UP)
+    if (key == UP && this->_input == KEY_UP)
         return true;
-    if (key == DOWN && t == KEY_DOWN)
+    if (key == DOWN && this->_input == KEY_DOWN)
         return true;
-    if (key == Z && t == 122)
+    if (key == Z && this->_input == 122)
         return true;
-    if (key == Q && t == 113)
+    if (key == Q && this->_input == 113)
         return true;
-    if (key == S && t == 115)
+    if (key == S && this->_input == 115)
         return true;
-    if (key == D && t == 100)
+    if (key == D && this->_input == 100)
         return true;
-    if (key == A && t == 97)
+    if (key == A && this->_input == 97)
         return true;
-    if (key == E && t == 101)
+    if (key == E && this->_input == 101)
         return true;
-    if (key == W && t == 119)
+    if (key == W && this->_input == 119)
         return true;
-    if (key == X && t == 120)
+    if (key == X && this->_input == 120)
         return true;
-    if (key == SPACE && t == 32)
+    if (key == SPACE && this->_input == 32)
         return true;
-    if (key == J && t == 106)
+    if (key == J && this->_input == 106)
         return true;
-    if (key == K && t == 107)
+    if (key == K && this->_input == 107)
         return true;
-    if (key == U && t == 117)
+    if (key == U && this->_input == 117)
         return true;
-    if (key == I && t == 105)
+    if (key == I && this->_input == 105)
         return true;
-    if (key == BACKSPACE && t == 10)
+    if (key == ENTER && this->_input == 8)
         return true;
-    if (key == KEYS_END && t == 27)
+    if (key == BACKSPACE && this->_input == 10)
         return true;
-    if (key == KEYS_END && t == 27)
+    if (key == KEYS_END && this->_input == 27)
         return true;
-    return (false);}
+    return (false);
+}
 
 float Libncurses::getDelta() const
 {
@@ -245,7 +230,7 @@ static float count_second(clock_t backup_clock)
 void Libncurses::clear() const
 {
     static clock_t _clock = clock();
-    if (count_second(_clock) >= 0.1) {
+    if (count_second(_clock) >= 0.01) {
         my_clear();
         _clock = clock();
     }
@@ -253,6 +238,7 @@ void Libncurses::clear() const
 
 void Libncurses::update()
 {
+    this->_input = getch();
     this->_exit = this->shouldExit();
     refresh();
 }
@@ -263,7 +249,7 @@ void Libncurses::render() const
 
 char Libncurses::getKeyCode() const
 {
-    return (getch());
+    return this->_input;
 }
 
 void Libncurses::setColor(IDisplayModule::Colors color)

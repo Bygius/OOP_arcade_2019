@@ -50,8 +50,6 @@ class Libsdl : public IDisplayModule
         void putText(const std::string &text, unsigned int size, float x, float y) const;
         const std::string &getLibName() const;
 
-        void set_exit(bool value);
-    protected:
     private:
         // std::unique_ptr<SDL_Window> _window;
         SDL_Window *_window;

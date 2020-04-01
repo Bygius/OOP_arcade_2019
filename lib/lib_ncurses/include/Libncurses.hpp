@@ -52,9 +52,9 @@ class Libncurses : public IDisplayModule
     protected:
     private:
         const std::string _lib_name;
-        char t;
         WINDOW *_win;
         bool _exit;
+        int _input;
 };
 
 void my_clear();
