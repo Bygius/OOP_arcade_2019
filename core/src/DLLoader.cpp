@@ -11,7 +11,7 @@
 
 
 template<typename T>
-DLLoader<T>::DLLoader(const std::string &lib_name) : _lib_name(lib_name)
+DLLoader<T>::DLLoader(const std::string &path, const std::string &name) : _lib_path(path), _lib_name(name)
 {
     _handle = NULL;
 }
@@ -25,7 +25,6 @@ DLLoader<T>::~DLLoader()
 template<typename T>
 std::unique_ptr<T> DLLoader<T>::getInstance()
 {
-    std::unique_ptr<T> ret;
     std::unique_ptr<T> (*create)();
 
     if (isLoaded() == false)
@@ -36,9 +35,7 @@ std::unique_ptr<T> DLLoader<T>::getInstance()
          std::cout << "Cannot open library: " << dlerror() << '\n';
          exit(84);
     }
-    ret = create();
-        //throw
-    return ret;
+    return create();
 }
 
 template<typename T>
@@ -68,16 +65,12 @@ template<typename T>
 void DLLoader<T>::loadLibrary(const std::string &lib_name)
 {
     if (isLoaded() == true)
-    {
        closeLibrary();
-    }
+
     _handle = dlopen(lib_name.c_str(), RTLD_LAZY | RTLD_GLOBAL);
 
-    if (!_handle) {
-        //throw
-        exit(81);
-
-    }
+    if (!_handle)
+        exit(84);
     this->_lib_name = lib_name;
 }
 
@@ -85,6 +78,18 @@ template<typename T>
 bool DLLoader<T>::isLoaded(void)
 {
     return (_handle == NULL) ? false : true;
+}
+
+template<typename T>
+std::string DLLoader<T>::getLibName(void)
+{
+    return _lib_name;
+}
+
+template<typename T>
+std::string DLLoader<T>::getLibPath(void)
+{
+    return _lib_path;
 }
 
 template class DLLoader<IDisplayModule>;

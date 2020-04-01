@@ -48,27 +48,33 @@ void reloadLibrary(std::unique_ptr<DLLoader<T>> &loader, std::unique_ptr<T> &mod
 template <typename T>
 void loadNextLibrary(std::unique_ptr<DLLoader<T>> &loader, std::unique_ptr<T> &module)
 {
-    std::vector<std::string> list = getLiblist("./lib/");
-    auto pos = std::find(list.begin(), list.end(), loader->_lib_name);
+    std::vector<std::string> list = getLiblist(loader->getLibPath().c_str());
+    auto pos = std::find(list.begin(), list.end(), loader->getLibName());
 
     if (list.size() == 0)
         return;
-    if (pos == list.end()-1 || pos == list.end()) {
+    if (pos == list.end()-1 || pos == list.end())
         reloadLibrary(loader, module, list.front().c_str());
-        //std::cout << list.front().c_str() << "\n";
-    } else {
+    else {
         pos++;
         reloadLibrary(loader, module, pos->c_str());
-        //std::cout << "--> " << pos->c_str() << "\n";
-
     }
-
 }
 
 template <typename T>
-void loadPreviousLibrary(std::unique_ptr<DLLoader<T>> loader, std::unique_ptr<T> module, const char *lib_name)
+void loadPreviousLibrary(std::unique_ptr<DLLoader<T>> &loader, std::unique_ptr<T> &module)
 {
+    std::vector<std::string> list = getLiblist(loader->getLibPath().c_str());
+    auto pos = std::find(list.begin(), list.end(), loader->getLibName());
 
+    if (list.size() == 0)
+        return;
+    if (pos == list.begin() || pos == list.end())
+        reloadLibrary(loader, module, list.back().c_str());
+    else {
+        pos--;
+        reloadLibrary(loader, module, pos->c_str());
+    }
 }
 
 int main(int ac, char **av)
@@ -76,38 +82,45 @@ int main(int ac, char **av)
     if (av[1] == NULL)
          return 84;
 
-    std::unique_ptr<DLLoader<IDisplayModule>> display_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/lib_arcade_sfml.so");
-    std::unique_ptr<DLLoader<IGameModule>> game_loader = std::make_unique<DLLoader<IGameModule>>("./games/lib_arcade_nibbler.so");
+    std::unique_ptr<DLLoader<IDisplayModule>> display_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/", "./lib/lib_arcade_sfml.so");
+    std::unique_ptr<DLLoader<IGameModule>> game_loader = std::make_unique<DLLoader<IGameModule>>("./games/", "./games/lib_arcade_nibbler.so");
     std::unique_ptr<IDisplayModule> d = display_loader->getInstance();
     std::unique_ptr<IGameModule> g = game_loader->getInstance();
 
-    // Display d("./lib/");
-    // d.Load("lib_arcade_ncurses.so");
-    
-    // size_t i = 0;
     d->open();
+    bool is_key_released = false;
     while (d->isOpen()) {
         d->clear();
         d->update();
-        if (d->isKeyPressed(IDisplayModule::RIGHT)) {
+        if (d->isKeyPressed(IDisplayModule::RIGHT) && is_key_released) {
             d->close();
             loadNextLibrary(display_loader, d);
             d->open();
+            is_key_released = false;
         }
+        if (d->isKeyPressed(IDisplayModule::LEFT) && is_key_released) {
+            d->close();
+            loadPreviousLibrary(display_loader, d);
+            d->open();
+            is_key_released = false;
+        }
+
+        if (!d->isKeyPressed(IDisplayModule::RIGHT) && !d->isKeyPressed(IDisplayModule::LEFT))
+            is_key_released = true;
         if (d->shouldExit())
             d->close();
-        d->setColor(IDisplayModule::Colors::BLUE);
-        d->putRect(10, 10, 40, 40);
-        d->setColor(IDisplayModule::Colors::GREEN);
-        d->putFillRect(100, 10, 10, 30);
-        d->setColor(IDisplayModule::Colors::YELLOW);
-        d->putPixel(200, 10);
-        d->setColor(IDisplayModule::Colors::RED);
-        d->putCircle(300, 300, 60);
-        d->setColor(IDisplayModule::Colors::MAGENTA);
-        d->putLine(100, 200, 100, 150);
-        d->setColor(IDisplayModule::CYAN);
-        d->putText("TA MERE LOL", 40, 300, 100);
+        // d->setColor(IDisplayModule::Colors::BLUE);
+        // d->putRect(10, 10, 40, 40);
+        // d->setColor(IDisplayModule::Colors::GREEN);
+        // d->putFillRect(100, 10, 10, 30);
+        // d->setColor(IDisplayModule::Colors::YELLOW);
+        // d->putPixel(200, 10);
+        // d->setColor(IDisplayModule::Colors::RED);
+        // d->putCircle(300, 300, 60);
+        // d->setColor(IDisplayModule::Colors::MAGENTA);
+        // d->putLine(100, 200, 100, 150);
+        // d->setColor(IDisplayModule::CYAN);
+        // d->putText("TA MERE LOL", 40, 300, 100);
         g->render(*d);
         d->render();
 

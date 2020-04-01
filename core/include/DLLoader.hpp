@@ -14,18 +14,22 @@
 template <typename T>
 class DLLoader {
     public :
-        DLLoader(const std::string &lib_name);
+        DLLoader(const std::string &path, const std::string &name);
         ~DLLoader();
         std::unique_ptr <T>getInstance();
         void loadLibrary();
         void loadLibrary(const std::string &lib_name);
         void closeLibrary();
-        std::string _lib_name;
+        std::string getLibPath();
+        std::string getLibName();
 
     private:
-        bool isLoaded(void);
 
+
+        bool isLoaded(void);
         void * _handle;
+        const std::string _lib_path;
+        std::string _lib_name;
 };
 
 #endif /* !DLLOADER_HPP_ */
