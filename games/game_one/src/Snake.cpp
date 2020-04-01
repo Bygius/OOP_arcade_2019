@@ -6,6 +6,7 @@
 */
 
 #include "Snake.hpp"
+#include <memory>
 
 Snake::Snake()
 {
@@ -66,4 +67,9 @@ void Snake::render(IDisplayModule &lib) const
 const std::string &Snake::getLibName() const
 {
 
+}
+
+extern "C" std::unique_ptr<IGameModule> createLib(void)
+{
+    return std::make_unique<Snake>();
 }
