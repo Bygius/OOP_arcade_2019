@@ -88,25 +88,36 @@ int main(int ac, char **av)
     std::unique_ptr<IGameModule> g = game_loader->getInstance();
 
     d->open();
-    bool is_key_released = false;
+    bool is_key_display_released = false;
+    bool is_key_games_released = false;
+
     while (d->isOpen()) {
         d->clear();
         d->update();
-        if (d->isKeyPressed(IDisplayModule::RIGHT) && is_key_released) {
+        if (d->isKeyPressed(IDisplayModule::RIGHT) && is_key_display_released) {
             d->close();
             loadNextLibrary(display_loader, d);
             d->open();
-            is_key_released = false;
+            is_key_display_released = false;
         }
-        if (d->isKeyPressed(IDisplayModule::LEFT) && is_key_released) {
+        if (d->isKeyPressed(IDisplayModule::LEFT) && is_key_display_released) {
             d->close();
             loadPreviousLibrary(display_loader, d);
             d->open();
-            is_key_released = false;
+            is_key_display_released = false;
         }
-
+        if (d->isKeyPressed(IDisplayModule::UP) && is_key_games_released) {
+            loadPreviousLibrary(game_loader, g);
+            is_key_games_released = false;
+        }
+        if (d->isKeyPressed(IDisplayModule::DOWN) && is_key_games_released) {
+            loadNextLibrary(game_loader, g);
+            is_key_games_released = false;
+        }
         if (!d->isKeyPressed(IDisplayModule::RIGHT) && !d->isKeyPressed(IDisplayModule::LEFT))
-            is_key_released = true;
+            is_key_display_released = true;
+        if (!d->isKeyPressed(IDisplayModule::UP) && !d->isKeyPressed(IDisplayModule::DOWN))
+            is_key_games_released = true;
         if (d->shouldExit())
             d->close();
         // d->setColor(IDisplayModule::Colors::BLUE);
