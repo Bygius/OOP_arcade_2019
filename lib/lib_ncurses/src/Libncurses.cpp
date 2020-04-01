@@ -37,6 +37,7 @@ void Libncurses::open()
     curs_set(0);
     keypad(stdscr, TRUE);
     wresize(stdscr, HEIGHT, WIDTH);
+    cbreak();
     // resizeterm(HEIGHT, WIDTH);
 
     start_color();

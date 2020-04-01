@@ -58,12 +58,13 @@ std::vector<std::pair<std::string, int>> Nibbler::getBestScores() const
 
 void Nibbler::update(const IDisplayModule &lib)
 {
-    (void)lib;
+    if (lib.isKeyPressed(IDisplayModule::SPACE))
+        this->x1 +=10;
 }
 
 void Nibbler::render(IDisplayModule &lib) const
 {
-    lib.putText("jeu", 30, 0, 0);
+    lib.putText("jeu", 30, this->x1, 0);
 }
 
 const std::string &Nibbler::getLibName() const

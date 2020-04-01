@@ -132,6 +132,7 @@ int main(int ac, char **av)
         // d->putLine(100, 200, 100, 150);
         // d->setColor(IDisplayModule::CYAN);
         // d->putText("TA MERE LOL", 40, 300, 100);
+        g->update(*d);
         g->render(*d);
         d->render();
 

@@ -51,6 +51,8 @@ class Libsdl : public IDisplayModule
         void putText(const std::string &text, unsigned int size, float x, float y) const;
         const std::string &getLibName() const;
 
+        void frame_rate_limit();
+
     private:
         // std::unique_ptr<SDL_Window> _window;
         SDL_Window *_window;
@@ -59,6 +61,7 @@ class Libsdl : public IDisplayModule
         SDL_Color _color;
         bool _exit;
         const std::string _lib_name;
+        int _delta;
 };
 
 

@@ -16,6 +16,7 @@ Libsdl::Libsdl() : _lib_name("lib_arcade_sdl.so")
 
     this->_color = { 255, 255, 255, 1};
     this->_exit = false;
+    this->_delta = 0;
 }
 
 Libsdl::~Libsdl()
@@ -27,6 +28,7 @@ void Libsdl::reset()
 {
     this->_color = { 255, 255, 255, 1};
     this->_exit = false;
+    this->_delta = 0;
 }
 
 void Libsdl::open()
@@ -56,94 +58,110 @@ bool Libsdl::isOpen() const
 
 bool Libsdl::switchToNextLib() const
 {
-    if (_event.key.keysym.sym == SDLK_n)
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (state[SDL_SCANCODE_N])
         return (true);
     return (false);
 }
 
 bool Libsdl::switchToPreviousLib() const
 {
-    if (_event.key.keysym.sym == SDLK_b)
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (state[SDL_SCANCODE_B])
         return (true);
     return (false);
 }
 
 bool Libsdl::switchToNextGame() const
 {
-    if (_event.key.keysym.sym == SDLK_p)
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (state[SDL_SCANCODE_P])
         return (true);
     return (false);
 }
 
 bool Libsdl::switchToPreviousGame() const
 {
-    if (_event.key.keysym.sym == SDLK_o)
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (state[SDL_SCANCODE_O])
         return (true);
     return (false);
 }
 
 bool Libsdl::shouldBeRestarted() const
 {
-    if (_event.key.keysym.sym == SDLK_r)
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (state[SDL_SCANCODE_R])
         return (true);
     return (false);
 }
 
 bool Libsdl::shouldGoToMenu() const
 {
-    if (_event.key.keysym.sym == SDLK_m)
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (state[SDL_SCANCODE_M])
         return (true);
     return (false);
 }
 
 bool Libsdl::shouldExit() const
 {
-    if (this->_event.type == SDL_QUIT || _event.key.keysym.sym == SDLK_ESCAPE)
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (this->_event.type == SDL_QUIT || state[SDL_SCANCODE_ESCAPE])
         return (true);
     return (false);
 }
 
 bool Libsdl::isKeyPressed(IDisplayModule::Keys key) const
 {
-    if (!_event.key.keysym.sym)
-        return (false);
-    if (key == RIGHT && _event.key.keysym.sym == SDLK_RIGHT)
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (key == SPACE && state[SDL_SCANCODE_SPACE])
         return true;
-    if (key == LEFT && _event.key.keysym.sym == SDLK_LEFT)
+    if (key == RIGHT && state[SDL_SCANCODE_RIGHT])
+        return true;
+    if (key == LEFT && state[SDL_SCANCODE_LEFT])
             return true;
-    if (key == UP && _event.key.keysym.sym == SDLK_UP)
+    if (key == UP && state[SDL_SCANCODE_UP])
         return true;
-    if (key == DOWN && _event.key.keysym.sym == SDLK_DOWN)
+    if (key == DOWN && state[SDL_SCANCODE_DOWN])
         return true;
-    if (key == Z && _event.key.keysym.sym == SDLK_z)
+    if (key == Z && state[SDL_SCANCODE_Z])
         return true;
-    if (key == Q && _event.key.keysym.sym == SDLK_q)
+    if (key == Q && state[SDL_SCANCODE_Q])
         return true;
-    if (key == S && _event.key.keysym.sym == SDLK_s)
+    if (key == S &&  state[SDL_SCANCODE_S])
         return true;
-    if (key == D && _event.key.keysym.sym == SDLK_d)
+    if (key == D &&  state[SDL_SCANCODE_D])
         return true;
-    if (key == A && _event.key.keysym.sym == SDLK_a)
+    if (key == A &&  state[SDL_SCANCODE_A])
         return true;        
-    if (key == E && _event.key.keysym.sym == SDLK_e)
+    if (key == E &&  state[SDL_SCANCODE_E])
         return true;
-    if (key == W && _event.key.keysym.sym == SDLK_w)
+    if (key == W &&  state[SDL_SCANCODE_W])
         return true;
-    if (key == X && _event.key.keysym.sym == SDLK_x)
+    if (key == X &&  state[SDL_SCANCODE_X])
         return true;
-    if (key == SPACE && _event.key.keysym.sym == SDLK_SPACE)
+    if (key == SPACE &&  state[SDL_SCANCODE_SPACE])
         return true;
-    if (key == J && _event.key.keysym.sym == SDLK_j)
+    if (key == J &&  state[SDL_SCANCODE_J])
         return true;
-    if (key == K && _event.key.keysym.sym == SDLK_k)
+    if (key == K &&  state[SDL_SCANCODE_K])
         return true;
-    if (key == U && _event.key.keysym.sym == SDLK_u)
+    if (key == U &&  state[SDL_SCANCODE_U])
         return true;
-    if (key == I && _event.key.keysym.sym == SDLK_i)
+    if (key == I &&  state[SDL_SCANCODE_I])
         return true;
-    if (key == ENTER && _event.key.keysym.sym == SDLK_RETURN)
+    if (key == ENTER &&  state[SDL_SCANCODE_RETURN])
         return true;
-    if (key == BACKSPACE && _event.key.keysym.sym == SDLK_BACKSPACE)
+    if (key == BACKSPACE &&  state[SDL_SCANCODE_BACKSPACE])
         return true;
     return (false);
 }
@@ -155,7 +173,7 @@ bool Libsdl::isKeyPressedOnce(IDisplayModule::Keys) const
 
 float Libsdl::getDelta() const
 {
-    return (0.00);
+    return this->_delta;
 }
 
 void Libsdl::clear() const
@@ -164,12 +182,26 @@ void Libsdl::clear() const
     SDL_RenderClear(this->_renderer);
 }
 
+void Libsdl::frame_rate_limit()
+{
+    static Uint32 startTime = 0;
+    static Uint32 endTime = 0;
+
+    if (!startTime)
+        startTime = SDL_GetTicks();
+    else
+        this->_delta = endTime - startTime;
+    if (this->_delta < 16)
+        SDL_Delay(16 - this->_delta);
+    startTime = endTime;
+    endTime = SDL_GetTicks();
+}
 void Libsdl::update()
 {
     SDL_PollEvent(&this->_event);
     if (this->shouldExit())
         this->_exit = true;
-
+    frame_rate_limit();
 }
 
 void Libsdl::render() const
