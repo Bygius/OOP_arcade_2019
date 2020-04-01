@@ -11,11 +11,12 @@
 
 Libncurses::Libncurses() : _lib_name("lib_arcade_ncurses.so")
 {
-
+    this->_exit = false;
 }
 
 void Libncurses::reset()
 {
+    this->_exit = false;
     // endwin();
     // initscr();
     // this->_win = newwin(HEIGHT, WIDTH, 0, 0);
