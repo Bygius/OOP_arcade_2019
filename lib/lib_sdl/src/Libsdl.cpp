@@ -178,8 +178,9 @@ float Libsdl::getDelta() const
 
 void Libsdl::clear() const
 {
-    SDL_SetRenderDrawColor(this->_renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(this->_renderer, 0 , 0, 0, 255);
     SDL_RenderClear(this->_renderer);
+    SDL_SetRenderDrawColor(this->_renderer, this->_color.r, this->_color.g, this->_color.b, this->_color.a);
 }
 
 void Libsdl::frame_rate_limit()
@@ -303,8 +304,7 @@ void Libsdl::putFillRect(float x, float y, float w, float h) const
     srcrect.y = y;
     srcrect.w = w;
     srcrect.h = h;
-
-    // SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 0.9);
+    printf("Lol\n");
     SDL_RenderFillRect(this->_renderer, &srcrect);
 }
 
