@@ -9,6 +9,7 @@
 #define PLAYER_HPP_
 
 #include "Arcade_interfaces.hpp"
+#include "MapPacman.hpp"
 
 class Player 
 {
@@ -25,12 +26,14 @@ class Player
 
         void displayPlayer(IDisplayModule &lib) const;
         void setDirection(const IDisplayModule &lib);
-        void movePlayer(void);
+        void movePlayer(MapPacman Map);
 
     protected:
     private:
         int _posX;
         int _posY;
+        int _width;
+        int _height;
         int _size;
         int _speed;
         Direction _direction;
