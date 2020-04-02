@@ -9,10 +9,10 @@
 
 MapNibbler::MapNibbler()
 {
-    this->_blocks.push_back(Block(150, 100, 8, 300));
-    this->_blocks.push_back(Block(150, 100, 300, 8));
-    this->_blocks.push_back(Block(150, 385, 300, 8));
-    this->_blocks.push_back(Block(435, 100, 8, 300));
+    this->_blocks.push_back(Block(152, 88, 8, 328));
+    this->_blocks.push_back(Block(152, 88, 328, 8));
+    this->_blocks.push_back(Block(152, 408, 328, 8));
+    this->_blocks.push_back(Block(472, 88, 8, 328));
 }
 
 MapNibbler::~MapNibbler()

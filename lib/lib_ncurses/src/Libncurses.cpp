@@ -8,6 +8,7 @@
 #include "Libncurses.hpp"
 #include <math.h>
 #include <memory>
+#include <unistd.h>
 
 Libncurses::Libncurses() : _lib_name("lib_arcade_ncurses.so")
 {
@@ -222,7 +223,7 @@ float Libncurses::getDelta() const
 
 void my_clear()
 {
-    clear();
+    erase();
 }
 
 static float count_second(clock_t backup_clock)
@@ -236,7 +237,7 @@ static float count_second(clock_t backup_clock)
 void Libncurses::clear() const
 {
     static clock_t _clock = clock();
-    if (count_second(_clock) >= 0.1) {
+    if (count_second(_clock) >= 0.003) {
         my_clear();
         _clock = clock();
     }
@@ -244,6 +245,7 @@ void Libncurses::clear() const
 
 void Libncurses::update()
 {
+    
     noecho();
     this->_input = getch();
     this->_exit = this->shouldExit();
@@ -252,6 +254,7 @@ void Libncurses::update()
 
 void Libncurses::render() const
 {
+    usleep(20000);
 }
 
 char Libncurses::getKeyCode() const
