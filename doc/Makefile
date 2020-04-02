@@ -1,6 +1,6 @@
 all:
 	doxygen Doxyfile
-	make -C latex pdf
+	@make -C latex
 	mv latex/refman.pdf doc_OOP_arcade_2019.pdf
 	$(MAKE) clean
 
