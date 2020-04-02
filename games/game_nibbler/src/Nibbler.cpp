@@ -8,10 +8,9 @@
 #include "Nibbler.hpp"
 #include <memory>
 
-Nibbler::Nibbler()
+Nibbler::Nibbler() : _caterpillar()
 {
-    this->x1 = 0;
-    this->y1 = 0;
+    
 }
 
 void Nibbler::reset()
@@ -58,8 +57,8 @@ std::vector<std::pair<std::string, int>> Nibbler::getBestScores() const
 
 void Nibbler::update(const IDisplayModule &lib)
 {
-    if (lib.isKeyPressed(IDisplayModule::SPACE))
-        this->x1 +=10;
+    this->_caterpillar.moveCaterpillar();
+    this->_caterpillar.setDirection(lib);
 }
 
 void Nibbler::render(IDisplayModule &lib) const
@@ -67,7 +66,7 @@ void Nibbler::render(IDisplayModule &lib) const
     lib.setColor(IDisplayModule::RED);
     lib.putText("NIBBLER", 30, 250, 0);
     lib.putText(this->_name, 24, 10, 20);
-   
+    this->_caterpillar.displayCaterpillar(lib);
 }
 
 const std::string &Nibbler::getLibName() const

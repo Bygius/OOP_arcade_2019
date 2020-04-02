@@ -9,12 +9,12 @@
 #define NIBBLER_HPP_
 
 #include "Arcade_interfaces.hpp"
+#include "Caterpillar.hpp"
 
 class Nibbler : public IGameModule
 {
     private:
-        int x1;
-        int y1;
+        Caterpillar _caterpillar;
         std::string _name;
 
     public:

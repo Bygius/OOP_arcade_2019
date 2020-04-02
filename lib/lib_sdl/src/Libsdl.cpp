@@ -136,31 +136,31 @@ bool Libsdl::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == Q && state[SDL_SCANCODE_Q])
         return true;
-    if (key == S &&  state[SDL_SCANCODE_S])
+    if (key == S && state[SDL_SCANCODE_S])
         return true;
-    if (key == D &&  state[SDL_SCANCODE_D])
+    if (key == D && state[SDL_SCANCODE_D])
         return true;
-    if (key == A &&  state[SDL_SCANCODE_A])
+    if (key == A && state[SDL_SCANCODE_A])
         return true;        
-    if (key == E &&  state[SDL_SCANCODE_E])
+    if (key == E && state[SDL_SCANCODE_E])
         return true;
-    if (key == W &&  state[SDL_SCANCODE_W])
+    if (key == W && state[SDL_SCANCODE_W])
         return true;
-    if (key == X &&  state[SDL_SCANCODE_X])
+    if (key == X && state[SDL_SCANCODE_X])
         return true;
-    if (key == SPACE &&  state[SDL_SCANCODE_SPACE])
+    if (key == SPACE && state[SDL_SCANCODE_SPACE])
         return true;
-    if (key == J &&  state[SDL_SCANCODE_J])
+    if (key == J && state[SDL_SCANCODE_J])
         return true;
-    if (key == K &&  state[SDL_SCANCODE_K])
+    if (key == K && state[SDL_SCANCODE_K])
         return true;
-    if (key == U &&  state[SDL_SCANCODE_U])
+    if (key == U && state[SDL_SCANCODE_U])
         return true;
-    if (key == I &&  state[SDL_SCANCODE_I])
+    if (key == I && state[SDL_SCANCODE_I])
         return true;
-    if (key == ENTER &&  state[SDL_SCANCODE_RETURN])
+    if (key == ENTER && state[SDL_SCANCODE_RETURN])
         return true;
-    if (key == BACKSPACE &&  state[SDL_SCANCODE_BACKSPACE])
+    if (key == BACKSPACE && state[SDL_SCANCODE_BACKSPACE])
         return true;
     return (false);
 }

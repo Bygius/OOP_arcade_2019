@@ -20,6 +20,8 @@ NAME		=	lib_arcade_nibbler.so
 
 SRCS_DIR	=	src/
 SRCS_FILES	=	Nibbler.cpp \
+				Square.cpp \
+				Caterpillar.cpp \
 
 SRCS		= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
