@@ -9,6 +9,8 @@
 #define PACMAN_HPP_
 
 #include "Arcade_interfaces.hpp"
+#include "Player.hpp"
+#include "Map.hpp"
 
 class Pacman : public IGameModule
 {
@@ -16,6 +18,8 @@ class Pacman : public IGameModule
         int x1;
         int y1;
         std::string _name;
+        Player _player;
+        Map _map;
 
     public:
         Pacman();
