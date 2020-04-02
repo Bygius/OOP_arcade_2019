@@ -59,7 +59,7 @@ class Libncurses : public IDisplayModule
 };
 
 void my_clear();
-int resize(int x);
+int resize(int x, char c);
 void print_circle(int x, int y, int radius);
 void my_sleep();
 

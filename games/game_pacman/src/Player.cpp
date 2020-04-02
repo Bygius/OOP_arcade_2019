@@ -12,6 +12,8 @@ Player::Player(int x, int y)
     this->_posX = x;
     this->_posY = y;
     this->_size = 8;
+    this->_height = 16;
+    this->_width = 16;
     this->_speed = 1;
     this->_direction = UP;
 }
@@ -50,15 +52,15 @@ void Player::displayPlayer(IDisplayModule &lib) const
     lib.putCircle(this->_posX, this->_posY, this->_size);
 }
 
-void Player::movePlayer(void)
+void Player::movePlayer(MapPacman map)
 {
-    if (this->_direction == UP)
+    if (this->_direction == UP && map.PlayerCollision(this->_posX, this->_posY - (this->_speed  + this->_size), this->_width, this->_height) == false)
         this->_posY -= this->_speed;
-    if (this->_direction == DOWN)
+    if (this->_direction == DOWN && map.PlayerCollision(this->_posX, this->_posY + this->_speed, this->_width, this->_height + this->_size) == false)
         this->_posY += this->_speed;
-    if (this->_direction == LEFT)
+    if (this->_direction == LEFT && map.PlayerCollision(this->_posX - (this->_speed  + this->_size), this->_posY, this->_width, this->_height) == false)
         this->_posX -= this->_speed;
-    if (this->_direction == RIGHT)
+    if (this->_direction == RIGHT && map.PlayerCollision(this->_posX + this->_speed, this->_posY, this->_width + this->_size, this->_height) == false)
         this->_posX += this->_speed;
 }
 

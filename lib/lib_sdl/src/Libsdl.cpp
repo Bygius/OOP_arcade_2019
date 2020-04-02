@@ -221,6 +221,9 @@ void Libsdl::setColor(IDisplayModule::Colors color)
         case (DEFAULT):
             this->_color = {255, 255, 255, 1};
             break;
+        case (WHITE):
+            this->_color = {255, 255, 255, 1};
+            break;
         case (BLACK):
             this->_color = {0, 0, 0, 1};
             break;

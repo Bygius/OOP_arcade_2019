@@ -10,7 +10,7 @@
 
 #include "Arcade_interfaces.hpp"
 #include "Player.hpp"
-#include "Map.hpp"
+#include "MapPacman.hpp"
 
 class Pacman : public IGameModule
 {
@@ -19,7 +19,7 @@ class Pacman : public IGameModule
         int y1;
         std::string _name;
         Player _player;
-        Map _map;
+        MapPacman _map;
 
     public:
         Pacman();

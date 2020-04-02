@@ -21,7 +21,8 @@ NAME		=	lib_arcade_pacman.so
 SRCS_DIR	=	src/
 SRCS_FILES	=	Pacman.cpp \
 				Player.cpp \
-				Map.cpp
+				MapPacman.cpp \
+				Collision.cpp
 
 SRCS		= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
