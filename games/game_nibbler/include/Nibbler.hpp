@@ -10,11 +10,13 @@
 
 #include "Arcade_interfaces.hpp"
 #include "Caterpillar.hpp"
+#include "MapNibbler.hpp"
 
 class Nibbler : public IGameModule
 {
     private:
         Caterpillar _caterpillar;
+        MapNibbler _map;
         std::string _name;
 
     public:

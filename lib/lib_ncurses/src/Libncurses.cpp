@@ -263,6 +263,7 @@ void Libncurses::setColor(IDisplayModule::Colors color)
 {
     switch (color) {
         case (DEFAULT): attron(COLOR_PAIR(DEFAULT)); break;
+        case (WHITE): attron(COLOR_PAIR(WHITE)); break;
         case (BLACK): attron(COLOR_PAIR(BLACK)); break;
         case (RED): attron(COLOR_PAIR(RED)); break;
         case (GREEN): attron(COLOR_PAIR(GREEN)); break;
@@ -284,7 +285,9 @@ void Libncurses::setColor(IDisplayModule::Colors color)
 
 void Libncurses::putPixel(float x, float y) const
 {
-    mvprintw(resize(y) / 2, resize(x), "X");
+    x = resize(x, 'x');
+    y = resize(y, 'y');
+    mvprintw(y, x, "X");
 }
 
 void Libncurses::putLine(float x1, float y1, float x2, float y2) const
@@ -324,10 +327,10 @@ void Libncurses::putLine(float x1, float y1, float x2, float y2) const
 
 void Libncurses::putRect(float x, float y, float w, float h) const
 {
-    x = resize(x);
-    y = resize(y) / 2;
-    w = resize(w);
-    h = resize(h) / 2;
+    x = resize(x, 'x');
+    y = resize(y, 'y');
+    w = resize(w, 'x');
+    h = resize(h, 'y');
 
     mvhline(y, x + 1, '_', w);
     mvvline(y + 1, x, '|', h);
@@ -340,10 +343,10 @@ void Libncurses::putFillRect(float x, float y, float w, float h) const
 {
     int i = 0;
 
-    x = resize(x);
-    y = resize(y) / 2;
-    w = resize(w);
-    h = resize(h) / 2;
+    x = resize(x, 'x');
+    y = resize(y, 'y');
+    w = resize(w, 'x');
+    h = resize(h, 'y');
     for (i = y; i <= y + h; i++)
         mvhline(i, x, 'X', w);
 }
@@ -387,12 +390,13 @@ void Libncurses::putFillCircle(float x, float y, float rad) const
     (void) rad;
 }
 
-void Libncurses::putText(
-    const std::string &text, unsigned int size, float x, float y) const
+void Libncurses::putText(const std::string &text, unsigned int size, float x, float y) const
 {
     (void) size;
+    x = resize(x, 'x');
+    y = resize(y, 'y');
 
-    mvprintw(resize(y), resize(x), text.c_str());
+    mvprintw(y, x, text.c_str());
 }
 
 const std::string &Libncurses::getLibName() const
@@ -400,9 +404,19 @@ const std::string &Libncurses::getLibName() const
     return this->_lib_name;
 }
 
-int resize(int x)
+int resize(int x, char c)
 {
-    return (x / 8);
+    if (c == 'x') {
+        if ((x / 8) == 0)
+            return 1;
+        return (x / 8);
+    }
+    if (c == 'y') {
+        if ((x / 16) == 0)
+            return 1;
+        return (x / 16);
+    }
+    return 0;
 }
 
 extern "C" std::unique_ptr<IDisplayModule> createLib(void)

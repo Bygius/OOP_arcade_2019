@@ -9,6 +9,7 @@
 #define CATERPILLAR_HPP_
 
 #include "Square.hpp"
+#include "MapNibbler.hpp"
 #include "Arcade_interfaces.hpp"
 #include <vector>
 
@@ -24,13 +25,15 @@ class Caterpillar
         Caterpillar();
         ~Caterpillar();
         void displayCaterpillar(IDisplayModule &lib) const;
-        void moveCaterpillar();
+        void moveCaterpillar(MapNibbler map);
         void setDirection(const IDisplayModule &lib);
     private:
         Direction _direction;
         int _speed;
         int _posX;
         int _posY;
+        int _width;
+        int _height;
         std::vector<Square> _queue;
 };
 

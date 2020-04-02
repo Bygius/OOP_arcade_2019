@@ -13,6 +13,8 @@ Caterpillar::Caterpillar()
     this->_direction = UP;
     this->_posX = 200;
     this->_posY = 200;
+    this->_width = 8;
+    this->_height = 8;
 }
 
 Caterpillar::~Caterpillar()
@@ -21,18 +23,18 @@ Caterpillar::~Caterpillar()
 
 void Caterpillar::displayCaterpillar(IDisplayModule &lib) const
 {
-    lib.putFillRect(this->_posX, this->_posY, 8, 8);
+    lib.putFillRect(this->_posX, this->_posY, this->_width, this->_height);
 }
 
-void Caterpillar::moveCaterpillar()
+void Caterpillar::moveCaterpillar(MapNibbler map)
 {
-    if (this->_direction == UP)
+    if (this->_direction == UP && map.checkCollisions(this->_posX, this->_posY - this->_speed, this->_width, this->_height))
         this->_posY -= this->_speed;
-    if (this->_direction == DOWN)
+    if (this->_direction == DOWN && map.checkCollisions(this->_posX, this->_posY + this->_speed, this->_width, this->_height))
         this->_posY += this->_speed;
-    if (this->_direction == LEFT)
+    if (this->_direction == LEFT && map.checkCollisions(this->_posX - this->_speed , this->_posY, this->_width, this->_height))
         this->_posX -= this->_speed;
-    if (this->_direction == RIGHT)
+    if (this->_direction == RIGHT && map.checkCollisions(this->_posX + this->_speed , this->_posY, this->_width, this->_height))
         this->_posX += this->_speed;
 }
 

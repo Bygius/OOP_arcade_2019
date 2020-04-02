@@ -180,6 +180,9 @@ void Libsfml::setColor(IDisplayModule::Colors color)
         case (DEFAULT):
             this->_color = sf::Color::White;
             break;
+        case (WHITE):
+            this->_color = sf::Color::White;
+            break;
         case (BLACK):
             this->_color = sf::Color::Black;
             break;
