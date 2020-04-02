@@ -132,19 +132,19 @@ bool Libsdl::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == DOWN && state[SDL_SCANCODE_DOWN])
         return true;
-    if (key == Z && state[SDL_SCANCODE_Z])
+    if (key == Z && state[SDL_SCANCODE_W])
         return true;
-    if (key == Q && state[SDL_SCANCODE_Q])
+    if (key == Q && state[SDL_SCANCODE_A])
         return true;
     if (key == S && state[SDL_SCANCODE_S])
         return true;
     if (key == D && state[SDL_SCANCODE_D])
         return true;
-    if (key == A && state[SDL_SCANCODE_A])
+    if (key == A && state[SDL_SCANCODE_Q])
         return true;        
     if (key == E && state[SDL_SCANCODE_E])
         return true;
-    if (key == W && state[SDL_SCANCODE_W])
+    if (key == W && state[SDL_SCANCODE_Z])
         return true;
     if (key == X && state[SDL_SCANCODE_X])
         return true;
