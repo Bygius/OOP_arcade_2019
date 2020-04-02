@@ -64,8 +64,8 @@ void Centiped::update(const IDisplayModule &lib)
 void Centiped::render(IDisplayModule &lib) const
 {
     lib.setColor(IDisplayModule::BLUE);
-    lib.putRect(this->x1, this->y1, 50, 50);
-    lib.putText(this->_name, 24, 100, 100);
+    lib.putText("CENTIPED", 30, 250, 0);
+    lib.putText(this->_name, 24, 10, 20);
 }
 
 const std::string &Centiped::getLibName() const

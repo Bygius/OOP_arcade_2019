@@ -65,8 +65,8 @@ void Nibbler::update(const IDisplayModule &lib)
 void Nibbler::render(IDisplayModule &lib) const
 {
     lib.setColor(IDisplayModule::RED);
-    lib.putText("jeu", 30, this->x1, 0);
-    lib.putText(this->_name, 24, 100, 100);
+    lib.putText("NIBBLER", 30, 250, 0);
+    lib.putText(this->_name, 24, 10, 20);
    
 }
 
