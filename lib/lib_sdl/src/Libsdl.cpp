@@ -104,7 +104,7 @@ bool Libsdl::shouldGoToMenu() const
 {
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
-    if (state[SDL_SCANCODE_M])
+    if (state[SDL_SCANCODE_SEMICOLON])
         return (true);
     return (false);
 }
