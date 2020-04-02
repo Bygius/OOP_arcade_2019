@@ -15,6 +15,7 @@ class Nibbler : public IGameModule
     private:
         int x1;
         int y1;
+        std::string _name;
 
     public:
         Nibbler();

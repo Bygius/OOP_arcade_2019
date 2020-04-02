@@ -43,7 +43,7 @@ bool Centiped::saveToFile() const
 
 void Centiped::setPlayerName(const std::string &name)
 {
-    (void)name;
+    this->_name = name;
 }
 
 std::pair<std::string, int> Centiped::getScore() const
@@ -63,7 +63,9 @@ void Centiped::update(const IDisplayModule &lib)
 
 void Centiped::render(IDisplayModule &lib) const
 {
+    lib.setColor(IDisplayModule::BLUE);
     lib.putRect(this->x1, this->y1, 50, 50);
+    lib.putText(this->_name, 24, 100, 100);
 }
 
 const std::string &Centiped::getLibName() const

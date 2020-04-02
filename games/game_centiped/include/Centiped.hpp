@@ -15,6 +15,7 @@ class Centiped : public IGameModule
     private:
         int x1;
         int y1;
+        std::string _name;
 
     public:
         Centiped();

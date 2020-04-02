@@ -43,7 +43,7 @@ bool Pacman::saveToFile() const
 
 void Pacman::setPlayerName(const std::string &name)
 {
-    (void)name;
+    this->_name = name;
 }
 
 std::pair<std::string, int> Pacman::getScore() const
@@ -63,7 +63,9 @@ void Pacman::update(const IDisplayModule &lib)
 
 void Pacman::render(IDisplayModule &lib) const
 {
+    lib.setColor(IDisplayModule::YELLOW);
     lib.putRect(this->x1, this->y1, 50, 50);
+    lib.putText(this->_name, 24, 100, 100);
 }
 
 const std::string &Pacman::getLibName() const

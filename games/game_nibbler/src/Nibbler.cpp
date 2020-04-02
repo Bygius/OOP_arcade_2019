@@ -43,7 +43,7 @@ bool Nibbler::saveToFile() const
 
 void Nibbler::setPlayerName(const std::string &name)
 {
-    (void)name;
+    this->_name = name;
 }
 
 std::pair<std::string, int> Nibbler::getScore() const
@@ -64,7 +64,10 @@ void Nibbler::update(const IDisplayModule &lib)
 
 void Nibbler::render(IDisplayModule &lib) const
 {
+    lib.setColor(IDisplayModule::RED);
     lib.putText("jeu", 30, this->x1, 0);
+    lib.putText(this->_name, 24, 100, 100);
+   
 }
 
 const std::string &Nibbler::getLibName() const
