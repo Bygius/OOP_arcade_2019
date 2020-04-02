@@ -9,7 +9,7 @@
 #include <memory>
 #include <math.h>
 
-Libsdl::Libsdl() : _lib_name("lib_arcade_sdl.so")
+Libsdl::Libsdl() : _lib_name("lib_arcade_sdl.so"), _window(nullptr, SDL_DestroyWindow), _renderer(nullptr, SDL_DestroyRenderer)
 {
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
@@ -33,16 +33,15 @@ void Libsdl::reset()
 
 void Libsdl::open()
 {
-    this->_window = SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
-    // this->_window = std::make_unique<SDL_Window>(SDL_CreateWindow("My Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0));
-    this->_renderer = SDL_CreateRenderer(this->_window, -1, SDL_RENDERER_ACCELERATED);
+    this->_window.reset(SDL_CreateWindow("My Window SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0));
+    this->_renderer.reset(SDL_CreateRenderer(this->_window.get(), -1, SDL_RENDERER_ACCELERATED));
     SDL_PollEvent(&this->_event);
 }
 
 void Libsdl::close()
 {
-    SDL_DestroyWindow(this->_window);
-    SDL_DestroyRenderer(this->_renderer);
+    SDL_DestroyWindow(this->_window.get());
+    SDL_DestroyRenderer(this->_renderer.get());
     TTF_Quit();
     SDL_Quit();
 }
@@ -178,9 +177,9 @@ float Libsdl::getDelta() const
 
 void Libsdl::clear() const
 {
-    SDL_SetRenderDrawColor(this->_renderer, 0 , 0, 0, 255);
-    SDL_RenderClear(this->_renderer);
-    SDL_SetRenderDrawColor(this->_renderer, this->_color.r, this->_color.g, this->_color.b, this->_color.a);
+    SDL_SetRenderDrawColor(this->_renderer.get(), 0 , 0, 0, 255);
+    SDL_RenderClear(this->_renderer.get());
+    SDL_SetRenderDrawColor(this->_renderer.get(), this->_color.r, this->_color.g, this->_color.b, this->_color.a);
 }
 
 void Libsdl::frame_rate_limit()
@@ -207,7 +206,7 @@ void Libsdl::update()
 
 void Libsdl::render() const
 {
-    SDL_RenderPresent(this->_renderer);
+    SDL_RenderPresent(this->_renderer.get());
 }
 
 char Libsdl::getKeyCode() const
@@ -271,17 +270,17 @@ void Libsdl::setColor(IDisplayModule::Colors color)
             printf("Bad color\n");
             break;
     }  
-    SDL_SetRenderDrawColor(this->_renderer, this->_color.r, this->_color.g, this->_color.b, this->_color.a);
+    SDL_SetRenderDrawColor(this->_renderer.get(), this->_color.r, this->_color.g, this->_color.b, this->_color.a);
 }
 
 void Libsdl::putPixel(float x, float y) const
 {
-    SDL_RenderDrawPoint(this->_renderer, x, y);
+    SDL_RenderDrawPoint(this->_renderer.get(), x, y);
 }
 
 void Libsdl::putLine(float x1, float y1, float x2, float y2) const
 {
-    SDL_RenderDrawLine(this->_renderer, x1, y1, x2, y2);
+    SDL_RenderDrawLine(this->_renderer.get(), x1, y1, x2, y2);
 }
 
 void Libsdl::putRect(float x, float y, float w, float h) const
@@ -293,7 +292,7 @@ void Libsdl::putRect(float x, float y, float w, float h) const
     srcrect.w = w;
     srcrect.h = h;
 
-    SDL_RenderDrawRect(this->_renderer, &srcrect);
+    SDL_RenderDrawRect(this->_renderer.get(), &srcrect);
 }
 
 void Libsdl::putFillRect(float x, float y, float w, float h) const
@@ -304,8 +303,7 @@ void Libsdl::putFillRect(float x, float y, float w, float h) const
     srcrect.y = y;
     srcrect.w = w;
     srcrect.h = h;
-    printf("Lol\n");
-    SDL_RenderFillRect(this->_renderer, &srcrect);
+    SDL_RenderFillRect(this->_renderer.get(), &srcrect);
 }
 
 void Libsdl::putCircle(float x, float y, float rad) const
@@ -319,14 +317,14 @@ void Libsdl::putCircle(float x, float y, float rad) const
     x = x + rad;
     y = y + rad;
     while (xValue >= yValue) {
-        SDL_RenderDrawPoint(this->_renderer, x + xValue, y - yValue);
-        SDL_RenderDrawPoint(this->_renderer, x + xValue, y + yValue);
-        SDL_RenderDrawPoint(this->_renderer, x - xValue, y - yValue);
-        SDL_RenderDrawPoint(this->_renderer, x - xValue, y + yValue);
-        SDL_RenderDrawPoint(this->_renderer, x + yValue, y - xValue);
-        SDL_RenderDrawPoint(this->_renderer, x + yValue, y + xValue);
-        SDL_RenderDrawPoint(this->_renderer, x - yValue, y - xValue);
-        SDL_RenderDrawPoint(this->_renderer, x - yValue, y + xValue);
+        SDL_RenderDrawPoint(this->_renderer.get(), x + xValue, y - yValue);
+        SDL_RenderDrawPoint(this->_renderer.get(), x + xValue, y + yValue);
+        SDL_RenderDrawPoint(this->_renderer.get(), x - xValue, y - yValue);
+        SDL_RenderDrawPoint(this->_renderer.get(), x - xValue, y + yValue);
+        SDL_RenderDrawPoint(this->_renderer.get(), x + yValue, y - xValue);
+        SDL_RenderDrawPoint(this->_renderer.get(), x + yValue, y + xValue);
+        SDL_RenderDrawPoint(this->_renderer.get(), x - yValue, y - xValue);
+        SDL_RenderDrawPoint(this->_renderer.get(), x - yValue, y + xValue);
         if (error <= 0) {
             ++yValue;
             error += ty;
@@ -358,13 +356,13 @@ void Libsdl::putText(const std::string &text, unsigned int size, float x, float 
     TTF_Font *_font = TTF_OpenFont("include/arial.ttf", size);
 
     surface = TTF_RenderText_Solid(_font, text.c_str(), this->_color);
-    texture = SDL_CreateTextureFromSurface(this->_renderer, surface);
+    texture = SDL_CreateTextureFromSurface(this->_renderer.get(), surface);
 
     SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
     SDL_Rect dstrect = {(int)x, (int)y, texture_w, texture_h};
 
     SDL_FreeSurface(surface);
-    SDL_RenderCopy(this->_renderer, texture, NULL, &dstrect);
+    SDL_RenderCopy(this->_renderer.get(), texture, NULL, &dstrect);
     SDL_DestroyTexture(texture);
     TTF_CloseFont(_font);
 

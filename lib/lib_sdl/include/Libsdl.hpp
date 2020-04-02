@@ -13,6 +13,7 @@
 #include "SDL2/SDL.h"
 #include "Arcade_interfaces.hpp"
 #include <SDL2/SDL_ttf.h>
+#include <memory>
 
 class Libsdl : public IDisplayModule
 {
@@ -54,9 +55,8 @@ class Libsdl : public IDisplayModule
         void frame_rate_limit();
 
     private:
-        // std::unique_ptr<SDL_Window> _window;
-        SDL_Window *_window;
-        SDL_Renderer *_renderer;
+        std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> _window;
+        std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> _renderer;
         SDL_Event _event;
         SDL_Color _color;
         bool _exit;
