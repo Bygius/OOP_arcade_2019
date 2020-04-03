@@ -66,8 +66,9 @@ void Nibbler::render(IDisplayModule &lib) const
     lib.setColor(IDisplayModule::RED);
     lib.putText("NIBBLER", 30, 250, 0);
     lib.putText(this->_name, 24, 10, 20);
-    this->_caterpillar.displayCaterpillar(lib);
+    
     this->_map.draw_blocks(lib);
+    this->_caterpillar.displayCaterpillar(lib);
 }
 
 const std::string &Nibbler::getLibName() const

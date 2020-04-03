@@ -19,7 +19,8 @@ class Caterpillar
         UP,
         DOWN,
         RIGHT,
-        LEFT
+        LEFT,
+        UNKNOWN
     };
     public:
         Caterpillar();
@@ -29,6 +30,7 @@ class Caterpillar
         void setDirection(const IDisplayModule &lib);
     private:
         Direction _direction;
+        Direction _futurDirection;
         int _speed;
         int _posX;
         int _posY;
