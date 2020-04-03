@@ -12,10 +12,10 @@ Caterpillar::Caterpillar()
     this->_speed = 1;
     this->_direction = RIGHT;
     this->_futurDirection = UNKNOWN;
-    this->_posX = 168;
-    this->_posY = 104;
-    this->_width = 8;
-    this->_height = 8;
+    this->_posX = 326;
+    this->_posY = 358;
+    this->_width = 12;
+    this->_height = 12;
 }
 
 Caterpillar::~Caterpillar()
@@ -68,4 +68,16 @@ void Caterpillar::setDirection(const IDisplayModule &lib)
         this->_futurDirection = Direction::RIGHT;
     if (lib.isKeyPressed(IDisplayModule::Q))
         this->_futurDirection = Direction::LEFT;
+}
+
+bool Caterpillar::checkCandies(MapNibbler map)
+{
+    if (map.checkCandies(this->_posX, this->_posY, this->_width, this->_height) == false)
+        incQueue();
+    return false;
+}
+
+void Caterpillar::incQueue()
+{
+    printf("touché\n");
 }

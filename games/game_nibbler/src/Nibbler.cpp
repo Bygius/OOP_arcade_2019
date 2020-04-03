@@ -58,6 +58,7 @@ std::vector<std::pair<std::string, int>> Nibbler::getBestScores() const
 void Nibbler::update(const IDisplayModule &lib)
 {
     this->_caterpillar.moveCaterpillar(_map);
+    this->_caterpillar.checkCandies(_map);
     this->_caterpillar.setDirection(lib);
 }
 
@@ -68,6 +69,7 @@ void Nibbler::render(IDisplayModule &lib) const
     lib.putText(this->_name, 24, 10, 20);
     
     this->_map.draw_blocks(lib);
+    this->_map.draw_candies(lib);
     this->_caterpillar.displayCaterpillar(lib);
 }
 

@@ -27,10 +27,16 @@ void Block::draw(IDisplayModule &lib) const
 
 bool Block::checkCollision(int posX, int posY, int width, int height)
 {
-    posX -= 7;
-    posY -= 7;
-    width += 14;
-    height += 14;
+    posX -= 5;
+    posY -= 5;
+    width += 10;
+    height += 10;
+
+    //reglage pour taille de 8
+    // posX -= 5;
+    // posY -= 5;
+    // width += 10;
+    // height += 10;
 
     if (((posX >= this->_posX) && (posX <= (this->_posX + this->_width))) &&
     ((posY >= this->_posY) && (posY <= (this->_posY + this->_height))))

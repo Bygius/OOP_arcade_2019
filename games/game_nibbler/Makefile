@@ -24,6 +24,7 @@ SRCS_FILES	=	Nibbler.cpp \
 				Caterpillar.cpp \
 				MapNibbler.cpp \
 				Block.cpp \
+				Candy.cpp \
 
 SRCS		= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 

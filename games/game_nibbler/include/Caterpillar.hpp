@@ -28,6 +28,9 @@ class Caterpillar
         void displayCaterpillar(IDisplayModule &lib) const;
         void moveCaterpillar(MapNibbler map);
         void setDirection(const IDisplayModule &lib);
+        bool checkCandies(MapNibbler map);
+        void incQueue();
+
     private:
         Direction _direction;
         Direction _futurDirection;
