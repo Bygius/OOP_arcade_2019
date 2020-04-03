@@ -22,7 +22,7 @@ class Candy {
         int _posY;
         int _width;
         int _height;
-        bool _eat;
+        int _eat;
 };
 
 #endif /* !CANDY_HPP_ */

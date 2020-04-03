@@ -28,33 +28,33 @@ void Caterpillar::displayCaterpillar(IDisplayModule &lib) const
     lib.putFillRect(this->_posX, this->_posY, this->_width, this->_height);
 }
 
-void Caterpillar::moveCaterpillar(MapNibbler map)
+void Caterpillar::moveCaterpillar(MapNibbler *map)
 {
     if (this->_futurDirection != UNKNOWN) {
-        if (this->_futurDirection == UP && map.checkCollisions(this->_posX, this->_posY - this->_speed, this->_width, this->_height)) {
+        if (this->_futurDirection == UP && map->checkCollisions(this->_posX, this->_posY - this->_speed, this->_width, this->_height)) {
             this->_futurDirection = UNKNOWN;
             this->_direction = UP;
         }
-        if (this->_futurDirection == DOWN && map.checkCollisions(this->_posX, this->_posY + this->_speed, this->_width, this->_height)) {
+        if (this->_futurDirection == DOWN && map->checkCollisions(this->_posX, this->_posY + this->_speed, this->_width, this->_height)) {
             this->_futurDirection = UNKNOWN;
             this->_direction = DOWN;
         }
-        if (this->_futurDirection == LEFT && map.checkCollisions(this->_posX - this->_speed , this->_posY, this->_width, this->_height)) {
+        if (this->_futurDirection == LEFT && map->checkCollisions(this->_posX - this->_speed , this->_posY, this->_width, this->_height)) {
             this->_futurDirection = UNKNOWN;
             this->_direction = LEFT;
         }
-        if (this->_futurDirection == RIGHT && map.checkCollisions(this->_posX + this->_speed , this->_posY, this->_width, this->_height)) {
+        if (this->_futurDirection == RIGHT && map->checkCollisions(this->_posX + this->_speed , this->_posY, this->_width, this->_height)) {
             this->_futurDirection = UNKNOWN;
             this->_direction = RIGHT;
         }
     }
-    if (this->_direction == UP && map.checkCollisions(this->_posX, this->_posY - this->_speed, this->_width, this->_height))
+    if (this->_direction == UP && map->checkCollisions(this->_posX, this->_posY - this->_speed, this->_width, this->_height))
         this->_posY -= this->_speed;
-    if (this->_direction == DOWN && map.checkCollisions(this->_posX, this->_posY + this->_speed, this->_width, this->_height))
+    if (this->_direction == DOWN && map->checkCollisions(this->_posX, this->_posY + this->_speed, this->_width, this->_height))
         this->_posY += this->_speed;
-    if (this->_direction == LEFT && map.checkCollisions(this->_posX - this->_speed , this->_posY, this->_width, this->_height))
+    if (this->_direction == LEFT && map->checkCollisions(this->_posX - this->_speed , this->_posY, this->_width, this->_height))
         this->_posX -= this->_speed;
-    if (this->_direction == RIGHT && map.checkCollisions(this->_posX + this->_speed , this->_posY, this->_width, this->_height))
+    if (this->_direction == RIGHT && map->checkCollisions(this->_posX + this->_speed , this->_posY, this->_width, this->_height))
         this->_posX += this->_speed;
 }
 
@@ -70,14 +70,14 @@ void Caterpillar::setDirection(const IDisplayModule &lib)
         this->_futurDirection = Direction::LEFT;
 }
 
-bool Caterpillar::checkCandies(MapNibbler map)
+bool Caterpillar::checkCandies(MapNibbler *map)
 {
-    if (map.checkCandies(this->_posX, this->_posY, this->_width, this->_height) == false)
+    if (map->checkCandies(this->_posX, this->_posY, this->_width, this->_height) == false)
         incQueue();
     return false;
 }
 
 void Caterpillar::incQueue()
 {
-    printf("touché\n");
+    
 }

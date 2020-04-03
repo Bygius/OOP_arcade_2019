@@ -45,14 +45,12 @@ bool Candy::checkCollision(int posX, int posY, int width, int height)
     
     if (((posX >= this->_posX) && (posX <= (this->_posX + this->_width))) &&
     ((posY >= this->_posY) && (posY <= (this->_posY + this->_height)))) {
-        //printf("bool : %d\n", this->_eat);
         this->_eat = true;
         return false;
     }
     if ((((posX + width) >= this->_posX) && (posX <= (this->_posX + this->_width))) &&
     (((posY + height) >= this->_posY) && (posY <= (this->_posY + this->_height)))) {
         this->_eat = true;
-        //printf("bool : %d\n", this->_eat);
         return false;
     }
     return true;

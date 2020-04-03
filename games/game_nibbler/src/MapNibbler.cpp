@@ -13,8 +13,6 @@ MapNibbler::MapNibbler()
     initCandies();   
 }
 
-
-
 MapNibbler::~MapNibbler()
 {
 }

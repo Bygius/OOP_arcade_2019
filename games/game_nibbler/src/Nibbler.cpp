@@ -8,9 +8,10 @@
 #include "Nibbler.hpp"
 #include <memory>
 
-Nibbler::Nibbler() : _caterpillar(), _map()
+Nibbler::Nibbler()
 {
-    
+    this->_caterpillar = new Caterpillar();
+    this->_map = new MapNibbler();
 }
 
 void Nibbler::reset()
@@ -57,9 +58,9 @@ std::vector<std::pair<std::string, int>> Nibbler::getBestScores() const
 
 void Nibbler::update(const IDisplayModule &lib)
 {
-    this->_caterpillar.moveCaterpillar(_map);
-    this->_caterpillar.checkCandies(_map);
-    this->_caterpillar.setDirection(lib);
+    this->_caterpillar->moveCaterpillar(_map);
+    this->_caterpillar->checkCandies(_map);
+    this->_caterpillar->setDirection(lib);
 }
 
 void Nibbler::render(IDisplayModule &lib) const
@@ -68,9 +69,9 @@ void Nibbler::render(IDisplayModule &lib) const
     lib.putText("NIBBLER", 30, 250, 0);
     lib.putText(this->_name, 24, 10, 20);
     
-    this->_map.draw_blocks(lib);
-    this->_map.draw_candies(lib);
-    this->_caterpillar.displayCaterpillar(lib);
+    this->_map->draw_blocks(lib);
+    this->_map->draw_candies(lib);
+    this->_caterpillar->displayCaterpillar(lib);
 }
 
 const std::string &Nibbler::getLibName() const

@@ -15,8 +15,8 @@
 class Nibbler : public IGameModule
 {
     private:
-        Caterpillar _caterpillar;
-        MapNibbler _map;
+        Caterpillar *_caterpillar;
+        MapNibbler *_map;
         std::string _name;
 
     public:

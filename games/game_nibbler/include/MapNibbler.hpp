@@ -22,6 +22,7 @@ class MapNibbler {
         void draw_candies(IDisplayModule &lib) const;
         bool checkCollisions(int posX, int posY, int width, int height);
         bool checkCandies(int posX, int posY, int width, int height);
+
     private:
         std::vector<Block> _blocks;
         std::vector<Candy> _candies;
