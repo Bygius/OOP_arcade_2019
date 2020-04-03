@@ -17,7 +17,7 @@ MapPacman::MapPacman()
     this->_collisions.push_back(Collision(56, 88, 8, HEIGHT - 288));
     this->_collisions.push_back(Collision(432, 88, 8, HEIGHT - 288));
     this->_collisions.push_back(Collision(56, 80, 384, 8));
-    this->_collisions.push_back(Collision(56, 282, 384, 8));
+    this->_collisions.push_back(Collision(56, 280, 384, 8));
 
     // LEFT
     this->_collisions.push_back(Collision(96, 120, 8, 48));
