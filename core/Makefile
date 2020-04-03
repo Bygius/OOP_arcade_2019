@@ -15,9 +15,8 @@ RM			=	rm -f
 CC			=	g++
 
 SRC			=	$(SRC_DIR)main.cpp		\
-				$(SRC_DIR)Display.cpp	\
+				$(SRC_DIR)Error.cpp	\
 				$(SRC_DIR)DLLoader.cpp	\
-				$(SRC_DIR)Display_lib_managment.cpp	\
 				$(SRC_DIR)Core.cpp
 
 OBJ			=	$(SRC:.cpp=.o)

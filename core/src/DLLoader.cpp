@@ -8,7 +8,7 @@
 #include "DLLoader.hpp"
 #include <dlfcn.h>
 #include "../../include/Arcade_interfaces.hpp"
-
+#include "Error.hpp"
 
 template<typename T>
 DLLoader<T>::DLLoader(const std::string &path, const std::string &name) : _lib_path(path), _lib_name(name)
@@ -30,11 +30,8 @@ std::unique_ptr<T> DLLoader<T>::getInstance()
     if (isLoaded() == false)
         loadLibrary();
     create = (std::unique_ptr<T>(*)())dlsym(_handle, "createLib");
-    if (create == nullptr) {
-         std::cout << this->_lib_name << "\n";
-         std::cout << "Cannot open library: " << dlerror() << '\n';
-         exit(84);
-    }
+    if (create == nullptr)
+        throw LibError("Cannot get entrypoint in library:" + _lib_name);
     return create();
 }
 
@@ -44,12 +41,19 @@ void DLLoader<T>::loadLibrary(void)
     if (isLoaded() == true)
         closeLibrary();
     _handle = dlopen(_lib_name.c_str(), RTLD_LAZY | RTLD_GLOBAL);
+    if (!_handle)
+        throw LibError("Cannot open library:" + _lib_name);
+}
 
-    if (!_handle) {
-        std::cout << "Cannot open library: " << dlerror() << '\n';
-        exit(84);
-
-    }
+template<typename T>
+void DLLoader<T>::loadLibrary(const std::string &lib_name)
+{
+    if (isLoaded() == true)
+       closeLibrary();
+    _handle = dlopen(lib_name.c_str(), RTLD_LAZY | RTLD_GLOBAL);
+    if (!_handle)
+        throw LibError("Cannot open library:" + lib_name);
+    _lib_name = lib_name;
 }
 
 template<typename T>
@@ -58,20 +62,6 @@ void DLLoader<T>::closeLibrary()
     if (isLoaded() == true)
         dlclose(_handle);
     _handle = NULL;
-}
-
-
-template<typename T>
-void DLLoader<T>::loadLibrary(const std::string &lib_name)
-{
-    if (isLoaded() == true)
-       closeLibrary();
-
-    _handle = dlopen(lib_name.c_str(), RTLD_LAZY | RTLD_GLOBAL);
-
-    if (!_handle)
-        exit(84);
-    this->_lib_name = lib_name;
 }
 
 template<typename T>

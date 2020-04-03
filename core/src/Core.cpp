@@ -9,6 +9,7 @@
 #include "dirent.h"
 #include <string.h>
 #include <algorithm>
+#include "Error.hpp"
 
 static std::vector<std::string> getLiblist(const char *path)
 {
@@ -117,10 +118,14 @@ void Core::run(void)
 
 Core::Core(std::string dipslay_module_path)
 {
-    _display_module_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/", "./lib/lib_arcade_sfml.so");
-    _game_module_loader = std::make_unique<DLLoader<IGameModule>>("./games/", "./games/lib_arcade_pacman.so");
-    _display_module = _display_module_loader->getInstance();
-    _game_module = _game_module_loader->getInstance();
+    try {
+        _display_module_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/", "./lib/lib_arcade_sfml.so");
+        _game_module_loader = std::make_unique<DLLoader<IGameModule>>("./games/", "./games/lib_arcade_pacman.so");
+        _display_module = _display_module_loader->getInstance();
+        _game_module = _game_module_loader->getInstance();
+    } catch (Error const &e) {
+        throw CoreError(std::string(e.what()));
+    }
 }
 
 Core::~Core()

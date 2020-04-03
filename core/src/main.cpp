@@ -6,12 +6,19 @@
 */
 
 #include "Core.hpp"
+#include "Error.hpp"
 
 int main(int ac, char **av)
 {
     if (av[1] == NULL)
         return 84;
-    Core *core = new Core("test");
+    Core *core;
+    try {
+        core = new Core("test");
+    } catch (const Error &e) {
+        std::cout << e.what() << std::endl;
+        return 84;
+    }
     core->run();
 }
 
