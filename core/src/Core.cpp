@@ -103,8 +103,8 @@ void Core::run(void)
 {
     _display_module->open();
     while (_display_module->isOpen()) {
-        _display_module->clear();
         _display_module->update();
+        _display_module->clear();
         updateLibrary();
         if (_display_module->shouldExit())
             break;
