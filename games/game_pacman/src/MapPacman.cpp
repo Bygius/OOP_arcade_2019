@@ -62,10 +62,10 @@ void MapPacman::display_collisions(IDisplayModule &lib) const
 
 bool MapPacman::PlayerCollision(int x, int y, int width, int height)
 {
-    // x -= 4;
-    // y -= 4;
-    // width += 4;
-    // height += 4;
+    x -= 7;
+    y -= 7;
+    width += 14;
+    height += 14;
 
     for (std::vector<Collision>::iterator it = this->_collisions.begin(); it != this->_collisions.end(); it++) {
         if (it->checkCollision(x, y, width, height) == true)

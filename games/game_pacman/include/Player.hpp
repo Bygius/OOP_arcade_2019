@@ -16,7 +16,7 @@ class Player
     public:
         Player(int x, int y);
         ~Player();
-        enum Direction { UP, DOWN, RIGHT, LEFT };
+        enum Direction { UP, DOWN, RIGHT, LEFT, UNKNOWN };
 
         int getPosX() const;
         int getPosY() const;
@@ -37,6 +37,7 @@ class Player
         int _size;
         int _speed;
         Direction _direction;
+        Direction _futurDirection;
 };
 
 #endif /* !PLAYER_HPP_ */

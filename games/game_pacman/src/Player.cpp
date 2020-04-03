@@ -16,6 +16,7 @@ Player::Player(int x, int y)
     this->_width = 16;
     this->_speed = 1;
     this->_direction = UP;
+    this->_futurDirection = UNKNOWN;
 }
 
 Player::~Player()
@@ -54,24 +55,42 @@ void Player::displayPlayer(IDisplayModule &lib) const
 
 void Player::movePlayer(MapPacman map)
 {
-    if (this->_direction == UP && map.PlayerCollision(this->_posX, this->_posY - (this->_speed  + this->_size), this->_width, this->_height) == false)
+    if (this->_futurDirection != UNKNOWN) {
+        if (this->_futurDirection == UP && map.PlayerCollision(this->_posX, this->_posY - this->_speed, this->_width, this->_height) == false) {
+            this->_futurDirection = UNKNOWN;
+            this->_direction = UP;
+        }
+        if (this->_futurDirection == DOWN && map.PlayerCollision(this->_posX, this->_posY + this->_speed, this->_width, this->_height) == false) {
+            this->_futurDirection = UNKNOWN;
+            this->_direction = DOWN;
+        }
+        if (this->_futurDirection == LEFT && map.PlayerCollision(this->_posX - this->_speed , this->_posY, this->_width, this->_height) == false) {
+            this->_futurDirection = UNKNOWN;
+            this->_direction = LEFT;
+        }
+        if (this->_futurDirection == RIGHT && map.PlayerCollision(this->_posX + this->_speed , this->_posY, this->_width, this->_height) == false) {
+            this->_futurDirection = UNKNOWN;
+            this->_direction = RIGHT;
+        }
+    }
+    if (this->_direction == UP && map.PlayerCollision(this->_posX, this->_posY - this->_speed, this->_width, this->_height) == false)
         this->_posY -= this->_speed;
-    if (this->_direction == DOWN && map.PlayerCollision(this->_posX, this->_posY + this->_speed, this->_width, this->_height + this->_size) == false)
+    if (this->_direction == DOWN && map.PlayerCollision(this->_posX, this->_posY + this->_speed, this->_width, this->_height) == false)
         this->_posY += this->_speed;
-    if (this->_direction == LEFT && map.PlayerCollision(this->_posX - (this->_speed  + this->_size), this->_posY, this->_width, this->_height) == false)
+    if (this->_direction == LEFT && map.PlayerCollision(this->_posX - this->_speed , this->_posY, this->_width, this->_height) == false)
         this->_posX -= this->_speed;
-    if (this->_direction == RIGHT && map.PlayerCollision(this->_posX + this->_speed, this->_posY, this->_width + this->_size, this->_height) == false)
+    if (this->_direction == RIGHT && map.PlayerCollision(this->_posX + this->_speed , this->_posY, this->_width, this->_height) == false)
         this->_posX += this->_speed;
 }
 
 void Player::setDirection(const IDisplayModule &lib)
 {
     if (lib.isKeyPressed(IDisplayModule::Z))
-        this->_direction = UP;
+        this->_futurDirection = UP;
     if (lib.isKeyPressed(IDisplayModule::S))
-        this->_direction = DOWN;
+        this->_futurDirection = DOWN;
     if (lib.isKeyPressed(IDisplayModule::D))
-        this->_direction = RIGHT;
+        this->_futurDirection = RIGHT;
     if (lib.isKeyPressed(IDisplayModule::Q))
-        this->_direction = LEFT;
+        this->_futurDirection = LEFT;
 }
