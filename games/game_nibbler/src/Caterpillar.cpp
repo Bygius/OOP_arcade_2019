@@ -32,7 +32,6 @@ Caterpillar::~Caterpillar()
 
 void Caterpillar::reset()
 {
-    this->_speed = 1;
     this->_direction = RIGHT;
     this->_futurDirection = UNKNOWN;
     this->_posX = 326;
@@ -47,6 +46,11 @@ void Caterpillar::reset()
     this->_queue.emplace_back(Square(this->_posX - 14, this->_posY));
     this->_queue.emplace_back(Square(this->_posX - 28, this->_posY));
     this->_queue.emplace_back(Square(this->_posX - 42, this->_posY));
+}
+
+void Caterpillar::resetSpeed()
+{
+    this->_speed = 1;
 }
 
 void Caterpillar::displayCaterpillar(IDisplayModule &lib) const

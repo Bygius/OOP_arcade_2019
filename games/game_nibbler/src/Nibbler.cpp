@@ -22,6 +22,7 @@ Nibbler::Nibbler() : _libname("Nibbler")
 void Nibbler::reset()
 {
     this->_caterpillar->reset();
+    this->_caterpillar->resetSpeed();
     this->_map->reset();
     this->_score = 0;
     this->_time = 990;

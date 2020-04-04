@@ -37,6 +37,7 @@ class Caterpillar
         bool isWin();
         bool isLose();
         void reset();
+        void resetSpeed();
         void incSpeed();
 
     private:
