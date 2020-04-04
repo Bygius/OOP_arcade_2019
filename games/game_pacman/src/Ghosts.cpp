@@ -30,7 +30,7 @@ Ghosts::~Ghosts()
 void Ghosts::draw(IDisplayModule &lib) const
 {
     lib.setColor(this->_color);
-    lib.putCircle(this->x_head, this->y_head, this->_radius);
+    lib.putFillCircle(this->x_head, this->y_head, this->_radius);
     lib.putFillRect(this->x_body, this->y_body, this->w_body, this->h_body);
 }
 

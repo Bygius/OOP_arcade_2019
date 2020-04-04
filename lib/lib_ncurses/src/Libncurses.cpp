@@ -388,9 +388,34 @@ void Libncurses::putCircle(float x, float y, float rad) const
 
 void Libncurses::putFillCircle(float x, float y, float rad) const
 {
-    (void) x;
-    (void) y;
-    (void) rad;
+    int diameter = (rad * 2);
+    int xValue = rad - 1;
+    int yValue = 0;
+    int tx = 1;
+    int ty = 0;
+    int error = (tx - diameter);
+    x = x + rad;
+    y = y + rad;
+    while (xValue >= yValue) {
+        putPixel(x + xValue, y - yValue);
+        putPixel(x + xValue, y + yValue);
+        putPixel(x - xValue, y - yValue);
+        putPixel(x - xValue, y + yValue);
+        putPixel(x + yValue, y - xValue);
+        putPixel(x + yValue, y + xValue);
+        putPixel(x - yValue, y - xValue);
+        putPixel(x - yValue, y + xValue);
+        if (error <= 0) {
+            ++yValue;
+            error += ty;
+            ty += 2;
+        }
+        if (error > 0) {
+            --xValue;
+            tx += 2;
+            error += (tx - diameter);
+        }
+    }
 }
 
 void Libncurses::putText(const std::string &text, unsigned int size, float x, float y) const

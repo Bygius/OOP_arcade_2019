@@ -50,7 +50,7 @@ void Player::setPosY(int y)
 
 void Player::displayPlayer(IDisplayModule &lib) const
 {
-    lib.putCircle(this->_posX, this->_posY, this->_size);
+    lib.putFillCircle(this->_posX, this->_posY, this->_size);
 }
 
 void Player::movePlayer(MapPacman *map)

@@ -12,7 +12,7 @@ static bool first = true;
 
 Pacman::Pacman()
 {
-    this->_player = new Player(240, 216);
+    this->_player =  new Player(240, 216);
     this->_map = new MapPacman();
     this->x1 = 0;
     this->y1 = 0;
