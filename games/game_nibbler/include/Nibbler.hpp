@@ -22,6 +22,7 @@ class Nibbler : public IGameModule
         int _time;
         int _level;
         int _scorelevel;
+        const std::string _libname;
 
     public:
         Nibbler();

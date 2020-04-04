@@ -9,7 +9,7 @@
 #include <memory>
 #include <ctime>
 
-Nibbler::Nibbler()
+Nibbler::Nibbler() : _libname("Nibbler")
 {
     this->_caterpillar = new Caterpillar();
     this->_map = new MapNibbler();
@@ -58,12 +58,12 @@ void Nibbler::setPlayerName(const std::string &name)
 
 std::pair<std::string, int> Nibbler::getScore() const
 {
-
+    return {};
 }
 
 std::vector<std::pair<std::string, int>> Nibbler::getBestScores() const
 {
-
+    return {};
 }
 
 static float count_second(clock_t backup_clock)
@@ -102,7 +102,7 @@ void Nibbler::update(const IDisplayModule &lib)
         this->_level++;
         this->_caterpillar->incSpeed();
     }
-    if (this->_caterpillar->isLose()) {
+    if (this->_caterpillar->isLose() || this->_time <= 0) {
         if (lib.isKeyPressed(IDisplayModule::Keys::SPACE)) {
             reset();
         }
@@ -112,7 +112,7 @@ void Nibbler::update(const IDisplayModule &lib)
 void Nibbler::render(IDisplayModule &lib) const
 {
     lib.setColor(IDisplayModule::RED);
-    lib.putText("NIBBLER", 30, 250, 0);
+    lib.putText(this->_libname, 30, 250, 0);
     
     
     if (this->_caterpillar->isWin() == false && this->_caterpillar->isLose() == false) {
@@ -149,7 +149,7 @@ void Nibbler::render(IDisplayModule &lib) const
 
 const std::string &Nibbler::getLibName() const
 {
-
+    return this->_libname;
 }
 
 extern "C" std::unique_ptr<IGameModule> createLib(void)
