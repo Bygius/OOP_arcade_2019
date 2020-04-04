@@ -41,4 +41,14 @@ class CoreError: public Error
         std::string error_msg;
 };
 
+class GameError: public Error
+{
+    public:
+        GameError(const std::string &msg);
+        virtual ~GameError() throw(){}
+        virtual const char *what() const throw();
+    protected:
+        std::string error_msg;
+};
+
 #endif /* !ERROR_HPP_ */

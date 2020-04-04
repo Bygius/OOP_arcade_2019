@@ -10,16 +10,25 @@
 
 int main(int ac, char **av)
 {
-    if (av[1] == NULL)
+    if (av[1] == NULL) {
+        std::cout << "USAGE:" << std::endl;
+        std::cout << "      " << av[0] << " [graphical library]" << std::endl;
         return 84;
+    }
     Core *core;
     try {
-        core = new Core("test");
+        core = new Core(av[1]);
     } catch (const Error &e) {
         std::cout << e.what() << std::endl;
         return 84;
     }
-    core->run();
+    try {
+        core->run();
+    } catch (const std::exception &e) {
+        std::cout << e.what() << std::endl;
+        return 84;
+    }
+    delete core;
 }
 
 

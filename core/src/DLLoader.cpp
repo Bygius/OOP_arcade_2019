@@ -31,7 +31,7 @@ std::unique_ptr<T> DLLoader<T>::getInstance()
         loadLibrary();
     create = (std::unique_ptr<T>(*)())dlsym(_handle, "createLib");
     if (create == nullptr)
-        throw LibError("Cannot get entrypoint in library:" + _lib_name);
+        throw LibError("DLLoader : Cannot get entrypoint in library:" + _lib_name);
     return create();
 }
 
@@ -42,7 +42,7 @@ void DLLoader<T>::loadLibrary(void)
         closeLibrary();
     _handle = dlopen(_lib_name.c_str(), RTLD_LAZY | RTLD_GLOBAL);
     if (!_handle)
-        throw LibError("Cannot open library:" + _lib_name);
+        throw LibError(std::string(dlerror()));
 }
 
 template<typename T>
@@ -52,7 +52,7 @@ void DLLoader<T>::loadLibrary(const std::string &lib_name)
        closeLibrary();
     _handle = dlopen(lib_name.c_str(), RTLD_LAZY | RTLD_GLOBAL);
     if (!_handle)
-        throw LibError("Cannot open library:" + lib_name);
+        throw LibError("DLLoader : " + std::string(dlerror()));
     _lib_name = lib_name;
 }
 

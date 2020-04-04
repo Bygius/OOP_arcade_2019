@@ -100,6 +100,153 @@ void Core::updateLibrary(void)
         status = true;
 }
 
+void Core::displayButton(std::vector<std::string> list, int cursor_x, int cursor_y, int max_y, int column)
+{
+    size_t cut;
+    for (int i = 1; i <= max_y; i++) {
+        cut = list[i-1].find("_arcade_") + strlen("_arcade_");
+        if (((column == 1) ? _display_module_loader->getLibName(): _game_module_loader->getLibName()) == list[i-1])
+            _display_module->setColor(IDisplayModule::GREEN);
+        if (cursor_x == column && cursor_y == i)
+            _display_module->setColor(IDisplayModule::RED);
+        _display_module->putText(list[i-1].substr(cut, list[i-1].length() - (cut + 3)), 20, ((column == 1) ? 30 : 200), 120 + (30 * i));
+        _display_module->setColor(IDisplayModule::WHITE);
+    }
+}
+
+void Core::actionButton(std::vector<std::string> liblist, std::vector<std::string> gamelist, int cursor_x, int cursor_y)
+{
+    static bool load_status = false;
+    if (_display_module->isKeyPressed(IDisplayModule::ENTER)) {
+        if (load_status) {
+            if (cursor_x == 1) {
+                try {
+                    load_status = false;
+                    _display_module->close();
+                    reloadLibrary(_display_module_loader, _display_module, liblist[cursor_y - 1].data());
+                    _display_module->open();
+                } catch (const std::exception &e) {
+
+                    throw LibError(e.what());
+                }
+
+            } else {
+                load_status = false;
+                try {
+                    reloadLibrary(_game_module_loader, _game_module, gamelist[cursor_y - 1].data());
+                } catch (const std::exception &e) {
+                    throw GameError(e.what());
+                }
+            }
+        }
+    } else
+        load_status = true;
+}
+void Core::menu(void)
+{
+    static int x_pos = 1;
+    static int y_pos = 1;
+    static bool status = false;
+    static clock_t elapsed = clock();
+
+    std::vector<std::string> libList = getLiblist("./lib/");
+    std::vector<std::string> gameList = getLiblist("./games/");
+
+    int nb_lib = libList.size();
+    int nb_game = gameList.size();
+
+    _display_module->setColor(IDisplayModule::WHITE);
+    _display_module->putText("Coronarcade" , 40, 240, 20);
+    _display_module->putText("Select a lib" , 25, 30, 100);
+    _display_module->putText("Select a game" , 25, 200, 100);
+    _display_module->putText("High scores" , 25, 450, 100);
+
+    displayButton(libList, x_pos, y_pos, (int)libList.size(), 1);
+    displayButton(gameList, x_pos, y_pos, (int)gameList.size(), 2);
+
+    std::string previous_game = _game_module_loader->getLibName(); // manage the case when an error occur when the new game is running
+
+    try {
+        actionButton(libList, gameList, x_pos, y_pos);
+    } catch (const LibError &e) {
+        std::cout << e.what() << std::endl;
+        try {
+            reloadLibrary(_display_module_loader, _display_module, _display_module_loader->getLibName().c_str());
+        } catch (LibError &e) {
+            throw CoreError("CoreError : No functional lib");
+        }
+        _display_module->open();
+    } catch (const GameError &e) {
+        std::cout << e.what() << std::endl;
+        try {
+            reloadLibrary(_game_module_loader, _game_module, previous_game.c_str());
+        } catch (LibError &e) {
+            throw CoreError("CoreError : No functional lib");
+        }
+    }
+    if (x_pos == 1 && y_pos >= nb_lib)
+        y_pos = nb_lib;
+    else if (x_pos == 2 && y_pos >= nb_game)
+        y_pos = nb_game;
+
+    if (_display_module->isKeyPressed(IDisplayModule::UP)) {
+        if (status) {
+            if (y_pos == 1)
+                y_pos = (x_pos == 1) ? nb_lib : nb_game;
+            else
+                y_pos--;
+            status = false;
+            elapsed = clock();
+        }
+    }
+    else if (_display_module->isKeyPressed(IDisplayModule::DOWN)) {
+        if (status) {
+            if (x_pos == 1 && y_pos == nb_lib)
+                y_pos = 1;
+            else if (x_pos == 2 && y_pos == nb_game)
+                y_pos = 1;
+            else
+                y_pos++;
+            status = false;
+            elapsed = clock();
+        }
+    } else if (_display_module->isKeyPressed(IDisplayModule::RIGHT)) {
+        if (status) {
+            if (x_pos == 2) {
+                x_pos = 1;
+                if (y_pos > nb_lib)
+                    y_pos = nb_lib;
+            } else {
+                if (y_pos > nb_game)
+                    y_pos = nb_game;
+                x_pos++;
+            }
+            status = false;
+            elapsed = clock();
+        }
+    } else if (_display_module->isKeyPressed(IDisplayModule::LEFT)) {
+        if (status) {
+            if (x_pos == 1) {
+                x_pos = 2;
+                if (y_pos > nb_game)
+                    y_pos = nb_game;
+            } else {
+                if (y_pos > nb_lib)
+                    y_pos = nb_lib;
+                x_pos--;
+            }
+            status = false;
+            elapsed = clock();
+        }
+    }
+    else
+        status = true;
+    if (((clock() - elapsed) * 0.00001) > 1) {
+        status = true;
+        elapsed = clock();
+    }
+}
+
 void Core::run(void)
 {
     _display_module->open();
@@ -109,25 +256,42 @@ void Core::run(void)
         updateLibrary();
         if (_display_module->shouldExit())
             break;
-        _game_module->update(*_display_module);
-        _game_module->render(*_display_module);
-        _display_module->render();
+        if (_display_module->shouldGoToMenu())
+            _menu = true;
+        if (_menu && _display_module->isKeyPressed(IDisplayModule::SPACE))
+            _menu = false;
+        if (_menu)
+            menu();
+        else {
+            _game_module->update(*_display_module);
+            _game_module->render(*_display_module);
+        }
+        try {
+            _display_module->render();
+        } catch (const std::exception &e) {
+            _display_module->close();
+            throw Error(e.what());
+        }
     }
     _display_module->close();
 }
 
 Core::Core(std::string dipslay_module_path)
 {
+    std::vector<std::string> gameList = getLiblist("./games/");
+
     try {
-        _display_module_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/", "./lib/lib_arcade_sfml.so");
-        _game_module_loader = std::make_unique<DLLoader<IGameModule>>("./games/", "./games/lib_arcade_pacman.so");
+        _display_module_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/", dipslay_module_path);
+        _game_module_loader = std::make_unique<DLLoader<IGameModule>>("./games/", gameList[0]);
         _display_module = _display_module_loader->getInstance();
         _game_module = _game_module_loader->getInstance();
     } catch (Error const &e) {
         throw CoreError(std::string(e.what()));
     }
+    _menu = true;
 }
 
 Core::~Core()
 {
+
 }

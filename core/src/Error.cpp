@@ -24,7 +24,7 @@ const char *Error::what() const throw()
 LibError::LibError(const std::string &msg) : Error(msg)
 {
     std::ostringstream buff;
-    buff << "LibError : " << msg;
+    buff << msg;
     this->error_msg = buff.str();
 }
 
@@ -36,11 +36,23 @@ const char *LibError::what() const throw()
 CoreError::CoreError(const std::string &msg) : Error(msg)
 {
     std::ostringstream buff;
-    buff << "CoreError : " << msg;
+    buff << msg;
     this->error_msg = buff.str();
 }
 
 const char *CoreError::what() const throw()
+{
+    return this->error_msg.c_str();
+}
+
+GameError::GameError(const std::string &msg) : Error(msg)
+{
+    std::ostringstream buff;
+    buff << msg;
+    this->error_msg = buff.str();
+}
+
+const char *GameError::what() const throw()
 {
     return this->error_msg.c_str();
 }
