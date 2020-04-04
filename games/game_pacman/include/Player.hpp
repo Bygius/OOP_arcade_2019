@@ -26,7 +26,9 @@ class Player
 
         void displayPlayer(IDisplayModule &lib) const;
         void setDirection(const IDisplayModule &lib);
-        void movePlayer(MapPacman Map);
+        void movePlayer(MapPacman *Map);
+        bool checkFood(MapPacman *map);
+        void incQueue();
 
     protected:
     private:

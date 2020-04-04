@@ -162,9 +162,9 @@ bool Libncurses::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == I && this->_input == 105)
         return true;
-    if (key == ENTER && this->_input == 8)
+    if (key == ENTER && this->_input == 10)
         return true;
-    if (key == BACKSPACE && this->_input == 10)
+    if (key == BACKSPACE && this->_input == KEY_BACKSPACE)
         return true;
     if (key == KEYS_END && this->_input == 27)
         return true;
@@ -207,9 +207,9 @@ bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys key) const
         return true;
     if (key == I && this->_input == 105)
         return true;
-    if (key == ENTER && this->_input == 8)
+    if (key == ENTER && this->_input == 10)
         return true;
-    if (key == BACKSPACE && this->_input == 10)
+    if (key == BACKSPACE && this->_input == KEY_BACKSPACE)
         return true;
     if (key == KEYS_END && this->_input == 27)
         return true;
