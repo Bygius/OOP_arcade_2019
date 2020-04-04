@@ -8,6 +8,7 @@
 #ifndef PLAYER_HPP_
 #define PLAYER_HPP_
 
+#include "Ghosts.hpp"
 #include "Arcade_interfaces.hpp"
 #include "MapPacman.hpp"
 
@@ -27,8 +28,16 @@ class Player
         void displayPlayer(IDisplayModule &lib) const;
         void setDirection(const IDisplayModule &lib);
         void movePlayer(MapPacman *Map);
-        bool checkFood(MapPacman *map);
-        void incQueue();
+        void checkFood(MapPacman *map);
+        void setHealth(int i);
+        int getHealth(void) const;
+        bool checkGhosts(void);
+        int getWidth(void) const;
+        int getHeight(void) const;
+        void drawHealth(IDisplayModule &lib);
+        void resetPos(int x, int y);
+
+        
 
     protected:
     private:
@@ -38,8 +47,10 @@ class Player
         int _height;
         int _size;
         int _speed;
+        int _health;
         Direction _direction;
         Direction _futurDirection;
+        std::vector<Ghosts> _ghosts;
 };
 
 #endif /* !PLAYER_HPP_ */

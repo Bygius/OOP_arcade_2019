@@ -10,17 +10,16 @@
 Ghosts::Ghosts(IDisplayModule::Colors color, int x)
 {
     this->_color = color;
-    // this->x_body = 240;
     this->x_body = x;
     this->y_body = 184;
     this->w_body = 16;
     this->h_body = 8;
-    // this->x_head = 240;
     this->x_head = x;
     this->y_head = 176;
     this->_radius = 8;
     this->_size = 16;
     this->_speed = 1;
+    this->_free = false;
 }
 
 Ghosts::~Ghosts()
@@ -34,15 +33,15 @@ void Ghosts::draw(IDisplayModule &lib) const
     lib.putFillRect(this->x_body, this->y_body, this->w_body, this->h_body);
 }
 
-// void Ghosts::setPosX_body(int x)
-// {
-//     this->x_body = x;
-// }
+bool Ghosts::getFree(void) const
+{
+    return (this->_free);
+}
 
-// void Ghosts::setPosY_body(int y)
-// {
-//     this->_posY = y;
-// }
+void Ghosts::setFree(bool value)
+{
+    this->_free = value;
+}
 
 void Ghosts::setPosX(int body, int head)
 {
@@ -56,7 +55,7 @@ void Ghosts::setPosY(int body, int head)
     this->y_head = head;
 }
 
-void Ghosts::moveFantom(MapPacman *map)
+void Ghosts::moveGhost(MapPacman *map)
 {
     if (this->_futurDirection != UNKNOWN) {
         if (this->_futurDirection == UP && map->PlayerCollision(this->x_head, this->y_head - this->_speed, this->_size, this->_size) == false) {
@@ -98,25 +97,55 @@ void Ghosts::setDirection(MapPacman *map)
 {
     int value = rand() % 4 + 1;
 
+    if (this->_futurDirection != UNKNOWN)
+        return;
+    if (map->PlayerCollision(this->x_head, this->y_head - this->_speed, this->_size, this->_size) == true && this->_direction == UP)
+        return;
+    if (map->PlayerCollision(this->x_head, this->y_head + this->_speed, this->_size, this->_size) == true && this->_direction == DOWN)
+        return;
+    if (map->PlayerCollision(this->x_head + this->_speed, this->y_head, this->_size, this->_size) == true && this->_direction == RIGHT)
+        return;
+    if (map->PlayerCollision(this->x_head - this->_speed, this->y_head, this->_size, this->_size) == true && this->_direction == LEFT)
+        return;
     if (value == 1) {
-        while (map->PlayerCollision(this->x_head, this->y_head - this->_speed, this->_size, this->_size) == true)
-            return;;
+        // while (map->PlayerCollision(this->x_head, this->y_head - this->_speed, this->_size, this->_size) == true)
+        //     return;
         this->_futurDirection = UP;
     }
     if (value == 2) {
-        while (map->PlayerCollision(this->x_head, this->y_head + this->_speed, this->_size, this->_size) == true)
-            return;
+        // while (map->PlayerCollision(this->x_head, this->y_head + this->_speed, this->_size, this->_size) == true)
+        //     return;
         this->_futurDirection = DOWN;        
     }
     if (value == 3) {
-        while (map->PlayerCollision(this->x_head - this->_speed , this->y_head, this->_size, this->_size) == true)
-            return;
+        // while (map->PlayerCollision(this->x_head - this->_speed , this->y_head, this->_size, this->_size) == true)
+        //     return;
         this->_futurDirection = RIGHT;
     }
     if (value == 4) {
-        while (map->PlayerCollision(this->x_head + this->_speed , this->y_head, this->_size, this->_size) == false)
-            return;
+        // while (map->PlayerCollision(this->x_head + this->_speed , this->y_head, this->_size, this->_size) == true)
+        //     return;
         this->_futurDirection = LEFT;
+    }       
+}
+
+void Ghosts::setFuturDirection(bool value)
+{
+    if (value == 1)
+        this->_futurDirection = RIGHT;
+    else
+        this->_futurDirection = LEFT;
+}
+
+bool Ghosts::checkCollision(int posX, int posY, int width, int height)
+{
+    if (((posX >= this->x_head) && (posX <= (this->x_head + this->_size))) &&
+    ((posY >= this->y_head) && (posY <= (this->y_head + this->_size)))) {
+        return true;
     }
-        
+    if ((((posX + width) >= this->x_head) && (posX <= (this->x_head + this->_size))) &&
+    (((posY + height) >= this->y_head) && (posY <= (this->y_head + this->_size)))) {
+        return true;
+    }
+    return false;
 }

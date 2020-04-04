@@ -9,7 +9,7 @@
 #include <memory>
 #include <math.h>
 
-Libsdl::Libsdl() : _lib_name("lib_arcade_sdl.so"), _window(nullptr, SDL_DestroyWindow), _renderer(nullptr, SDL_DestroyRenderer)
+Libsdl::Libsdl() : _window(nullptr, SDL_DestroyWindow), _renderer(nullptr, SDL_DestroyRenderer), _lib_name("lib_arcade_sdl.so")
 {
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();

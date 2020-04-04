@@ -17,10 +17,19 @@ Player::Player(int x, int y)
     this->_speed = 1;
     this->_direction = UP;
     this->_futurDirection = UNKNOWN;
+    this->_health = 3;
 }
 
 Player::~Player()
 {
+}
+
+void Player::resetPos(int x, int y)
+{
+    this->_posX = x;
+    this->_posY = y;
+    this->_direction = UP;
+    this->_futurDirection = UNKNOWN;
 }
 
 int Player::getPosX() const
@@ -46,6 +55,26 @@ void Player::setPosX(int x)
 void Player::setPosY(int y)
 {
     this->_posY = y;
+}
+
+void Player::setHealth(int i)
+{
+    this->_health += i;
+}
+
+int Player::getHealth(void) const
+{
+    return (this->_health);
+}
+
+int Player::getHeight(void) const
+{
+    return (this->_height);
+}
+
+int Player::getWidth(void) const
+{
+    return (this->_width);
 }
 
 void Player::displayPlayer(IDisplayModule &lib) const
@@ -96,14 +125,28 @@ void Player::setDirection(const IDisplayModule &lib)
 }
 
 
-bool Player::checkFood(MapPacman *map)
+void Player::checkFood(MapPacman *map)
 {
-    if (map->checkFood(this->_posX, this->_posY, this->_width, this->_height) == false)
-        incQueue();
+    map->checkFood(this->_posX, this->_posY, this->_width, this->_height);
+}
+
+
+bool Player::checkGhosts(void)
+{
+    for (std::vector<Ghosts>::iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++) {
+        if (it->checkCollision(this->_posX, this->_posY, this->_width, this->_height) == false)
+            return true;
+    }
     return false;
 }
 
-void Player::incQueue()
+void Player::drawHealth(IDisplayModule &lib)
 {
-    
+    int x = 340;
+
+    lib.setColor(IDisplayModule::Colors::YELLOW);
+    for (int i = 0; i < this->_health; i++) {
+        lib.putFillCircle(x, 316, 8);
+        x += 32;
+    }
 }

@@ -18,14 +18,14 @@ class Ghosts {
         ~Ghosts();
         enum Direction { UP, DOWN, RIGHT, LEFT, UNKNOWN };
         void draw(IDisplayModule &lib) const;
-        // void setPosX_body(int x);
-        // void setPosY_body(int y);
-        // void setPosX_head(int x);
-        // void setPosY_head(int y);
         void setPosX(int body, int head);
         void setPosY(int body, int head);
-        void moveFantom(MapPacman *map);
+        void moveGhost(MapPacman *map);
         void setDirection(MapPacman *map);
+        bool getFree(void) const;
+        void setFree(bool value);
+        void setFuturDirection(bool value);
+        bool checkCollision(int posX, int posY, int width, int height);
 
     protected:
     private:
@@ -33,15 +33,12 @@ class Ghosts {
         int y_body;
         int w_body;
         int h_body;
-
         int x_head; 
         int y_head;
         int _radius;
-
         int _speed;
-
         int _size;
-
+        bool _free;
         Direction _direction;
         Direction _futurDirection;
 

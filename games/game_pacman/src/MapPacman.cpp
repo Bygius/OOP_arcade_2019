@@ -43,6 +43,7 @@ void MapPacman::initCollisions()
     this->_collisions.push_back(Collision(200, 160, 24, 8));
     this->_collisions.push_back(Collision(288, 160, 8, 40));
     this->_collisions.push_back(Collision(272, 160, 24, 8));
+    this->_collisions.push_back(Collision(224, 160, 48, 4));
 
     //RIGHT
     this->_collisions.push_back(Collision(328, 88, 8, 40));
