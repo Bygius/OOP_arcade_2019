@@ -58,7 +58,10 @@ void Nibbler::setPlayerName(const std::string &name)
 
 std::pair<std::string, int> Nibbler::getScore() const
 {
-    return {};
+    std::pair <std::string, int> ret;
+    ret.first = this->_name;
+    ret.second = this->_score;
+    return ret;
 }
 
 std::vector<std::pair<std::string, int>> Nibbler::getBestScores() const
