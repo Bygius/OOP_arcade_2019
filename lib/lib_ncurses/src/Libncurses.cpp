@@ -25,10 +25,6 @@ void Libncurses::reset()
 {
     this->_exit = false;
     this->_input = '\0';
-    // endwin();
-    // initscr();
-    // this->_win = newwin(HEIGHT, WIDTH, 0, 0);
-    // curs_set(0);
 }
 
 void Libncurses::open()
@@ -39,7 +35,6 @@ void Libncurses::open()
     keypad(stdscr, TRUE);
     wresize(stdscr, HEIGHT, WIDTH);
     cbreak();
-    // resizeterm(HEIGHT, WIDTH);
 
     start_color();
     init_pair(DEFAULT, COLOR_WHITE, COLOR_BLACK);
