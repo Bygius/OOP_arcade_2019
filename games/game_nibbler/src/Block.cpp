@@ -22,7 +22,7 @@ Block::~Block()
 void Block::draw(IDisplayModule &lib) const
 {
     lib.setColor(IDisplayModule::Colors::WHITE);
-    lib.putRect(this->_posX, this->_posY, this->_width, this->_height);
+    lib.putFillRect(this->_posX, this->_posY, this->_width, this->_height);
 }
 
 bool Block::checkCollision(int posX, int posY, int width, int height)

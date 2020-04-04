@@ -9,7 +9,7 @@
 
 Caterpillar::Caterpillar()
 {
-    this->_speed = 2;
+    this->_speed = 1;
     this->_direction = RIGHT;
     this->_futurDirection = UNKNOWN;
     this->_posX = 326;
@@ -28,6 +28,25 @@ Caterpillar::Caterpillar()
 
 Caterpillar::~Caterpillar()
 {
+}
+
+void Caterpillar::reset()
+{
+    this->_speed = 1;
+    this->_direction = RIGHT;
+    this->_futurDirection = UNKNOWN;
+    this->_posX = 326;
+    this->_posY = 358;
+    this->_width = 12;
+    this->_height = 12;
+    this->_feed = false;
+    this->_len = 0;
+    this->_lose = false;
+    this->_win = false;
+    this->_queue.erase(this->_queue.begin(), this->_queue.end());
+    this->_queue.emplace_back(Square(this->_posX - 14, this->_posY));
+    this->_queue.emplace_back(Square(this->_posX - 28, this->_posY));
+    this->_queue.emplace_back(Square(this->_posX - 42, this->_posY));
 }
 
 void Caterpillar::displayCaterpillar(IDisplayModule &lib) const
@@ -126,4 +145,12 @@ void Caterpillar::checkLose()
     for (std::vector<Square>::iterator it = this->_queue.begin()+2; it != this->_queue.end(); it++)
         if (it->checkMove(this->_posX, this->_posY, this->_width, this->_height) == false)
             this->_lose = true;
+}
+
+void Caterpillar::incSpeed()
+{
+    if (this->_speed == 1)
+        this->_speed ++;
+    else
+        this->_speed += 2;
 }

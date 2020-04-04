@@ -18,6 +18,10 @@ class Nibbler : public IGameModule
         Caterpillar *_caterpillar;
         MapNibbler *_map;
         std::string _name;
+        int _score;
+        int _time;
+        int _level;
+        int _scorelevel;
 
     public:
         Nibbler();

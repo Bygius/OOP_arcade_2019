@@ -36,6 +36,8 @@ class Caterpillar
         void checkLose();
         bool isWin();
         bool isLose();
+        void reset();
+        void incSpeed();
 
     private:
         Direction _direction;

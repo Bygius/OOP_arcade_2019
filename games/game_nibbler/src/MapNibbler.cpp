@@ -159,3 +159,9 @@ int MapNibbler::getEat()
             ret++;
     return ret;
 }
+
+void MapNibbler::reset()
+{
+    for (std::vector<Candy>::iterator it = this->_candies.begin(); it != this->_candies.end(); it++)
+        it->setFeed();
+}

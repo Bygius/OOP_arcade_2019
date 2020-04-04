@@ -23,6 +23,7 @@ class MapNibbler {
         bool checkCollisions(int posX, int posY, int width, int height);
         void checkCandies(int posX, int posY, int width, int height);
         int getEat();
+        void reset();
 
     private:
         std::vector<Block> _blocks;

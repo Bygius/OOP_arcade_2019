@@ -60,3 +60,8 @@ bool Candy::isFeed()
 {
     return this->_eat;
 }
+
+void Candy::setFeed()
+{
+    this->_eat = false;
+}
