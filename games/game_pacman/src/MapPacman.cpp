@@ -13,6 +13,12 @@
 
 MapPacman::MapPacman()
 {
+    initCollisions();
+    initFood();
+}
+
+void MapPacman::initCollisions()
+{
     // WALL
     this->_collisions.push_back(Collision(56, 88, 8, HEIGHT - 288));
     this->_collisions.push_back(Collision(432, 88, 8, HEIGHT - 288));
@@ -37,6 +43,7 @@ MapPacman::MapPacman()
     this->_collisions.push_back(Collision(200, 160, 24, 8));
     this->_collisions.push_back(Collision(288, 160, 8, 40));
     this->_collisions.push_back(Collision(272, 160, 24, 8));
+    this->_collisions.push_back(Collision(224, 160, 48, 4));
 
     //RIGHT
     this->_collisions.push_back(Collision(328, 88, 8, 40));
@@ -48,6 +55,69 @@ MapPacman::MapPacman()
     this->_collisions.push_back(Collision(368, 120, 32, 8));
     this->_collisions.push_back(Collision(392, 200, 8, 48));
     this->_collisions.push_back(Collision(368, 240, 32, 8));
+}
+
+void MapPacman::initFood() // x + 32 et y + 40
+{
+    // LEFT
+    this->_foods.push_back(Food(76, 100, 8, 8));
+    this->_foods.push_back(Food(108, 100, 8, 8));
+    this->_foods.push_back(Food(140, 100, 8, 8));
+    this->_foods.push_back(Food(76, 140, 8, 8));
+    this->_foods.push_back(Food(108, 140, 8, 8));
+    this->_foods.push_back(Food(140, 140, 8, 8));
+    this->_foods.push_back(Food(76, 180, 8, 8));
+    this->_foods.push_back(Food(108, 180, 8, 8));
+    this->_foods.push_back(Food(140, 180, 8, 8));    
+    this->_foods.push_back(Food(76, 220, 8, 8));
+    this->_foods.push_back(Food(108, 220, 8, 8));
+    this->_foods.push_back(Food(140, 220, 8, 8));
+    this->_foods.push_back(Food(76, 260, 8, 8));
+    this->_foods.push_back(Food(108, 260, 8, 8));
+    this->_foods.push_back(Food(140, 260, 8, 8));
+
+
+    // MID
+    this->_foods.push_back(Food(180, 100, 8, 8));
+    this->_foods.push_back(Food(212, 100, 8, 8));
+    this->_foods.push_back(Food(244, 100, 8, 8));
+    this->_foods.push_back(Food(180, 140, 8, 8));
+    this->_foods.push_back(Food(212, 140, 8, 8));
+    this->_foods.push_back(Food(244, 140, 8, 8));
+    this->_foods.push_back(Food(180, 180, 8, 8));
+    this->_foods.push_back(Food(180, 220, 8, 8));
+    this->_foods.push_back(Food(212, 220, 8, 8));
+    this->_foods.push_back(Food(244, 220, 8, 8));
+    this->_foods.push_back(Food(180, 260, 8, 8));
+    this->_foods.push_back(Food(212, 260, 8, 8));
+    this->_foods.push_back(Food(244, 260, 8, 8));
+    this->_foods.push_back(Food(272, 100, 8, 8));
+    this->_foods.push_back(Food(304, 100, 8, 8));
+    this->_foods.push_back(Food(272, 140, 8, 8));
+    this->_foods.push_back(Food(304, 140, 8, 8));
+    this->_foods.push_back(Food(304, 180, 8, 8));
+    this->_foods.push_back(Food(272, 220, 8, 8));
+    this->_foods.push_back(Food(304, 220, 8, 8));
+    this->_foods.push_back(Food(272, 260, 8, 8));
+    this->_foods.push_back(Food(304, 260, 8, 8));
+
+
+    // RIGHT
+    this->_foods.push_back(Food(348, 100, 8, 8));
+    this->_foods.push_back(Food(380, 100, 8, 8));
+    this->_foods.push_back(Food(412, 100, 8, 8));
+    this->_foods.push_back(Food(348, 140, 8, 8));
+    this->_foods.push_back(Food(380, 140, 8, 8));
+    this->_foods.push_back(Food(412, 140, 8, 8));
+    this->_foods.push_back(Food(348, 180, 8, 8));
+    this->_foods.push_back(Food(380, 180, 8, 8));
+    this->_foods.push_back(Food(412, 180, 8, 8));    
+    this->_foods.push_back(Food(348, 220, 8, 8));
+    this->_foods.push_back(Food(380, 220, 8, 8));
+    this->_foods.push_back(Food(412, 220, 8, 8));
+    this->_foods.push_back(Food(348, 260, 8, 8));
+    this->_foods.push_back(Food(380, 260, 8, 8));
+    this->_foods.push_back(Food(412, 260, 8, 8));
 }
 
 MapPacman::~MapPacman()
@@ -72,4 +142,36 @@ bool MapPacman::PlayerCollision(int x, int y, int width, int height)
             return (true);
     }
     return (false);
+}
+
+void MapPacman::draw_food(IDisplayModule &lib) const
+{
+    for (std::vector<Food>::const_iterator it = this->_foods.begin(); it != this->_foods.end(); it++)
+        it->draw(lib);
+}
+
+bool MapPacman::checkFood(int posX, int posY, int width, int height)
+{
+    for (std::vector<Food>::iterator it = this->_foods.begin(); it != this->_foods.end(); it++) {
+        if (it->checkCollision(posX, posY, width, height) == false)
+            return false;
+    }
+    return true;
+}
+
+int MapPacman::countScore(void)
+{
+    int score = 0;
+
+    for (std::vector<Food>::iterator it = this->_foods.begin(); it != this->_foods.end(); it++) {
+        if (it->getEat() == true)
+            score += 1;
+    }
+    return (score);
+}
+
+void MapPacman::reset()
+{
+    for (std::vector<Food>::iterator it = this->_foods.begin(); it != this->_foods.end(); it++)
+        it->setEat();
 }

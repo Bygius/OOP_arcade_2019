@@ -162,9 +162,9 @@ bool Libncurses::isKeyPressed(IDisplayModule::Keys key) const
         return true;
     if (key == I && this->_input == 105)
         return true;
-    if (key == ENTER && this->_input == 8)
+    if (key == ENTER && this->_input == 10)
         return true;
-    if (key == BACKSPACE && this->_input == 10)
+    if (key == BACKSPACE && this->_input == KEY_BACKSPACE)
         return true;
     if (key == KEYS_END && this->_input == 27)
         return true;
@@ -207,9 +207,9 @@ bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys key) const
         return true;
     if (key == I && this->_input == 105)
         return true;
-    if (key == ENTER && this->_input == 8)
+    if (key == ENTER && this->_input == 10)
         return true;
-    if (key == BACKSPACE && this->_input == 10)
+    if (key == BACKSPACE && this->_input == KEY_BACKSPACE)
         return true;
     if (key == KEYS_END && this->_input == 27)
         return true;
@@ -388,9 +388,34 @@ void Libncurses::putCircle(float x, float y, float rad) const
 
 void Libncurses::putFillCircle(float x, float y, float rad) const
 {
-    (void) x;
-    (void) y;
-    (void) rad;
+    int diameter = (rad * 2);
+    int xValue = rad - 1;
+    int yValue = 0;
+    int tx = 1;
+    int ty = 0;
+    int error = (tx - diameter);
+    x = x + rad;
+    y = y + rad;
+    while (xValue >= yValue) {
+        putPixel(x + xValue, y - yValue);
+        putPixel(x + xValue, y + yValue);
+        putPixel(x - xValue, y - yValue);
+        putPixel(x - xValue, y + yValue);
+        putPixel(x + yValue, y - xValue);
+        putPixel(x + yValue, y + xValue);
+        putPixel(x - yValue, y - xValue);
+        putPixel(x - yValue, y + xValue);
+        if (error <= 0) {
+            ++yValue;
+            error += ty;
+            ty += 2;
+        }
+        if (error > 0) {
+            --xValue;
+            tx += 2;
+            error += (tx - diameter);
+        }
+    }
 }
 
 void Libncurses::putText(const std::string &text, unsigned int size, float x, float y) const

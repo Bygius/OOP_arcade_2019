@@ -1,23 +1,23 @@
 /*
 ** EPITECH PROJECT, 2020
-** candy
+** OOP_arcade_2019
 ** File description:
-** candy
+** Food
 */
 
-#ifndef CANDY_HPP_
-#define CANDY_HPP_
+#ifndef FOOD_HPP_
+#define FOOD_HPP_
 
 #include "Arcade_interfaces.hpp"
 
-class Candy {
+class Food {
     public:
-        Candy(int posX, int posY, int width, int height);
-        ~Candy();
+        Food(int posX, int posY, int width, int height);
+        ~Food();
         void draw(IDisplayModule &lib) const;
         bool checkCollision(int posX, int posY, int width, int height);
-        bool isFeed();
-        void setFeed();
+        bool getEat(void) const;
+        void setEat(void);
 
     private:
         int _posX;
@@ -27,4 +27,4 @@ class Candy {
         int _eat;
 };
 
-#endif /* !CANDY_HPP_ */
+#endif /* !FOOD_HPP_ */

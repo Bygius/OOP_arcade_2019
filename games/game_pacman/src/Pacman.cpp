@@ -8,15 +8,29 @@
 #include "Pacman.hpp"
 #include <memory>
 
-Pacman::Pacman(): _player(240, 216)
+static int ghst = 1;
+
+Pacman::Pacman() : _lib_name("Pacman")
 {
+    this->_player =  new Player(240, 216);
+    this->_map = new MapPacman();
     this->x1 = 0;
     this->y1 = 0;
+    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::MAGENTA, 240));
+    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::RED, 217));
+    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::BLUE, 264));
+    this->_begin = clock();
 }
 
 void Pacman::reset()
 {
-
+    this->_player->reset(240, 216);
+    this->_map->reset();
+    this->_begin = clock();
+    this->_ghosts.erase(this->_ghosts.begin(), this->_ghosts.end());
+    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::MAGENTA, 240));
+    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::RED, 217));
+    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::BLUE, 264));
 }
 
 bool Pacman::loadFromFile(const std::string &filepath)
@@ -48,37 +62,97 @@ void Pacman::setPlayerName(const std::string &name)
 
 std::pair<std::string, int> Pacman::getScore() const
 {
-
+    std::pair <std::string, int> score;
+    score.first = this->_name;
+    score.second = _map->countScore();
+    return (score);
 }
 
 std::vector<std::pair<std::string, int>> Pacman::getBestScores() const
 {
-
+    std::vector<std::pair<std::string, int>> bestscore;
+    return (bestscore);
 }
 
 void Pacman::update(const IDisplayModule &lib)
 {
-    _player.setDirection(lib);
-    _player.movePlayer(_map);
-    // _player.checkCollision(_map);
+    clock_t end = clock();
+
+    _player->setDirection(lib);
+    _player->checkFood(_map);
+    _player->movePlayer(_map);
+    if (this->checkTest() == true) {
+        _player->setHealth(-1);
+        _player->resetPos(240, 216);
+        this->_begin = clock();
+        this->_ghosts.erase(this->_ghosts.begin(), this->_ghosts.end());
+        this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::MAGENTA, 240));
+        this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::RED, 217));
+        this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::BLUE, 264));
+    }
+    
+    double duration = (end - this->_begin)/(double)CLOCKS_PER_SEC;
+
+    for (std::vector<Ghosts>::iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++) {
+        if ((duration > 1.0)  && (ghst == 1) && (it->getFree() == false)) {
+            it->setFree(true);
+            it->setPosY(144, 136);
+            it->setFuturDirection(1);
+        }
+        if ((duration > 2.0)  && (ghst == 2) && (it->getFree() == false)) {
+            it->setFree(true);
+            it->setPosY(144, 136);
+            it->setPosX(240, 240);
+            it->setFuturDirection(0);
+        }
+        if ((duration > 3.0)  && (ghst == 3) && (it->getFree() == false)) {
+            it->setFree(true);
+            it->setPosY(144, 136);
+            it->setPosX(240, 240);
+            it->setFuturDirection(1);
+        }
+        if (it->getFree() == true) {
+            it->setDirection(_map);
+            it->moveGhost(_map);
+        }
+        ghst++;
+    }
+    ghst = 1;
+
 }
 
 void Pacman::render(IDisplayModule &lib) const
 {
-    lib.setColor(IDisplayModule::YELLOW);
+    std::string score = std::to_string(this->getScore().second);
+
+    lib.setColor(IDisplayModule::Colors::YELLOW);
     lib.putText("PACMAN", 30, 250, 0);
-    lib.putText(this->_name, 24, 10, 20);
-    _player.displayPlayer(lib);
-    // _map.displayWall(lib);
-    _map.display_collisions(lib);
+    lib.putText("SCORE : ", 30, 100, 300);
+    lib.putText(score, 30, 240, 300);
+    _player->drawHealth(lib);
+    _map->display_collisions(lib);
+    _map->draw_food(lib);
+    lib.setColor(IDisplayModule::YELLOW);
+    _player->displayPlayer(lib);
+    for (std::vector<Ghosts>::const_iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++)
+        it->draw(lib);
 }
 
 const std::string &Pacman::getLibName() const
 {
-    return ("a");
+    return (this->_lib_name);
 }
 
 extern "C" std::unique_ptr<IGameModule> createLib(void)
 {
     return std::make_unique<Pacman>();
+}
+
+bool Pacman::checkTest(void)
+{
+    for (std::vector<Ghosts>::iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++) {
+        if (it->checkCollision(_player->getPosX(), _player->getPosY(), _player->getWidth(), _player->getHeight()) == true)
+            return true;
+    }
+    return false;
 }

@@ -11,6 +11,7 @@
 #include "Arcade_interfaces.hpp"
 #include "Player.hpp"
 #include "MapPacman.hpp"
+#include "Ghosts.hpp"
 
 class Pacman : public IGameModule
 {
@@ -18,12 +19,16 @@ class Pacman : public IGameModule
         int x1;
         int y1;
         std::string _name;
-        Player _player;
-        MapPacman _map;
+        const std::string _lib_name;
+        Player *_player;
+        MapPacman *_map;
+        std::vector<Ghosts> _ghosts;
+        clock_t _begin;
 
     public:
         Pacman();
         virtual ~Pacman() = default;
+        bool checkTest(void);
 
         void reset();
         bool loadFromFile(const std::string &filepath);

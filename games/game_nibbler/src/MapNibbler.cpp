@@ -13,8 +13,6 @@ MapNibbler::MapNibbler()
     initCandies();   
 }
 
-
-
 MapNibbler::~MapNibbler()
 {
 }
@@ -146,11 +144,24 @@ bool MapNibbler::checkCollisions(int posX, int posY, int width, int height)
     return true;
 }
 
-bool MapNibbler::checkCandies(int posX, int posY, int width, int height)
+void MapNibbler::checkCandies(int posX, int posY, int width, int height)
 {
-    for (std::vector<Candy>::iterator it = this->_candies.begin(); it != this->_candies.end(); it++) {
-        if (it->checkCollision(posX, posY, width, height) == false)
-            return false;
-    }
-    return true;
+    for (std::vector<Candy>::iterator it = this->_candies.begin(); it != this->_candies.end(); it++)
+        it->checkCollision(posX, posY, width, height);
+}
+
+int MapNibbler::getEat()
+{
+    int ret = 0;
+
+    for (std::vector<Candy>::iterator it = this->_candies.begin(); it != this->_candies.end(); it++)
+        if (it->isFeed())
+            ret++;
+    return ret;
+}
+
+void MapNibbler::reset()
+{
+    for (std::vector<Candy>::iterator it = this->_candies.begin(); it != this->_candies.end(); it++)
+        it->setFeed();
 }

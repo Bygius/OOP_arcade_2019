@@ -9,7 +9,7 @@
 #include <memory>
 #include <math.h>
 
-Libsdl::Libsdl() : _lib_name("lib_arcade_sdl.so"), _window(nullptr, SDL_DestroyWindow), _renderer(nullptr, SDL_DestroyRenderer)
+Libsdl::Libsdl() : _window(nullptr, SDL_DestroyWindow), _renderer(nullptr, SDL_DestroyRenderer), _lib_name("lib_arcade_sdl.so")
 {
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
@@ -343,9 +343,17 @@ void Libsdl::putCircle(float x, float y, float rad) const
 
 void Libsdl::putFillCircle(float x, float y, float rad) const
 {
-    (void) x;
-    (void) y;
-    (void) rad;
+    int h = 0;
+    int xValue = -rad;
+    int yValue = 0;
+
+    x = x + rad;
+    y = y + rad;
+    for ( xValue = -rad; xValue < rad ; xValue++) {
+        h = (int)sqrt(rad * rad - xValue * xValue);
+        for (yValue = -h; yValue < h; yValue++)
+            putPixel(x + xValue, y + yValue);
+    }
 }
 
 void Libsdl::putText(const std::string &text, unsigned int size, float x, float y) const

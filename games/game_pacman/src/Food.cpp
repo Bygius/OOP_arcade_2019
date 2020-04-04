@@ -1,13 +1,13 @@
 /*
 ** EPITECH PROJECT, 2020
-** cndy
+** OOP_arcade_2019
 ** File description:
-** candy
+** Food
 */
 
-#include "Candy.hpp"
+#include "Food.hpp"
 
-Candy::Candy(int posX, int posY, int width, int height)
+Food::Food(int posX, int posY, int width, int height)
 {
     this->_posX = posX;
     this->_posY = posY;
@@ -16,33 +16,30 @@ Candy::Candy(int posX, int posY, int width, int height)
     this->_eat = false;
 }
 
-Candy::~Candy()
+Food::~Food()
 {
 }
 
-void Candy::draw(IDisplayModule &lib) const
+void Food::draw(IDisplayModule &lib) const
 {
     if (this->_eat == false) {
-        lib.setColor(IDisplayModule::Colors::MAGENTA);
-        lib.putFillRect(this->_posX, this->_posY, this->_width, this->_height);
-        lib.setColor(IDisplayModule::Colors::CYAN);
+        lib.setColor(IDisplayModule::Colors::DARK_GRAY);
         lib.putFillRect(this->_posX + 2, this->_posY + 2, 4, 4);
     }
 }
 
-bool Candy::checkCollision(int posX, int posY, int width, int height)
+bool Food::getEat(void) const
+{
+    return (this->_eat);
+}
+
+bool Food::checkCollision(int posX, int posY, int width, int height)
 {
     posX -= 5;
     posY -= 5;
     width += 10;
     height += 10;
 
-    //reglage pour taille de 8
-    // posX -= 5;
-    // posY -= 5;
-    // width += 10;
-    // height += 10;
-    
     if (((posX >= this->_posX) && (posX <= (this->_posX + this->_width))) &&
     ((posY >= this->_posY) && (posY <= (this->_posY + this->_height)))) {
         this->_eat = true;
@@ -56,12 +53,7 @@ bool Candy::checkCollision(int posX, int posY, int width, int height)
     return true;
 }
 
-bool Candy::isFeed()
-{
-    return this->_eat;
-}
-
-void Candy::setFeed()
+void Food::setEat(void)
 {
     this->_eat = false;
 }
