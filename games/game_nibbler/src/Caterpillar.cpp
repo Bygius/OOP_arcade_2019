@@ -9,7 +9,7 @@
 
 Caterpillar::Caterpillar()
 {
-    this->_speed = 1;
+    this->_speed = 2;
     this->_direction = RIGHT;
     this->_futurDirection = UNKNOWN;
     this->_posX = 326;
@@ -95,6 +95,7 @@ void Caterpillar::moveQueue(MapNibbler *map)
 {
     if (map->getEat() != this->_len) {
         this->_len++;
+        this->_queue.emplace_back(Square(-100, -100));
         this->_queue.emplace_back(Square(-100, -100));
     }
     if (this->_queue.begin()->checkMove(this->_posX, this->_posY, this->_width, this->_height)) {
