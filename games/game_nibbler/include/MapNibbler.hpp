@@ -26,8 +26,8 @@ class MapNibbler {
         void reset();
 
     private:
-        std::vector<Block> _blocks;
-        std::vector<Candy> _candies;
+        std::vector<std::unique_ptr<Block>> _blocks;
+        std::vector<std::unique_ptr<Candy>> _candies;
 };
 
 #endif /* !MAP_HPP_ */

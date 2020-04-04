@@ -21,9 +21,9 @@ Caterpillar::Caterpillar()
     this->_lose = false;
     this->_win = false;
 
-    this->_queue.emplace_back(Square(this->_posX - 14, this->_posY));
-    this->_queue.emplace_back(Square(this->_posX - 28, this->_posY));
-    this->_queue.emplace_back(Square(this->_posX - 42, this->_posY));
+    this->_queue.push_back(std::make_unique<Square>(this->_posX - 14, this->_posY));
+    this->_queue.push_back(std::make_unique<Square>(this->_posX - 28, this->_posY));
+    this->_queue.push_back(std::make_unique<Square>(this->_posX - 42, this->_posY));
 }
 
 Caterpillar::~Caterpillar()
@@ -43,9 +43,9 @@ void Caterpillar::reset()
     this->_lose = false;
     this->_win = false;
     this->_queue.erase(this->_queue.begin(), this->_queue.end());
-    this->_queue.emplace_back(Square(this->_posX - 14, this->_posY));
-    this->_queue.emplace_back(Square(this->_posX - 28, this->_posY));
-    this->_queue.emplace_back(Square(this->_posX - 42, this->_posY));
+    this->_queue.push_back(std::make_unique<Square>(this->_posX - 14, this->_posY));
+    this->_queue.push_back(std::make_unique<Square>(this->_posX - 28, this->_posY));
+    this->_queue.push_back(std::make_unique<Square>(this->_posX - 42, this->_posY));
 }
 
 void Caterpillar::resetSpeed()
@@ -60,7 +60,7 @@ void Caterpillar::displayCaterpillar(IDisplayModule &lib) const
     lib.putFillRect(this->_posX, this->_posY, this->_width, this->_height);
 }
 
-void Caterpillar::moveCaterpillar(MapNibbler *map)
+void Caterpillar::moveCaterpillar(std::unique_ptr<MapNibbler> &map)
 {
     if (this->_futurDirection != UNKNOWN) {
         if (this->_futurDirection == UP && map->checkCollisions(this->_posX, this->_posY - this->_speed, this->_width, this->_height)) {
@@ -103,28 +103,28 @@ void Caterpillar::setDirection(const IDisplayModule &lib)
         this->_futurDirection = Direction::LEFT;
 }
 
-void Caterpillar::checkCandies(MapNibbler *map)
+void Caterpillar::checkCandies(std::unique_ptr<MapNibbler> &map)
 {
     map->checkCandies(this->_posX, this->_posY, this->_width, this->_height);
 }
 
 void Caterpillar::displayQueue(IDisplayModule &lib) const
 {
-    for (std::vector<Square>::const_iterator it = this->_queue.begin(); it != this->_queue.end(); it++)
-        it->display(lib);
+    for (std::vector<std::unique_ptr<Square>>::const_iterator it = this->_queue.begin(); it != this->_queue.end(); it++)
+        it->get()->display(lib);
 }
 
-void Caterpillar::moveQueue(MapNibbler *map)
+void Caterpillar::moveQueue(std::unique_ptr<MapNibbler> &map)
 {
     if (map->getEat() != this->_len) {
         this->_len++;
-        this->_queue.emplace_back(Square(-100, -100));
-        this->_queue.emplace_back(Square(-100, -100));
+        this->_queue.push_back(std::make_unique<Square>(-2000, -2000));
+        this->_queue.push_back(std::make_unique<Square>(-2000, -2000));
     }
-    if (this->_queue.begin()->checkMove(this->_posX, this->_posY, this->_width, this->_height)) {
+    if (this->_queue.begin()->get()->checkMove(this->_posX, this->_posY, this->_width, this->_height)) {
         std::rotate(this->_queue.begin(),this->_queue.begin() + 1, this->_queue.end());
-        this->_queue.begin()->setPosX(this->_posX);
-        this->_queue.begin()->setPosY(this->_posY);
+        this->_queue.begin()->get()->setPosX(this->_posX);
+        this->_queue.begin()->get()->setPosY(this->_posY);
     }
 }
 
@@ -138,7 +138,7 @@ bool Caterpillar::isWin()
     return this->_win;
 }
 
-void Caterpillar::checkWin(MapNibbler *map)
+void Caterpillar::checkWin(std::unique_ptr<MapNibbler> &map)
 {
     if (map->getEat() == 28)
         this->_win = true;
@@ -146,8 +146,8 @@ void Caterpillar::checkWin(MapNibbler *map)
 
 void Caterpillar::checkLose()
 {
-    for (std::vector<Square>::iterator it = this->_queue.begin()+2; it != this->_queue.end(); it++)
-        if (it->checkMove(this->_posX, this->_posY, this->_width, this->_height) == false)
+    for (std::vector<std::unique_ptr<Square>>::iterator it = this->_queue.begin()+2; it != this->_queue.end(); it++)
+        if (it->get()->checkMove(this->_posX, this->_posY, this->_width, this->_height) == false)
             this->_lose = true;
 }
 

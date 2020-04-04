@@ -28,11 +28,11 @@ class Caterpillar
         ~Caterpillar();
         void displayCaterpillar(IDisplayModule &lib) const;
         void displayQueue(IDisplayModule &lib) const;
-        void moveCaterpillar(MapNibbler *map);
-        void moveQueue(MapNibbler *map);
+        void moveCaterpillar(std::unique_ptr<MapNibbler> &map);
+        void moveQueue(std::unique_ptr<MapNibbler> &map);
         void setDirection(const IDisplayModule &lib);
-        void checkCandies(MapNibbler *map);
-        void checkWin(MapNibbler *map);
+        void checkCandies(std::unique_ptr<MapNibbler> &map);
+        void checkWin(std::unique_ptr<MapNibbler> &map);
         void checkLose();
         bool isWin();
         bool isLose();
@@ -48,7 +48,7 @@ class Caterpillar
         int _posY;
         int _width;
         int _height;
-        std::vector<Square> _queue;
+        std::vector<std::unique_ptr<Square>> _queue;
         bool _feed;
         int _len;
         bool _win;

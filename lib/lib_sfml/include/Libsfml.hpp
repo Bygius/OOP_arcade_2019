@@ -20,7 +20,6 @@ class Libsfml : public IDisplayModule
         std::unique_ptr<sf::RenderWindow> _window;
         sf::Color _color;
         sf::Event _event;
-        sf::Clock _clock;
         const std::string _lib_name;
 
     public:

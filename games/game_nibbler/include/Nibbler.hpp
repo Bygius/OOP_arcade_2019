@@ -15,8 +15,8 @@
 class Nibbler : public IGameModule
 {
     private:
-        Caterpillar *_caterpillar;
-        MapNibbler *_map;
+        std::unique_ptr<Caterpillar> _caterpillar;
+        std::unique_ptr<MapNibbler> _map;
         std::string _name;
         int _score;
         int _time;

@@ -165,14 +165,56 @@ bool Libsdl::isKeyPressed(IDisplayModule::Keys key) const
     return (false);
 }
 
-bool Libsdl::isKeyPressedOnce(IDisplayModule::Keys) const
+bool Libsdl::isKeyPressedOnce(IDisplayModule::Keys key) const
 {
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (key == SPACE && state[SDL_SCANCODE_SPACE])
+        return true;
+    if (key == RIGHT && state[SDL_SCANCODE_RIGHT])
+        return true;
+    if (key == LEFT && state[SDL_SCANCODE_LEFT])
+            return true;
+    if (key == UP && state[SDL_SCANCODE_UP])
+        return true;
+    if (key == DOWN && state[SDL_SCANCODE_DOWN])
+        return true;
+    if (key == Z && state[SDL_SCANCODE_W])
+        return true;
+    if (key == Q && state[SDL_SCANCODE_A])
+        return true;
+    if (key == S && state[SDL_SCANCODE_S])
+        return true;
+    if (key == D && state[SDL_SCANCODE_D])
+        return true;
+    if (key == A && state[SDL_SCANCODE_Q])
+        return true;        
+    if (key == E && state[SDL_SCANCODE_E])
+        return true;
+    if (key == W && state[SDL_SCANCODE_Z])
+        return true;
+    if (key == X && state[SDL_SCANCODE_X])
+        return true;
+    if (key == SPACE && state[SDL_SCANCODE_SPACE])
+        return true;
+    if (key == J && state[SDL_SCANCODE_J])
+        return true;
+    if (key == K && state[SDL_SCANCODE_K])
+        return true;
+    if (key == U && state[SDL_SCANCODE_U])
+        return true;
+    if (key == I && state[SDL_SCANCODE_I])
+        return true;
+    if (key == ENTER && state[SDL_SCANCODE_RETURN])
+        return true;
+    if (key == BACKSPACE && state[SDL_SCANCODE_BACKSPACE])
+        return true;
     return (false);
 }
 
 float Libsdl::getDelta() const
 {
-    return this->_delta;
+    return 1;
 }
 
 void Libsdl::clear() const
@@ -191,8 +233,8 @@ void Libsdl::frame_rate_limit()
         startTime = SDL_GetTicks();
     else
         this->_delta = endTime - startTime;
-    if (this->_delta < 16)
-        SDL_Delay(16 - this->_delta);
+    if (this->_delta < 25)
+        SDL_Delay(25 - this->_delta);
     startTime = endTime;
     endTime = SDL_GetTicks();
 }
@@ -361,7 +403,6 @@ void Libsdl::putText(const std::string &text, unsigned int size, float x, float 
     int texture_w = 0;
     int texture_h = 0;
 
-    // TTF_Font *_fonta = TTF_OpenFont("include/arial.ttf", 24);;
     SDL_Surface *surface;
     SDL_Texture *texture;
     TTF_Font *_font = TTF_OpenFont("include/arial.ttf", size);

@@ -11,8 +11,8 @@
 
 Nibbler::Nibbler() : _libname("Nibbler")
 {
-    this->_caterpillar = new Caterpillar();
-    this->_map = new MapNibbler();
+    this->_caterpillar = std::make_unique<Caterpillar>();
+    this->_map = std::make_unique<MapNibbler>();
     this-> _scorelevel = 0;
     this->_score = 0;
     this->_time = 990;

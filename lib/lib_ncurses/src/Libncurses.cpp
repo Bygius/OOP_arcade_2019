@@ -218,7 +218,7 @@ bool Libncurses::isKeyPressedOnce(IDisplayModule::Keys key) const
 
 float Libncurses::getDelta() const
 {
-    return (0.00);
+    return 1;
 }
 
 void my_clear()
@@ -226,26 +226,14 @@ void my_clear()
     erase();
 }
 
-static float count_second(clock_t backup_clock)
-{
-    double result = 0;
-    result = clock() - backup_clock;
-    result *= 0.000001;
-    return (result);
-}
-
 void Libncurses::clear() const
 {
-    static clock_t _clock = clock();
-    if (count_second(_clock) >= 0.003) {
-        my_clear();
-        _clock = clock();
-    }
+    usleep(15000);
+    my_clear();
 }
 
 void Libncurses::update()
 {
-    
     noecho();
     this->_input = getch();
     this->_exit = this->shouldExit();
@@ -254,7 +242,7 @@ void Libncurses::update()
 
 void Libncurses::render() const
 {
-    usleep(20000);
+    
 }
 
 char Libncurses::getKeyCode() const

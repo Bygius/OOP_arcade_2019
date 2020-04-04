@@ -21,7 +21,7 @@ class Square {
         void display(IDisplayModule &lib) const;
         bool checkMove(int posX, int posY, int width, int height);
 
-    public:
+    private:
         int _posX;
         int _posY;
         int _width;

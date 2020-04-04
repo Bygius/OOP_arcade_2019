@@ -144,7 +144,7 @@ bool Libsfml::isKeyPressedOnce(IDisplayModule::Keys key) const
 
 float Libsfml::getDelta() const
 {
-    return 0.00;
+    return 1;
 }
 
 void Libsfml::clear() const
