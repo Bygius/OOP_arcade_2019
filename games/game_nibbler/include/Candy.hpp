@@ -16,6 +16,7 @@ class Candy {
         ~Candy();
         void draw(IDisplayModule &lib) const;
         bool checkCollision(int posX, int posY, int width, int height);
+        bool isFeed();
 
     private:
         int _posX;

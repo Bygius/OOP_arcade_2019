@@ -8,6 +8,8 @@
 #ifndef SQUARE_HPP_
 #define SQUARE_HPP_
 
+#include "Arcade_interfaces.hpp"
+
 class Square {
     public:
         Square(int posX, int posY);
@@ -16,10 +18,14 @@ class Square {
         int getPosY();
         void setPosX(int posX);
         void setPosY(int posY);
+        void display(IDisplayModule &lib) const;
+        bool checkMove(int posX, int posY, int width, int height);
 
-    private:
+    public:
         int _posX;
         int _posY;
+        int _width;
+        int _height;
 };
 
 #endif /* !SQUARE_HPP_ */

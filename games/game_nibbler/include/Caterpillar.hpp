@@ -12,6 +12,7 @@
 #include "MapNibbler.hpp"
 #include "Arcade_interfaces.hpp"
 #include <vector>
+#include <algorithm>
 
 class Caterpillar
 {
@@ -26,10 +27,15 @@ class Caterpillar
         Caterpillar();
         ~Caterpillar();
         void displayCaterpillar(IDisplayModule &lib) const;
+        void displayQueue(IDisplayModule &lib) const;
         void moveCaterpillar(MapNibbler *map);
+        void moveQueue(MapNibbler *map);
         void setDirection(const IDisplayModule &lib);
-        bool checkCandies(MapNibbler *map);
-        void incQueue();
+        void checkCandies(MapNibbler *map);
+        void checkWin(MapNibbler *map);
+        void checkLose();
+        bool isWin();
+        bool isLose();
 
     private:
         Direction _direction;
@@ -40,6 +46,10 @@ class Caterpillar
         int _width;
         int _height;
         std::vector<Square> _queue;
+        bool _feed;
+        int _len;
+        bool _win;
+        bool _lose;
 };
 
 #endif /* !CATERPILLAR_HPP_ */

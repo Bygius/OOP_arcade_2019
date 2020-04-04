@@ -55,3 +55,8 @@ bool Candy::checkCollision(int posX, int posY, int width, int height)
     }
     return true;
 }
+
+bool Candy::isFeed()
+{
+    return this->_eat;
+}
