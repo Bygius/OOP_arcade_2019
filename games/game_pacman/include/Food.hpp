@@ -17,6 +17,7 @@ class Food {
         void draw(IDisplayModule &lib) const;
         bool checkCollision(int posX, int posY, int width, int height);
         bool getEat(void) const;
+        void setEat(void);
 
     private:
         int _posX;

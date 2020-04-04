@@ -24,6 +24,19 @@ Player::~Player()
 {
 }
 
+void Player::reset(int x, int y)
+{
+    this->_posX = x;
+    this->_posY = y;
+    this->_size = 8;
+    this->_height = 16;
+    this->_width = 16;
+    this->_speed = 1;
+    this->_direction = UP;
+    this->_futurDirection = UNKNOWN;
+    this->_health = 3;
+}
+
 void Player::resetPos(int x, int y)
 {
     this->_posX = x;
@@ -146,7 +159,7 @@ void Player::drawHealth(IDisplayModule &lib)
 
     lib.setColor(IDisplayModule::Colors::YELLOW);
     for (int i = 0; i < this->_health; i++) {
-        lib.putFillCircle(x, 316, 8);
+        lib.putFillCircle(x, 312, 8);
         x += 32;
     }
 }

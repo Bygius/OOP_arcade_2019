@@ -24,6 +24,7 @@ class Player
         int getSize() const;
         void setPosX(int x);
         void setPosY(int y);
+        void reset(int x, int y);
 
         void displayPlayer(IDisplayModule &lib) const;
         void setDirection(const IDisplayModule &lib);

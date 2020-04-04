@@ -26,7 +26,7 @@ class MapPacman {
         void draw_food(IDisplayModule &lib) const;
         bool checkFood(int posX, int posY, int width, int height);
         int countScore(void);
-
+        void reset();
     protected:
     private:
         std::vector<Collision> _collisions;

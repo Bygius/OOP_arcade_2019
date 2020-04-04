@@ -169,3 +169,9 @@ int MapPacman::countScore(void)
     }
     return (score);
 }
+
+void MapPacman::reset()
+{
+    for (std::vector<Food>::iterator it = this->_foods.begin(); it != this->_foods.end(); it++)
+        it->setEat();
+}

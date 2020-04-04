@@ -10,7 +10,7 @@
 
 static int ghst = 1;
 
-Pacman::Pacman() : _lib_name("lib_arcade_pacman.so")
+Pacman::Pacman() : _lib_name("Pacman")
 {
     this->_player =  new Player(240, 216);
     this->_map = new MapPacman();
@@ -24,7 +24,13 @@ Pacman::Pacman() : _lib_name("lib_arcade_pacman.so")
 
 void Pacman::reset()
 {
-
+    this->_player->reset(240, 216);
+    this->_map->reset();
+    this->_begin = clock();
+    this->_ghosts.erase(this->_ghosts.begin(), this->_ghosts.end());
+    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::MAGENTA, 240));
+    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::RED, 217));
+    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::BLUE, 264));
 }
 
 bool Pacman::loadFromFile(const std::string &filepath)
@@ -88,18 +94,18 @@ void Pacman::update(const IDisplayModule &lib)
     double duration = (end - this->_begin)/(double)CLOCKS_PER_SEC;
 
     for (std::vector<Ghosts>::iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++) {
-        if ((duration > 2.0)  && (ghst == 1) && (it->getFree() == false)) {
+        if ((duration > 1.0)  && (ghst == 1) && (it->getFree() == false)) {
             it->setFree(true);
             it->setPosY(144, 136);
             it->setFuturDirection(1);
         }
-        if ((duration > 5.0)  && (ghst == 2) && (it->getFree() == false)) {
+        if ((duration > 2.0)  && (ghst == 2) && (it->getFree() == false)) {
             it->setFree(true);
             it->setPosY(144, 136);
             it->setPosX(240, 240);
             it->setFuturDirection(0);
         }
-        if ((duration > 8.0)  && (ghst == 3) && (it->getFree() == false)) {
+        if ((duration > 3.0)  && (ghst == 3) && (it->getFree() == false)) {
             it->setFree(true);
             it->setPosY(144, 136);
             it->setPosX(240, 240);

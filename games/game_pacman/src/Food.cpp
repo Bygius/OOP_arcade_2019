@@ -52,3 +52,8 @@ bool Food::checkCollision(int posX, int posY, int width, int height)
     }
     return true;
 }
+
+void Food::setEat(void)
+{
+    this->_eat = false;
+}
