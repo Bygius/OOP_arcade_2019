@@ -28,8 +28,8 @@ class Player
 
         void displayPlayer(IDisplayModule &lib) const;
         void setDirection(const IDisplayModule &lib);
-        void movePlayer(MapPacman *Map);
-        void checkFood(MapPacman *map);
+        void movePlayer(std::unique_ptr<MapPacman> &map);
+        void checkFood(std::unique_ptr<MapPacman> &map);
         void setHealth(int i);
         int getHealth(void) const;
         bool checkGhosts(void);
@@ -51,7 +51,7 @@ class Player
         int _health;
         Direction _direction;
         Direction _futurDirection;
-        std::vector<Ghosts> _ghosts;
+        std::vector<std::unique_ptr<Ghosts>> _ghosts;
 };
 
 #endif /* !PLAYER_HPP_ */

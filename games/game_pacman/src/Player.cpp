@@ -95,7 +95,7 @@ void Player::displayPlayer(IDisplayModule &lib) const
     lib.putFillCircle(this->_posX, this->_posY, this->_size);
 }
 
-void Player::movePlayer(MapPacman *map)
+void Player::movePlayer(std::unique_ptr<MapPacman> &map)
 {
     if (this->_futurDirection != UNKNOWN) {
         if (this->_futurDirection == UP && map->PlayerCollision(this->_posX, this->_posY - this->_speed, this->_width, this->_height) == false) {
@@ -138,7 +138,7 @@ void Player::setDirection(const IDisplayModule &lib)
 }
 
 
-void Player::checkFood(MapPacman *map)
+void Player::checkFood(std::unique_ptr<MapPacman> &map)
 {
     map->checkFood(this->_posX, this->_posY, this->_width, this->_height);
 }
@@ -146,8 +146,8 @@ void Player::checkFood(MapPacman *map)
 
 bool Player::checkGhosts(void)
 {
-    for (std::vector<Ghosts>::iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++) {
-        if (it->checkCollision(this->_posX, this->_posY, this->_width, this->_height) == false)
+    for (std::vector<std::unique_ptr<Ghosts>>::iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++) {
+        if (it->get()->checkCollision(this->_posX, this->_posY, this->_width, this->_height) == false)
             return true;
     }
     return false;

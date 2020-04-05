@@ -7,7 +7,7 @@
 
 #include "Ghosts.hpp"
 
-Ghosts::Ghosts(IDisplayModule::Colors color, int x)
+Ghosts::Ghosts(IDisplayModule::Colors color, int x, int speed)
 {
     this->_color = color;
     this->x_body = x;
@@ -18,7 +18,7 @@ Ghosts::Ghosts(IDisplayModule::Colors color, int x)
     this->y_head = 176;
     this->_radius = 8;
     this->_size = 16;
-    this->_speed = 1;
+    this->_speed = speed;
     this->_free = false;
 }
 
@@ -55,7 +55,7 @@ void Ghosts::setPosY(int body, int head)
     this->y_head = head;
 }
 
-void Ghosts::moveGhost(MapPacman *map)
+void Ghosts::moveGhost(std::unique_ptr<MapPacman> &map)
 {
     if (this->_futurDirection != UNKNOWN) {
         if (this->_futurDirection == UP && map->PlayerCollision(this->x_head, this->y_head - this->_speed, this->_size, this->_size) == false) {
@@ -93,38 +93,38 @@ void Ghosts::moveGhost(MapPacman *map)
     }
 }
 
-void Ghosts::setDirection(MapPacman *map)
+void Ghosts::setDirection(std::unique_ptr<MapPacman> &map)
 {
     int value = rand() % 4 + 1;
 
+    if (map->PlayerCollision(this->x_head, this->y_head - this->_speed, this->_size, this->_size) == true && this->_futurDirection == UP) {
+        this->_futurDirection = UNKNOWN;
+        value = 2;
+    }
+    if (map->PlayerCollision(this->x_head, this->y_head + this->_speed, this->_size, this->_size) == true && this->_futurDirection == DOWN) {
+        this->_futurDirection = UNKNOWN;
+        value = 1;
+    }   
+    if (map->PlayerCollision(this->x_head + this->_speed, this->y_head, this->_size, this->_size) == true && this->_futurDirection == RIGHT) {
+        this->_futurDirection = UNKNOWN;
+        value = 4;
+    }
+    if (map->PlayerCollision(this->x_head - this->_speed, this->y_head, this->_size, this->_size) == true && this->_futurDirection == LEFT) {
+        this->_futurDirection = UNKNOWN;
+        value = 3;
+    }
     if (this->_futurDirection != UNKNOWN)
         return;
-    if (map->PlayerCollision(this->x_head, this->y_head - this->_speed, this->_size, this->_size) == true && this->_direction == UP)
-        return;
-    if (map->PlayerCollision(this->x_head, this->y_head + this->_speed, this->_size, this->_size) == true && this->_direction == DOWN)
-        return;
-    if (map->PlayerCollision(this->x_head + this->_speed, this->y_head, this->_size, this->_size) == true && this->_direction == RIGHT)
-        return;
-    if (map->PlayerCollision(this->x_head - this->_speed, this->y_head, this->_size, this->_size) == true && this->_direction == LEFT)
-        return;
     if (value == 1) {
-        // while (map->PlayerCollision(this->x_head, this->y_head - this->_speed, this->_size, this->_size) == true)
-        //     return;
         this->_futurDirection = UP;
     }
     if (value == 2) {
-        // while (map->PlayerCollision(this->x_head, this->y_head + this->_speed, this->_size, this->_size) == true)
-        //     return;
         this->_futurDirection = DOWN;        
     }
     if (value == 3) {
-        // while (map->PlayerCollision(this->x_head - this->_speed , this->y_head, this->_size, this->_size) == true)
-        //     return;
         this->_futurDirection = RIGHT;
     }
     if (value == 4) {
-        // while (map->PlayerCollision(this->x_head + this->_speed , this->y_head, this->_size, this->_size) == true)
-        //     return;
         this->_futurDirection = LEFT;
     }       
 }

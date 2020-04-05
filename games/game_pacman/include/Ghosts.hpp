@@ -14,14 +14,14 @@
 
 class Ghosts {
     public:
-        Ghosts(IDisplayModule::Colors color, int x);
+        Ghosts(IDisplayModule::Colors color, int x, int lvl);
         ~Ghosts();
         enum Direction { UP, DOWN, RIGHT, LEFT, UNKNOWN };
         void draw(IDisplayModule &lib) const;
         void setPosX(int body, int head);
         void setPosY(int body, int head);
-        void moveGhost(MapPacman *map);
-        void setDirection(MapPacman *map);
+        void moveGhost(std::unique_ptr<MapPacman> &map);
+        void setDirection(std::unique_ptr<MapPacman> &map);
         bool getFree(void) const;
         void setFree(bool value);
         void setFuturDirection(bool value);
