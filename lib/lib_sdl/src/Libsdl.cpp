@@ -405,7 +405,7 @@ void Libsdl::putText(const std::string &text, unsigned int size, float x, float 
 
     SDL_Surface *surface;
     SDL_Texture *texture;
-    TTF_Font *_font = TTF_OpenFont("include/arial.ttf", size);
+    TTF_Font *_font = TTF_OpenFont("assets/arial.ttf", size);
 
     surface = TTF_RenderText_Solid(_font, text.c_str(), this->_color);
     texture = SDL_CreateTextureFromSurface(this->_renderer.get(), surface);
