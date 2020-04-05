@@ -159,6 +159,8 @@ void Pacman::freeGhosts(void)
 
 void Pacman::update(const IDisplayModule &lib)
 {
+    static bool saving = false;
+
     _player->setDirection(lib);
     _player->checkFood(_map);
     _player->movePlayer(_map);
@@ -181,8 +183,12 @@ void Pacman::update(const IDisplayModule &lib)
     if (this->_game->check_win(this->_map, std::stoi(this->_score)))
         this->reset();
     if (this->_game->get_loose()) {
-        if (lib.isKeyPressed(IDisplayModule::Keys::SPACE)) {
+        if (saving == false) {
             this->saveToFile();
+            saving = true;
+        }
+        if (lib.isKeyPressed(IDisplayModule::Keys::SPACE)) {
+            saving = false;
             _game->set_loose(false);
             _game->reset();
             reset();
