@@ -22,11 +22,12 @@ class GameHandling {
         int get_lvl(void) const;
         int get_score(void) const;
         void set_score(int score);
-        void check_loose(std::unique_ptr<Player> &player);
+        bool check_loose(std::unique_ptr<Player> &player);
         bool get_loose() const;
         void save_score(int score);
         void draw_loose(IDisplayModule &lib);
-
+        void set_loose(bool value);
+        void reset(void);
 
     protected:
     private:

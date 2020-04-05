@@ -141,8 +141,10 @@ void Pacman::update(const IDisplayModule &lib)
     _player->checkFood(_map);
     _player->movePlayer(_map);
     if (this->checkHit() == true) {
-        this->_game->check_loose(this->_player);
-
+        if (this->_game->check_loose(this->_player) == true) {
+            this->_score = std::to_string(this->getScore().second + this->_game->get_score());
+            this->_game->save_score(std::stoi(this->_score));
+        }
         _player->setHealth(-1);
         _player->resetPos(240, 216);
         this->_begin = clock();
@@ -154,11 +156,15 @@ void Pacman::update(const IDisplayModule &lib)
     this->_score = std::to_string(this->getScore().second + this->_game->get_score());
     this->_bestscore = this->getBestScores();
     this->freeGhosts();
-    ;
     if (this->_game->check_win(this->_map, std::stoi(this->_score)))
         this->reset();
-    if (this->_game->get_loose() == true)
-        this->_game->save_score(std::stoi(this->_score));
+    if (this->_game->get_loose()) {
+        if (lib.isKeyPressed(IDisplayModule::Keys::SPACE)) {
+            _game->set_loose(false);
+            _game->reset();
+            reset();
+        }
+    }
         
 }
 
@@ -180,18 +186,22 @@ void Pacman::render(IDisplayModule &lib) const
     //     while (lib.isKeyPressed(IDisplayModule::SPACE) == false)
     //         this->_game->draw_loose(lib);
     // }
-
-    lib.setColor(IDisplayModule::Colors::YELLOW);
-    lib.putText("PACMAN", 30, 250, 0);
-    lib.putText("SCORE : ", 30, 100, 300);
-    lib.putText(_score, 30, 240, 300);
-    _player->drawHealth(lib);
-    _map->display_collisions(lib);
-    _map->draw_food(lib);
-    lib.setColor(IDisplayModule::YELLOW);
-    _player->displayPlayer(lib);
-    for (std::vector<std::unique_ptr<Ghosts>>::const_iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++)
-        it->get()->draw(lib);
+    if (this->_game->get_loose() == false) {
+        lib.setColor(IDisplayModule::Colors::YELLOW);
+        lib.putText("PACMAN", 30, 250, 0);
+        lib.putText("SCORE : ", 30, 100, 300);
+        lib.putText(_score, 30, 240, 300);
+        _player->drawHealth(lib);
+        _map->display_collisions(lib);
+        _map->draw_food(lib);
+        lib.setColor(IDisplayModule::YELLOW);
+        _player->displayPlayer(lib);
+        for (std::vector<std::unique_ptr<Ghosts>>::const_iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++)
+            it->get()->draw(lib);
+    }
+    if (this->_game->get_loose() == true) {
+        this->_game->draw_loose(lib);
+    }
 }
 
 const std::string &Pacman::getLibName() const
