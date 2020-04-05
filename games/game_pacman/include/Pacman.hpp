@@ -16,6 +16,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 
 class Pacman : public IGameModule
@@ -55,5 +56,7 @@ class Pacman : public IGameModule
         void draw_loose(IDisplayModule &lib) const;
         void freeGhosts(void);
 };
+
+bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j);
 
 #endif /* !Pacman_HPP_ */
