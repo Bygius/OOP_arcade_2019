@@ -264,7 +264,8 @@ void Core::EnterPlayerName()
         name += buff;
         is_pressed = true;
     } else if (_display_module->isKeyPressed(IDisplayModule::BACKSPACE)) {
-        name = name.substr(0, name.size()-1);
+        if (name.size() > 1)
+            name = name.substr(0, name.size()-1);
         is_pressed = true;
     } else {
         is_pressed = false;
