@@ -89,11 +89,13 @@ void Core::updateLibrary(void)
     } else if (_display_module->switchToNextGame()) {
         if (status) { // P
             loadNextLibrary(_game_module_loader, _game_module);
+            _game_module->setPlayerName(_player_name);
             status = false;
         }
     } else if (_display_module->switchToPreviousGame()) {
         if (status) { // 0
             loadPreviousLibrary(_game_module_loader, _game_module);
+            _game_module->setPlayerName(_player_name);
             status = false;
         }
     } else
@@ -109,7 +111,7 @@ void Core::displayButton(std::vector<std::string> list, int cursor_x, int cursor
             _display_module->setColor(IDisplayModule::GREEN);
         if (cursor_x == column && cursor_y == i)
             _display_module->setColor(IDisplayModule::RED);
-        _display_module->putText(list[i-1].substr(cut, list[i-1].length() - (cut + 3)), 20, ((column == 1) ? 30 : 200), 120 + (30 * i));
+        _display_module->putText(list[i-1].substr(cut, list[i-1].length() - (cut + 3)), 20, ((column == 1) ? 30 : 250), 120 + (30 * i));
         _display_module->setColor(IDisplayModule::WHITE);
     }
 }
@@ -134,6 +136,7 @@ void Core::actionButton(std::vector<std::string> liblist, std::vector<std::strin
                 load_status = false;
                 try {
                     reloadLibrary(_game_module_loader, _game_module, gamelist[cursor_y - 1].data());
+                    _game_module->setPlayerName(_player_name);
                 } catch (const std::exception &e) {
                     throw GameError(e.what());
                 }
@@ -156,10 +159,12 @@ void Core::menu(void)
     int nb_game = gameList.size();
 
     _display_module->setColor(IDisplayModule::WHITE);
-    _display_module->putText("Coronarcade" , 40, 240, 20);
+    _display_module->putText("Coronarcade" , 40, 200, 20);
     _display_module->putText("Select a lib" , 25, 30, 100);
-    _display_module->putText("Select a game" , 25, 200, 100);
+    _display_module->putText("Select a game" , 25, 250, 100);
     _display_module->putText("High scores" , 25, 450, 100);
+    _display_module->putText(_player_name.c_str() , 20, 450, 70);
+
 
     displayButton(libList, x_pos, y_pos, (int)libList.size(), 1);
     displayButton(gameList, x_pos, y_pos, (int)gameList.size(), 2);
@@ -268,7 +273,7 @@ void Core::EnterPlayerName()
     _display_module->putText(name, 20, 20, 50);
     if (_display_module->isKeyPressed(IDisplayModule::ENTER) && name.size() > 1) {
         _set_name  = false;
-        name = name.substr(1, name.size());
+        _player_name = name.substr(1, name.size());
     }
 }
 
@@ -278,7 +283,6 @@ void Core::run(void)
     while (_display_module->isOpen()) {
         _display_module->update();
         _display_module->clear();
-        //_display_module->render();
         if (_display_module->shouldExit())
             break;
 
@@ -310,15 +314,13 @@ void Core::run(void)
 Core::Core(std::string dipslay_module_path)
 {
     std::vector<std::string> gameList = getLiblist("./games/");
+    if (gameList.size() == 0)
+        throw CoreError("Arcade need a least one game to run");
     _set_name = true;
-    try {
-        _display_module_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/", dipslay_module_path);
-        _game_module_loader = std::make_unique<DLLoader<IGameModule>>("./games/", gameList[0]);
-        _display_module = _display_module_loader->getInstance();
-        _game_module = _game_module_loader->getInstance();
-    } catch (Error const &e) {
-        throw CoreError(std::string(e.what()));
-    }
+    _display_module_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/", dipslay_module_path);
+    _game_module_loader = std::make_unique<DLLoader<IGameModule>>("./games/", gameList[0]);
+    _display_module = _display_module_loader->getInstance();
+    _game_module = _game_module_loader->getInstance();
     _menu = true;
 }
 

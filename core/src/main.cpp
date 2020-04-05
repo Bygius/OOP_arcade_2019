@@ -18,7 +18,11 @@ int main(int ac, char **av)
     Core *core;
     try {
         core = new Core(av[1]);
-    } catch (const Error &e) {
+    } catch (const LibError &e) {
+        std::cout << e.what() << std::endl;
+        std::cout << "please remove it before retrying" << std::endl;
+        return 84;
+    } catch (const std::exception &e) {
         std::cout << e.what() << std::endl;
         return 84;
     }
@@ -26,6 +30,7 @@ int main(int ac, char **av)
         core->run();
     } catch (const std::exception &e) {
         std::cout << e.what() << std::endl;
+        std::cout << "please remove it before retrying" << std::endl;
         return 84;
     }
     delete core;
