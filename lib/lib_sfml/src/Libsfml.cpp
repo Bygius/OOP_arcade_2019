@@ -165,11 +165,16 @@ void Libsfml::render() const
 
 char Libsfml::getKeyCode() const
 {
-    if (this->_event.type == sf::Event::TextEntered)
+    static int verif = 0;
+
+    if (this->_event.type == sf::Event::TextEntered && verif == 0)
     {
+        verif = 1;
         if (this->_event.text.unicode < 128)
             return (static_cast<char>(this->_event.text.unicode));
     }
+    if (this->_event.type == sf::Event::KeyReleased)
+        verif = 0;
     return '\0';
 }
 

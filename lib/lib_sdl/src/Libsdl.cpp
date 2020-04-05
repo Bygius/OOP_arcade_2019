@@ -253,7 +253,15 @@ void Libsdl::render() const
 
 char Libsdl::getKeyCode() const
 {
-    return (_event.key.keysym.sym);
+    static bool verif = false;
+    if (this->_event.type == SDL_KEYDOWN && verif == false) {
+        verif = true;
+        return (_event.key.keysym.sym);
+    }
+    if (this->_event.type == SDL_KEYUP) {
+        verif = false;
+    }
+    return '\0';
 }
 
 void Libsdl::setColor(IDisplayModule::Colors color)
