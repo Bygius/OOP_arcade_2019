@@ -30,6 +30,7 @@ class Core {
         Core(std::string display_module_path);
         ~Core();
         void run(void);
+        void EnterPlayerName(void);
         void menu(void);
         void displayButton(std::vector<std::string> list, int cursor_x, int cursor_y, int max_y, int column);
         void actionButton(std::vector<std::string> liblist, std::vector<std::string> gamelist, int cursor_x, int cursor_y);
@@ -45,7 +46,9 @@ class Core {
         std::unique_ptr<DLLoader<IGameModule>> _game_module_loader;
         std::unique_ptr<IDisplayModule> _display_module;
         std::unique_ptr<IGameModule> _game_module;
+        std::string _player_name;
         bool _menu;
+        bool _set_name;
 };
 
 #endif /* !CORE_HPP_ */

@@ -247,24 +247,54 @@ void Core::menu(void)
     }
 }
 
+void Core::EnterPlayerName()
+{
+    static std::string name = " ";
+    static bool is_pressed = false;
+
+    char buff = _display_module->getKeyCode();
+
+    if (((buff >= 'A' && buff <= 'Z') || (buff >= 'a' && buff <= 'z')) && is_pressed == false) {
+        name += buff;
+        is_pressed = true;
+    } else if (_display_module->isKeyPressed(IDisplayModule::BACKSPACE)) {
+        name = name.substr(0, name.size()-1);
+        is_pressed = true;
+    } else {
+        is_pressed = false;
+    }
+    _display_module->setColor(IDisplayModule::WHITE);
+    _display_module->putText(name, 20, 10, 10);
+    if (_display_module->isKeyPressed(IDisplayModule::ENTER) && name.size() > 1) {
+        _set_name  = false;
+        name = name.substr(1, name.size());
+    }
+}
+
 void Core::run(void)
 {
     _display_module->open();
     while (_display_module->isOpen()) {
         _display_module->update();
         _display_module->clear();
-        updateLibrary();
+        //_display_module->render();
         if (_display_module->shouldExit())
             break;
-        if (_display_module->shouldGoToMenu())
-            _menu = true;
-        if (_menu && _display_module->isKeyPressed(IDisplayModule::SPACE))
-            _menu = false;
-        if (_menu)
-            menu();
+
+        if (_set_name)
+            EnterPlayerName();
         else {
-            _game_module->update(*_display_module);
-            _game_module->render(*_display_module);
+            updateLibrary();
+            if (_display_module->shouldGoToMenu())
+                _menu = true;
+            if (_menu && _display_module->isKeyPressed(IDisplayModule::SPACE))
+                _menu = false;
+            if (_menu)
+                menu();
+            else {
+                _game_module->update(*_display_module);
+                _game_module->render(*_display_module);
+            }
         }
         try {
             _display_module->render();
@@ -279,7 +309,7 @@ void Core::run(void)
 Core::Core(std::string dipslay_module_path)
 {
     std::vector<std::string> gameList = getLiblist("./games/");
-
+    _set_name = true;
     try {
         _display_module_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/", dipslay_module_path);
         _game_module_loader = std::make_unique<DLLoader<IGameModule>>("./games/", gameList[0]);
