@@ -87,13 +87,13 @@ std::vector<std::pair<std::string, int>> Pacman::getBestScores() const
 {
     std::vector<std::pair<std::string, int>> bestscore;
     std::ifstream file;
-    std::string delimiter = " ";
+    std::string delimiter = ":";
     std::string line;
     size_t index;
     std::string name;
     int score;
 
-    file.open("Highscores.txt");
+    file.open("games/.saves/Pacman");
     while (std::getline(file, line)) {
         index = line.find(delimiter);
         name = line.substr(0, index);
