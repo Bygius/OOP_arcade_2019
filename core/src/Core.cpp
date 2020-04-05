@@ -128,15 +128,14 @@ void Core::actionButton(std::vector<std::string> liblist, std::vector<std::strin
                     reloadLibrary(_display_module_loader, _display_module, liblist[cursor_y - 1].data());
                     _display_module->open();
                 } catch (const std::exception &e) {
-
                     throw LibError(e.what());
                 }
-
             } else {
                 load_status = false;
                 try {
                     reloadLibrary(_game_module_loader, _game_module, gamelist[cursor_y - 1].data());
                     _game_module->setPlayerName(_player_name);
+                    //_game_module->loadFromFile();
                 } catch (const std::exception &e) {
                     throw GameError(e.what());
                 }
@@ -150,6 +149,8 @@ void Core::displayScores(void)
 {
     int i = 0;
     std::vector<std::pair<std::string, int>> bestscore;
+    if (!_game_module->loadFromFile())
+        return;
     try {
         bestscore = _game_module->getBestScores();
     } catch (const std::exception &e) {
