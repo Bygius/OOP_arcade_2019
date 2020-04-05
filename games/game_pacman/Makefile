@@ -24,7 +24,8 @@ SRCS_FILES	=	Pacman.cpp \
 				MapPacman.cpp \
 				Collision.cpp \
 				Ghosts.cpp \
-				Food.cpp
+				Food.cpp \
+				GameHandling.cpp
 
 SRCS		= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
