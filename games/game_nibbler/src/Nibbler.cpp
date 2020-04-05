@@ -48,10 +48,12 @@ bool Nibbler::loadFromFile(const std::string &filepath)
     if (!file)
         return (false);
     while (std::getline(file, line)) {
-        index = line.find(delimiter);
-        name = line.substr(0, index);
-        std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
-        this->_bestscore.push_back(make_pair(name, score));
+        if (line.length() >= 3) {
+            index = line.find(delimiter);
+            name = line.substr(0, index);
+            std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
+            this->_bestscore.push_back(make_pair(name, score));
+        }
     }
     std::sort(this->_bestscore.begin(), this->_bestscore.end(), compare);
     return (true);
@@ -70,10 +72,12 @@ bool Nibbler::loadFromFile()
     if (!file)
         return (false);
     while (std::getline(file, line)) {
-        index = line.find(delimiter);
-        name = line.substr(0, index);
-        std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
-        this->_bestscore.push_back(make_pair(name, score));
+        if (line.length() >= 3) {
+            index = line.find(delimiter);
+            name = line.substr(0, index);
+            std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
+            this->_bestscore.push_back(make_pair(name, score));
+        }
     }
     std::sort(this->_bestscore.begin(), this->_bestscore.end(), compare);
     return (true);}
