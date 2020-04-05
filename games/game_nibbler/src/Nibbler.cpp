@@ -32,14 +32,46 @@ void Nibbler::reset()
 
 bool Nibbler::loadFromFile(const std::string &filepath)
 {
-    (void)filepath;
-    return false;
+    std::ifstream file;
+    std::string delimiter = ":";
+    std::string line;
+    size_t index;
+    std::string name = "";
+    int score;
+
+    file.open(filepath);
+    if (!file)
+        return (false);
+    while (std::getline(file, line)) {
+        index = line.find(delimiter);
+        name = line.substr(0, index);
+        std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
+        this->_bestscore.push_back(make_pair(name, score));
+    }
+    std::sort(this->_bestscore.begin(), this->_bestscore.end(), compare);
+    return (true);
 }
 
 bool Nibbler::loadFromFile()
 {
-    return false;
-}
+    std::ifstream file;
+    std::string delimiter = ":";
+    std::string line;
+    size_t index;
+    std::string name = "";
+    int score;
+
+    file.open("./games/.saves/Nibbler");
+    if (!file)
+        return (false);
+    while (std::getline(file, line)) {
+        index = line.find(delimiter);
+        name = line.substr(0, index);
+        std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
+        this->_bestscore.push_back(make_pair(name, score));
+    }
+    std::sort(this->_bestscore.begin(), this->_bestscore.end(), compare);
+    return (true);}
 
 bool Nibbler::saveToFile(const std::string &filepath) const
 {
@@ -51,7 +83,7 @@ bool Nibbler::saveToFile(const std::string &filepath) const
         return (false);
     file << new_score;
     file.close();
-    return false;
+    return true;
 }
 
 bool Nibbler::saveToFile() const
@@ -64,7 +96,8 @@ bool Nibbler::saveToFile() const
         return (false);
     file << new_score;
     file.close();
-    return true;}
+    return true;
+}
 
 void Nibbler::setPlayerName(const std::string &name)
 {
@@ -86,27 +119,8 @@ bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, i
 
 std::vector<std::pair<std::string, int>> Nibbler::getBestScores() const
 {
-    std::vector<std::pair<std::string, int>> bestscore;
-    std::ifstream file;
-    std::string delimiter = ":";
-    std::string line;
-    size_t index;
-    std::string name = "";
-    int score;
-
-    file.open("games/.saves/Nibbler");
-    if (!file) {
-        bestscore.push_back(make_pair(name, 0));
-        return (bestscore);
-    }
-    while (std::getline(file, line)) {
-        index = line.find(delimiter);
-        name = line.substr(0, index);
-        std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
-        bestscore.push_back(make_pair(name, score));
-    }
-    std::sort(bestscore.begin(), bestscore.end(), compare);
-    return (bestscore);}
+    return (this->_bestscore);
+}
 
 static float count_second(clock_t backup_clock)
 {

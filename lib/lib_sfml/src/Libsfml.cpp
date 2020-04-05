@@ -305,7 +305,7 @@ void Libsfml::putFillCircle(float x, float y, float rad) const
 void Libsfml::putText(const std::string &text, unsigned int size, float x, float y) const
 {
     sf::Font font;
-    font.loadFromFile("include/arial.ttf");
+    font.loadFromFile("assets/arial.ttf");
     sf::Text str;
     str.setFont(font);
     str.setString(text);
