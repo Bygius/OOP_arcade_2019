@@ -135,7 +135,7 @@ void Core::actionButton(std::vector<std::string> liblist, std::vector<std::strin
                 try {
                     reloadLibrary(_game_module_loader, _game_module, gamelist[cursor_y - 1].data());
                     _game_module->setPlayerName(_player_name);
-                    //_game_module->loadFromFile();
+                    _game_module->loadFromFile();
                 } catch (const std::exception &e) {
                     throw GameError(e.what());
                 }
@@ -149,8 +149,6 @@ void Core::displayScores(void)
 {
     int i = 0;
     std::vector<std::pair<std::string, int>> bestscore;
-    if (!_game_module->loadFromFile())
-        return;
     try {
         bestscore = _game_module->getBestScores();
     } catch (const std::exception &e) {
@@ -159,7 +157,6 @@ void Core::displayScores(void)
     _display_module->setColor(IDisplayModule::WHITE);
     for (std::vector<std::pair<std::string, int>>::const_iterator it = bestscore.begin(); it != bestscore.end(); it++)
         _display_module->putText(std::to_string(it->second) , 15, 450, 150 + (i++ * 20));
-
 }
 
 void Core::menu(void)
@@ -258,8 +255,7 @@ void Core::menu(void)
             status = false;
             elapsed = clock();
         }
-    }
-    else
+    } else
         status = true;
     if (((clock() - elapsed) * 0.00001) > 1) {
         status = true;
@@ -289,10 +285,11 @@ void Core::EnterPlayerName()
     _display_module->setColor(IDisplayModule::WHITE);
     _display_module->putText(name, 20, 20, 50);
     if (_display_module->isKeyPressed(IDisplayModule::ENTER) && name.size() > 1) {
-         _set_name  = false;
-         _player_name = name.substr(1, name.size());
+        _set_name  = false;
+        _player_name = name.substr(1, name.size());
+        _game_module->setPlayerName(_player_name);
     }
-    // _display_module->putText(_player_name.c_str() , 20, 450, 70);
+    //_display_module->putText(_player_name.c_str() , 20, 450, 70);
 }
 
 void Core::run(void)
