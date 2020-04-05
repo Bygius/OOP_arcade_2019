@@ -12,6 +12,11 @@
 #include "Player.hpp"
 #include "MapPacman.hpp"
 #include "Ghosts.hpp"
+#include "GameHandling.hpp"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
 
 class Pacman : public IGameModule
 {
@@ -22,11 +27,13 @@ class Pacman : public IGameModule
         const std::string _lib_name;
         std::unique_ptr<Player> _player;
         std::unique_ptr<MapPacman> _map;
+        std::unique_ptr<GameHandling> _game;
         std::vector<std::unique_ptr<Ghosts>> _ghosts;
         clock_t _begin;
         int ghst;
-        int lvl;
         bool loose;
+        std::string _score;
+        std::vector<std::pair<std::string, int>> _bestscore;
 
     public:
         Pacman();
