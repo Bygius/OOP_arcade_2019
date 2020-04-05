@@ -306,8 +306,10 @@ void Core::run(void)
             EnterPlayerName();
         else {
             updateLibrary();
-            if (_display_module->shouldGoToMenu())
+            if (_display_module->shouldGoToMenu()) {
                 _menu = true;
+                _game_module->loadFromFile();
+            }
             if (_menu && _display_module->isKeyPressed(IDisplayModule::SPACE))
                 _menu = false;
             if (_menu)
