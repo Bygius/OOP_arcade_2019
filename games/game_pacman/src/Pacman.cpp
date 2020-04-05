@@ -19,8 +19,6 @@ Pacman::Pacman() : _lib_name("Pacman")
     this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::RED, 217, _game->get_lvl()));
     this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::BLUE, 264, _game->get_lvl()));
     this->_begin = clock();
-
-    this->_name = "TEST";
 }
 
 void Pacman::reset()
@@ -48,27 +46,24 @@ bool Pacman::loadFromFile()
 bool Pacman::saveToFile(const std::string &filepath) const
 {
     std::ofstream file;
+    std::string new_score = "\n" + this->_name + ":" + this->_score;
 
-    file.open(filepath);
-    file << this->_name << " " << this->_score << "\n";
+    file.open(filepath, std::ios::app);
+    file << new_score;
     file.close();
     return false;
 }
 
 bool Pacman::saveToFile() const
 {
-    // std::ifstream ex_file;
-    // std::ofstream file;
-    // std::string line;
+    std::ofstream file;
+    std::string new_score = "\n" + this->_name + ":" + this->_score;
 
-    // ex_file.open("Highscores.txt");
-    // file.open("Highscores.txt");
-    // while (std::getline(ex_file, line))
-    //     file << line << "\n";
-    // file << this->_name << " " << this->_score << "\n";
-    // ex_file.close();
-    // file.close();
-    return true;}
+    file.open("games/.saves/Pacman", std::ios::app);
+    file << new_score;
+    file.close();
+    return true;
+}
 
 void Pacman::setPlayerName(const std::string &name)
 {
@@ -81,6 +76,11 @@ std::pair<std::string, int> Pacman::getScore() const
     score.first = this->_name;
     score.second = _map->countScore();
     return (score);
+}
+
+bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j)
+{
+    return (i.second > j.second);
 }
 
 std::vector<std::pair<std::string, int>> Pacman::getBestScores() const
@@ -100,6 +100,7 @@ std::vector<std::pair<std::string, int>> Pacman::getBestScores() const
         std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
         bestscore.push_back(make_pair(name, score));
     }
+    std::sort(bestscore.begin(), bestscore.end(), compare);
     return (bestscore);
 }
 
@@ -160,6 +161,7 @@ void Pacman::update(const IDisplayModule &lib)
         this->reset();
     if (this->_game->get_loose()) {
         if (lib.isKeyPressed(IDisplayModule::Keys::SPACE)) {
+            this->saveToFile();
             _game->set_loose(false);
             _game->reset();
             reset();
