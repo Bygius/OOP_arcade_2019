@@ -11,6 +11,7 @@ GameHandling::GameHandling(int lvl)
 {
     this->lvl = lvl;
     this->_score = 0;
+    this->loose = false;
 }
 
 GameHandling::~GameHandling()
