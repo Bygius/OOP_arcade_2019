@@ -157,7 +157,7 @@ void Core::displayScores(void)
     _display_module->setColor(IDisplayModule::WHITE);
     for (std::vector<std::pair<std::string, int>>::const_iterator it = bestscore.begin(); it != bestscore.end() && i < 5; it++) {
         _display_module->putText(it->first , 15, 450, 150 + (i * 40));
-        _display_module->putText(std::to_string(it->second) , 15, 500, 150 + ((i++ * 40)));
+        _display_module->putText(std::to_string(it->second) , 15, 550, 150 + ((i++ * 40)));
     }
 }
 
@@ -274,7 +274,8 @@ void Core::EnterPlayerName()
     char buff = _display_module->getKeyCode();
 
     _display_module->putText("Enter your Name :", 20, 10, 10);
-    if (((buff >= 'A' && buff <= 'Z') || (buff >= 'a' && buff <= 'z')) && is_pressed == false && name.size() < 6) {
+    _display_module->putText("Press enter to continue", 20, 200, 400);
+    if (((buff >= 'A' && buff <= 'Z') || (buff >= 'a' && buff <= 'z')) && is_pressed == false && name.size() < 10) {
         name += buff;
         is_pressed = true;
     } else if (_display_module->isKeyPressed(IDisplayModule::BACKSPACE)) {
