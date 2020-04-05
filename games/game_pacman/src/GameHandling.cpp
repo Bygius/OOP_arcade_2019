@@ -17,6 +17,13 @@ GameHandling::~GameHandling()
 {
 }
 
+void GameHandling::reset(void)
+{
+    this->loose = false;
+    this->_score = 0;
+    this->lvl = 1;
+}
+
 int GameHandling::get_lvl(void) const
 {
     return (this->lvl);
@@ -37,6 +44,11 @@ bool GameHandling::get_loose(void) const
     return (this->loose);
 }
 
+void GameHandling::set_loose(bool value)
+{
+    this->loose = value;
+}
+
 bool GameHandling::check_win(std::unique_ptr<MapPacman> &map, int score)
 {
     if (map->winFood() == true) {
@@ -48,11 +60,14 @@ bool GameHandling::check_win(std::unique_ptr<MapPacman> &map, int score)
         
 }
 
-void GameHandling::check_loose(std::unique_ptr<Player> &player)
+bool GameHandling::check_loose(std::unique_ptr<Player> &player)
 {
-    if (player->getHealth() == 1)
+    if (player->getHealth() == 1) {
         this->loose = true;
-    return;
+        return (true);
+    }
+        
+    return (false);
 }
 
 void GameHandling::save_score(int score)
@@ -68,9 +83,9 @@ void GameHandling::draw_loose(IDisplayModule &lib)
     lib.setColor(IDisplayModule::Colors::YELLOW);
     lib.putText("PACMAN", 30, 250, 0);
     lib.setColor(IDisplayModule::Colors::RED);
-    lib.putText("GAME OVER", 60, 170, 150);
-    lib.putText("YOUR SCORE : ", 30, 150, 300);
-    lib.putText(new_score, 30, 370, 300);
-    lib.putText("(press space to restart)", 20, 230, 400);
+    lib.putText("GAME OVER", 60, 140, 150);
+    lib.putText("YOUR SCORE : ", 30, 190, 250);
+    lib.putText(new_score, 30, 410, 250);
+    lib.putText("(press space to restart)", 20, 210, 400);
     lib.render();
 }
