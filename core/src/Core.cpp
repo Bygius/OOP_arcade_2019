@@ -177,7 +177,7 @@ void Core::menu(void)
     _display_module->putText("Select a lib" , 25, 30, 100);
     _display_module->putText("Select a game" , 25, 250, 100);
     _display_module->putText("High scores" , 25, 450, 100);
-
+    _display_module->putText("Press space to continue", 20, 200, 400);
     displayButton(libList, x_pos, y_pos, (int)libList.size(), 1);
     displayButton(gameList, x_pos, y_pos, (int)gameList.size(), 2);
 
@@ -289,7 +289,6 @@ void Core::EnterPlayerName()
         _player_name = name.substr(1, name.size());
         _game_module->setPlayerName(_player_name);
     }
-    //_display_module->putText(_player_name.c_str() , 20, 450, 70);
 }
 
 void Core::run(void)
