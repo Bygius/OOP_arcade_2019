@@ -33,6 +33,7 @@ class Core {
         void EnterPlayerName(void);
         void menu(void);
         void displayButton(std::vector<std::string> list, int cursor_x, int cursor_y, int max_y, int column);
+        void displayScores(void);
         void actionButton(std::vector<std::string> liblist, std::vector<std::string> gamelist, int cursor_x, int cursor_y);
         void updateLibrary(void);
 

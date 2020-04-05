@@ -145,6 +145,22 @@ void Core::actionButton(std::vector<std::string> liblist, std::vector<std::strin
     } else
         load_status = true;
 }
+
+void Core::displayScores(void)
+{
+    int i = 0;
+    std::vector<std::pair<std::string, int>> bestscore;
+    try {
+        bestscore = _game_module->getBestScores();
+    } catch (const std::exception &e) {
+        throw CoreError("Cannot load best score");
+    }
+    _display_module->setColor(IDisplayModule::WHITE);
+    for (std::vector<std::pair<std::string, int>>::const_iterator it = bestscore.begin(); it != bestscore.end(); it++)
+        _display_module->putText(std::to_string(it->second) , 15, 450, 150 + (i++ * 20));
+
+}
+
 void Core::menu(void)
 {
     static int x_pos = 1;
@@ -163,8 +179,6 @@ void Core::menu(void)
     _display_module->putText("Select a lib" , 25, 30, 100);
     _display_module->putText("Select a game" , 25, 250, 100);
     _display_module->putText("High scores" , 25, 450, 100);
-    _display_module->putText(_player_name.c_str() , 20, 450, 70);
-
 
     displayButton(libList, x_pos, y_pos, (int)libList.size(), 1);
     displayButton(gameList, x_pos, y_pos, (int)gameList.size(), 2);
@@ -250,6 +264,7 @@ void Core::menu(void)
         status = true;
         elapsed = clock();
     }
+    displayScores();
 }
 
 void Core::EnterPlayerName()
@@ -273,9 +288,10 @@ void Core::EnterPlayerName()
     _display_module->setColor(IDisplayModule::WHITE);
     _display_module->putText(name, 20, 20, 50);
     if (_display_module->isKeyPressed(IDisplayModule::ENTER) && name.size() > 1) {
-        _set_name  = false;
-        _player_name = name.substr(1, name.size());
+         _set_name  = false;
+         _player_name = name.substr(1, name.size());
     }
+    // _display_module->putText(_player_name.c_str() , 20, 450, 70);
 }
 
 void Core::run(void)
@@ -286,7 +302,6 @@ void Core::run(void)
         _display_module->clear();
         if (_display_module->shouldExit())
             break;
-
         if (_set_name)
             EnterPlayerName();
         else {
@@ -320,6 +335,7 @@ Core::Core(std::string dipslay_module_path)
     _set_name = true;
     _display_module_loader = std::make_unique<DLLoader<IDisplayModule>>("./lib/", dipslay_module_path);
     _game_module_loader = std::make_unique<DLLoader<IGameModule>>("./games/", gameList[0]);
+    std::cout << "Default game loaded : " << gameList[0] << std::endl;
     _display_module = _display_module_loader->getInstance();
     _game_module = _game_module_loader->getInstance();
     _menu = true;

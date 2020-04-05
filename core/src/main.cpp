@@ -10,7 +10,7 @@
 
 int main(int ac, char **av)
 {
-    if (av[1] == NULL) {
+    if (ac == 1) {
         std::cout << "USAGE:" << std::endl;
         std::cout << "      " << av[0] << " [graphical library]" << std::endl;
         return 84;
