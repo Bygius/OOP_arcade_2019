@@ -19,6 +19,7 @@ Pacman::Pacman() : _lib_name("Pacman")
     this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::RED, 217, _game->get_lvl()));
     this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::BLUE, 264, _game->get_lvl()));
     this->_begin = clock();
+    this->_name = "Pierre";
 }
 
 void Pacman::reset()
@@ -90,10 +91,14 @@ std::vector<std::pair<std::string, int>> Pacman::getBestScores() const
     std::string delimiter = ":";
     std::string line;
     size_t index;
-    std::string name;
+    std::string name = "";
     int score;
 
     file.open("games/.saves/Pacman");
+    if (!file) {
+        bestscore.push_back(make_pair(name, 0));
+        return (bestscore);
+    }
     while (std::getline(file, line)) {
         index = line.find(delimiter);
         name = line.substr(0, index);
@@ -172,10 +177,8 @@ void Pacman::update(const IDisplayModule &lib)
 
 void Pacman::render(IDisplayModule &lib) const
 {
-    
-
     // Print best scores
-    //    float y_pos = 200;
+    // float y_pos = 200;
     // for (std::vector<std::pair<std::string, int>>::const_iterator it = this->_bestscore.begin(); it != this->_bestscore.end(); it++) {
     //     float x_pos = 200;
     //     std::string _name_p = it->first;
@@ -183,10 +186,6 @@ void Pacman::render(IDisplayModule &lib) const
     //     lib.putText(_name_p, 24, x_pos, y_pos);
     //     lib.putText(score, 24, x_pos + 100, y_pos);
     //     y_pos += 50;
-    // }
-    // if (this->_game->get_loose() == true) {
-    //     while (lib.isKeyPressed(IDisplayModule::SPACE) == false)
-    //         this->_game->draw_loose(lib);
     // }
     if (this->_game->get_loose() == false) {
         lib.setColor(IDisplayModule::Colors::YELLOW);
