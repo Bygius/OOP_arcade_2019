@@ -8,17 +8,16 @@
 #include "Pacman.hpp"
 #include <memory>
 
-static int ghst = 1;
-
 Pacman::Pacman() : _lib_name("Pacman")
 {
-    this->_player =  new Player(240, 216);
-    this->_map = new MapPacman();
+    this->_player = std::make_unique<Player>(240, 216);
+    this->_map = std::make_unique<MapPacman>();
     this->x1 = 0;
     this->y1 = 0;
-    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::MAGENTA, 240));
-    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::RED, 217));
-    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::BLUE, 264));
+    this->lvl = 1;
+    this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::MAGENTA, 240, this->lvl));
+    this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::RED, 217, this->lvl));
+    this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::BLUE, 264, this->lvl));
     this->_begin = clock();
 }
 
@@ -28,9 +27,9 @@ void Pacman::reset()
     this->_map->reset();
     this->_begin = clock();
     this->_ghosts.erase(this->_ghosts.begin(), this->_ghosts.end());
-    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::MAGENTA, 240));
-    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::RED, 217));
-    this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::BLUE, 264));
+    this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::MAGENTA, 240, this->lvl));
+    this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::RED, 217, this->lvl));
+    this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::BLUE, 264, this->lvl));
 }
 
 bool Pacman::loadFromFile(const std::string &filepath)
@@ -74,51 +73,56 @@ std::vector<std::pair<std::string, int>> Pacman::getBestScores() const
     return (bestscore);
 }
 
-void Pacman::update(const IDisplayModule &lib)
+void Pacman::freeGhosts(void)
 {
     clock_t end = clock();
-
-    _player->setDirection(lib);
-    _player->checkFood(_map);
-    _player->movePlayer(_map);
-    if (this->checkTest() == true) {
-        _player->setHealth(-1);
-        _player->resetPos(240, 216);
-        this->_begin = clock();
-        this->_ghosts.erase(this->_ghosts.begin(), this->_ghosts.end());
-        this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::MAGENTA, 240));
-        this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::RED, 217));
-        this->_ghosts.push_back(Ghosts(IDisplayModule::Colors::BLUE, 264));
-    }
-    
     double duration = (end - this->_begin)/(double)CLOCKS_PER_SEC;
 
-    for (std::vector<Ghosts>::iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++) {
-        if ((duration > 1.0)  && (ghst == 1) && (it->getFree() == false)) {
-            it->setFree(true);
-            it->setPosY(144, 136);
-            it->setFuturDirection(1);
+    for (std::vector<std::unique_ptr<Ghosts>>::iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++) {
+        if ((duration > 1.0)  && (ghst == 1) && (it->get()->getFree() == false)) {
+            it->get()->setFree(true);
+            it->get()->setPosY(144, 136);
+            it->get()->setFuturDirection(1);
         }
-        if ((duration > 2.0)  && (ghst == 2) && (it->getFree() == false)) {
-            it->setFree(true);
-            it->setPosY(144, 136);
-            it->setPosX(240, 240);
-            it->setFuturDirection(0);
+        if ((duration > 2.0)  && (ghst == 2) && (it->get()->getFree() == false)) {
+            it->get()->setFree(true);
+            it->get()->setPosY(144, 136);
+            it->get()->setPosX(240, 240);
+            it->get()->setFuturDirection(0);
         }
-        if ((duration > 3.0)  && (ghst == 3) && (it->getFree() == false)) {
-            it->setFree(true);
-            it->setPosY(144, 136);
-            it->setPosX(240, 240);
-            it->setFuturDirection(1);
+        if ((duration > 3.0)  && (ghst == 3) && (it->get()->getFree() == false)) {
+            it->get()->setFree(true);
+            it->get()->setPosY(144, 136);
+            it->get()->setPosX(240, 240);
+            it->get()->setFuturDirection(1);
         }
-        if (it->getFree() == true) {
-            it->setDirection(_map);
-            it->moveGhost(_map);
+        if (it->get()->getFree() == true) {
+            it->get()->setDirection(_map);
+            it->get()->moveGhost(_map);
         }
         ghst++;
     }
     ghst = 1;
+}
 
+void Pacman::update(const IDisplayModule &lib)
+{
+    
+
+    _player->setDirection(lib);
+    _player->checkFood(_map);
+    _player->movePlayer(_map);
+    if (this->checkHit() == true) {
+        _player->setHealth(-1);
+        _player->resetPos(240, 216);
+        this->_begin = clock();
+        this->_ghosts.erase(this->_ghosts.begin(), this->_ghosts.end());
+        this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::MAGENTA, 240, this->lvl));
+        this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::RED, 217, this->lvl));
+        this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::BLUE, 264, this->lvl));
+    }
+    this->freeGhosts();
+    this->win();
 }
 
 void Pacman::render(IDisplayModule &lib) const
@@ -134,8 +138,8 @@ void Pacman::render(IDisplayModule &lib) const
     _map->draw_food(lib);
     lib.setColor(IDisplayModule::YELLOW);
     _player->displayPlayer(lib);
-    for (std::vector<Ghosts>::const_iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++)
-        it->draw(lib);
+    for (std::vector<std::unique_ptr<Ghosts>>::const_iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++)
+        it->get()->draw(lib);
 }
 
 const std::string &Pacman::getLibName() const
@@ -148,11 +152,19 @@ extern "C" std::unique_ptr<IGameModule> createLib(void)
     return std::make_unique<Pacman>();
 }
 
-bool Pacman::checkTest(void)
+bool Pacman::checkHit(void)
 {
-    for (std::vector<Ghosts>::iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++) {
-        if (it->checkCollision(_player->getPosX(), _player->getPosY(), _player->getWidth(), _player->getHeight()) == true)
+    for (std::vector<std::unique_ptr<Ghosts>>::iterator it = this->_ghosts.begin(); it != this->_ghosts.end(); it++) {
+        if (it->get()->checkCollision(_player->getPosX(), _player->getPosY(), _player->getWidth(), _player->getHeight()) == true)
             return true;
     }
     return false;
+}
+
+void Pacman::win(void)
+{
+    if (_map->winFood() == true) {
+        this->reset();
+        this->lvl *= 2;
+    }
 }
