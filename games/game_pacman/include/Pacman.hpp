@@ -57,6 +57,6 @@ class Pacman : public IGameModule
         void freeGhosts(void);
 };
 
-bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j);
+static bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j);
 
 #endif /* !Pacman_HPP_ */
