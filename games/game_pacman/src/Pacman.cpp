@@ -47,9 +47,8 @@ bool Pacman::loadFromFile(const std::string &filepath)
     int score;
 
     file.open(filepath);
-    if (!file) {
+    if (!file)
         return (false);
-    }
     while (std::getline(file, line)) {
         index = line.find(delimiter);
         name = line.substr(0, index);
@@ -70,10 +69,8 @@ bool Pacman::loadFromFile()
     int score;
 
     file.open("games/.saves/Pacman");
-    if (!file) {
-        this->_bestscore.push_back(make_pair(name, 0));
+    if (!file)
         return (false);
-    }
     while (std::getline(file, line)) {
         index = line.find(delimiter);
         name = line.substr(0, index);

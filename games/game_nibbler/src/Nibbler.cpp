@@ -40,9 +40,8 @@ bool Nibbler::loadFromFile(const std::string &filepath)
     int score;
 
     file.open(filepath);
-    if (!file) {
+    if (!file)
         return (false);
-    }
     while (std::getline(file, line)) {
         index = line.find(delimiter);
         name = line.substr(0, index);
@@ -63,9 +62,8 @@ bool Nibbler::loadFromFile()
     int score;
 
     file.open("./games/.saves/Nibbler");
-    if (!file) {
+    if (!file)
         return (false);
-    }
     while (std::getline(file, line)) {
         index = line.find(delimiter);
         name = line.substr(0, index);
