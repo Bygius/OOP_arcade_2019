@@ -81,13 +81,13 @@ void MapPacman::initFood() // x + 32 et y + 40
     this->_foods.push_back(std::make_unique<Food>(180, 100, 8, 8));
     this->_foods.push_back(std::make_unique<Food>(212, 100, 8, 8));
     this->_foods.push_back(std::make_unique<Food>(244, 100, 8, 8));
+
     this->_foods.push_back(std::make_unique<Food>(180, 140, 8, 8));
     this->_foods.push_back(std::make_unique<Food>(212, 140, 8, 8));
     this->_foods.push_back(std::make_unique<Food>(244, 140, 8, 8));
     this->_foods.push_back(std::make_unique<Food>(180, 180, 8, 8));
     this->_foods.push_back(std::make_unique<Food>(180, 220, 8, 8));
     this->_foods.push_back(std::make_unique<Food>(212, 220, 8, 8));
-    this->_foods.push_back(std::make_unique<Food>(244, 220, 8, 8));
     this->_foods.push_back(std::make_unique<Food>(180, 260, 8, 8));
     this->_foods.push_back(std::make_unique<Food>(212, 260, 8, 8));
     this->_foods.push_back(std::make_unique<Food>(244, 260, 8, 8));
