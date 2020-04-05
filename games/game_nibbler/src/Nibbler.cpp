@@ -30,6 +30,11 @@ void Nibbler::reset()
     this->_scorelevel = 0;
 }
 
+bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j)
+{
+    return (i.second > j.second);
+}
+
 bool Nibbler::loadFromFile(const std::string &filepath)
 {
     std::ifstream file;
@@ -110,11 +115,6 @@ std::pair<std::string, int> Nibbler::getScore() const
     ret.first = this->_name;
     ret.second = this->_score;
     return ret;
-}
-
-bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j)
-{
-    return (i.second > j.second);
 }
 
 std::vector<std::pair<std::string, int>> Nibbler::getBestScores() const
@@ -201,7 +201,6 @@ void Nibbler::render(IDisplayModule &lib) const
         lib.setColor(IDisplayModule::WHITE);
         lib.putText("PRESS 'SPACE' TO REPLAY", 30, 130, 300);
     }
-    
 }
 
 const std::string &Nibbler::getLibName() const

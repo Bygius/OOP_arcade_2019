@@ -45,6 +45,6 @@ class Nibbler : public IGameModule
         const std::string &getLibName() const;
 };
 
-bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j);
+static bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j);
 
 #endif /* !Nibbler_HPP_ */
