@@ -43,14 +43,28 @@ bool Nibbler::loadFromFile()
 
 bool Nibbler::saveToFile(const std::string &filepath) const
 {
-    (void)filepath;
+    std::ofstream file;
+    std::string new_score = "\n" + this->_name + ":" + std::to_string(this->_score);
+
+    file.open(filepath, std::ios::app);
+    if (!file)
+        return (false);
+    file << new_score;
+    file.close();
     return false;
 }
 
 bool Nibbler::saveToFile() const
 {
-    return false;
-}
+    std::ofstream file;
+    std::string new_score = "\n" + this->_name + ":" + std::to_string(this->_score);
+
+    file.open("games/.saves/Nibbler", std::ios::app);
+    if (!file)
+        return (false);
+    file << new_score;
+    file.close();
+    return true;}
 
 void Nibbler::setPlayerName(const std::string &name)
 {
@@ -65,10 +79,34 @@ std::pair<std::string, int> Nibbler::getScore() const
     return ret;
 }
 
+bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j)
+{
+    return (i.second > j.second);
+}
+
 std::vector<std::pair<std::string, int>> Nibbler::getBestScores() const
 {
-    return {};
-}
+    std::vector<std::pair<std::string, int>> bestscore;
+    std::ifstream file;
+    std::string delimiter = ":";
+    std::string line;
+    size_t index;
+    std::string name = "";
+    int score;
+
+    file.open("games/.saves/Nibbler");
+    if (!file) {
+        bestscore.push_back(make_pair(name, 0));
+        return (bestscore);
+    }
+    while (std::getline(file, line)) {
+        index = line.find(delimiter);
+        name = line.substr(0, index);
+        std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
+        bestscore.push_back(make_pair(name, score));
+    }
+    std::sort(bestscore.begin(), bestscore.end(), compare);
+    return (bestscore);}
 
 static float count_second(clock_t backup_clock)
 {
@@ -108,6 +146,7 @@ void Nibbler::update(const IDisplayModule &lib)
     }
     if (this->_caterpillar->isLose() || this->_time <= 0) {
         if (lib.isKeyPressed(IDisplayModule::Keys::SPACE)) {
+            this->saveToFile();
             reset();
         }
     }

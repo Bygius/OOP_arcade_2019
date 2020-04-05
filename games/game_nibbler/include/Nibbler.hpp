@@ -11,6 +11,9 @@
 #include "Arcade_interfaces.hpp"
 #include "Caterpillar.hpp"
 #include "MapNibbler.hpp"
+#include <fstream>
+#include <sstream>
+#include <algorithm>
 
 class Nibbler : public IGameModule
 {

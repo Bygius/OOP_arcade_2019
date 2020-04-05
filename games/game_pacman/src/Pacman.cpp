@@ -50,6 +50,8 @@ bool Pacman::saveToFile(const std::string &filepath) const
     std::string new_score = "\n" + this->_name + ":" + this->_score;
 
     file.open(filepath, std::ios::app);
+    if (!file)
+        return (false);
     file << new_score;
     file.close();
     return false;
@@ -61,6 +63,8 @@ bool Pacman::saveToFile() const
     std::string new_score = "\n" + this->_name + ":" + this->_score;
 
     file.open("games/.saves/Pacman", std::ios::app);
+    if (!file)
+        return (false);
     file << new_score;
     file.close();
     return true;
