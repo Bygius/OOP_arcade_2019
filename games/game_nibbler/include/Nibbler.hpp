@@ -26,6 +26,7 @@ class Nibbler : public IGameModule
         int _level;
         int _scorelevel;
         const std::string _libname;
+        std::vector<std::pair<std::string, int>> _bestscore;
 
     public:
         Nibbler();
@@ -43,5 +44,7 @@ class Nibbler : public IGameModule
         void render(IDisplayModule &lib) const;
         const std::string &getLibName() const;
 };
+
+bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j);
 
 #endif /* !Nibbler_HPP_ */

@@ -19,7 +19,6 @@ Pacman::Pacman() : _lib_name("Pacman")
     this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::RED, 217, _game->get_lvl()));
     this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::BLUE, 264, _game->get_lvl()));
     this->_begin = clock();
-    this->_name = "Pierre";
 }
 
 void Pacman::reset()
@@ -33,15 +32,56 @@ void Pacman::reset()
     this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::BLUE, 264, _game->get_lvl()));
 }
 
+bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j)
+{
+    return (i.second > j.second);
+}
+
 bool Pacman::loadFromFile(const std::string &filepath)
 {
-    (void)filepath;
-    return false;
+    std::ifstream file;
+    std::string delimiter = ":";
+    std::string line;
+    size_t index;
+    std::string name = "";
+    int score;
+
+    file.open(filepath);
+    if (!file) {
+        return (false);
+    }
+    while (std::getline(file, line)) {
+        index = line.find(delimiter);
+        name = line.substr(0, index);
+        std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
+        this->_bestscore.push_back(make_pair(name, score));
+    }
+    std::sort(this->_bestscore.begin(), this->_bestscore.end(), compare);
+    return (true);
 }
 
 bool Pacman::loadFromFile()
 {
-    return false;
+    std::ifstream file;
+    std::string delimiter = ":";
+    std::string line;
+    size_t index;
+    std::string name = "";
+    int score;
+
+    file.open("games/.saves/Pacman");
+    if (!file) {
+        this->_bestscore.push_back(make_pair(name, 0));
+        return (false);
+    }
+    while (std::getline(file, line)) {
+        index = line.find(delimiter);
+        name = line.substr(0, index);
+        std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
+        this->_bestscore.push_back(make_pair(name, score));
+    }
+    std::sort(this->_bestscore.begin(), this->_bestscore.end(), compare);
+    return (true);
 }
 
 bool Pacman::saveToFile(const std::string &filepath) const
@@ -54,7 +94,7 @@ bool Pacman::saveToFile(const std::string &filepath) const
         return (false);
     file << new_score;
     file.close();
-    return false;
+    return true;
 }
 
 bool Pacman::saveToFile() const
@@ -83,34 +123,9 @@ std::pair<std::string, int> Pacman::getScore() const
     return (score);
 }
 
-bool compare(const std::pair<std::string, int>&i, const std::pair<std::string, int>&j)
-{
-    return (i.second > j.second);
-}
-
 std::vector<std::pair<std::string, int>> Pacman::getBestScores() const
 {
-    std::vector<std::pair<std::string, int>> bestscore;
-    std::ifstream file;
-    std::string delimiter = ":";
-    std::string line;
-    size_t index;
-    std::string name = "";
-    int score;
-
-    file.open("games/.saves/Pacman");
-    if (!file) {
-        bestscore.push_back(make_pair(name, 0));
-        return (bestscore);
-    }
-    while (std::getline(file, line)) {
-        index = line.find(delimiter);
-        name = line.substr(0, index);
-        std::istringstream(line.substr(index + 1, line.length() - index)) >> score;
-        bestscore.push_back(make_pair(name, score));
-    }
-    std::sort(bestscore.begin(), bestscore.end(), compare);
-    return (bestscore);
+    return (this->_bestscore);
 }
 
 void Pacman::freeGhosts(void)
@@ -181,16 +196,6 @@ void Pacman::update(const IDisplayModule &lib)
 
 void Pacman::render(IDisplayModule &lib) const
 {
-    // Print best scores
-    // float y_pos = 200;
-    // for (std::vector<std::pair<std::string, int>>::const_iterator it = this->_bestscore.begin(); it != this->_bestscore.end(); it++) {
-    //     float x_pos = 200;
-    //     std::string _name_p = it->first;
-    //     std::string score = std::to_string(it->second);
-    //     lib.putText(_name_p, 24, x_pos, y_pos);
-    //     lib.putText(score, 24, x_pos + 100, y_pos);
-    //     y_pos += 50;
-    // }
     if (this->_game->get_loose() == false) {
         lib.setColor(IDisplayModule::Colors::YELLOW);
         lib.putText("PACMAN", 30, 250, 0);
