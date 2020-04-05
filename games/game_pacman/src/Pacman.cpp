@@ -177,7 +177,8 @@ void Pacman::update(const IDisplayModule &lib)
         this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::RED, 217, _game->get_lvl()));
         this->_ghosts.push_back(std::make_unique<Ghosts>(IDisplayModule::Colors::BLUE, 264, _game->get_lvl()));
     }
-    this->_score = std::to_string(this->getScore().second + this->_game->get_score());
+    if (this->_game->get_loose() == false)
+        this->_score = std::to_string(this->getScore().second + this->_game->get_score());
     this->_bestscore = this->getBestScores();
     this->freeGhosts();
     if (this->_game->check_win(this->_map, std::stoi(this->_score)))

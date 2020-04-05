@@ -132,6 +132,7 @@ static float count_second(clock_t backup_clock)
 
 void Nibbler::update(const IDisplayModule &lib)
 {
+    static bool save = false;
     static std::clock_t start = std::clock();
     if (count_second(start) > 0.5) {
         start = std::clock();
@@ -159,9 +160,13 @@ void Nibbler::update(const IDisplayModule &lib)
         this->_caterpillar->incSpeed();
     }
     if (this->_caterpillar->isLose() || this->_time <= 0) {
-        if (lib.isKeyPressed(IDisplayModule::Keys::SPACE)) {
+        if (save == false) {
             this->saveToFile();
+            save = true;
+        }
+        if (lib.isKeyPressed(IDisplayModule::Keys::SPACE)) {
             reset();
+            save = false;
         }
     }
 }
