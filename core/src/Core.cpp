@@ -337,6 +337,7 @@ Core::Core(std::string dipslay_module_path)
     _display_module = _display_module_loader->getInstance();
     _game_module = _game_module_loader->getInstance();
     _menu = true;
+    _player_name = "";
 }
 
 Core::~Core()
