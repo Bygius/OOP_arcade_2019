@@ -254,6 +254,7 @@ void Core::EnterPlayerName()
 
     char buff = _display_module->getKeyCode();
 
+    _display_module->putText("Enter your Name :", 20, 10, 10);
     if (((buff >= 'A' && buff <= 'Z') || (buff >= 'a' && buff <= 'z')) && is_pressed == false) {
         name += buff;
         is_pressed = true;
@@ -264,7 +265,7 @@ void Core::EnterPlayerName()
         is_pressed = false;
     }
     _display_module->setColor(IDisplayModule::WHITE);
-    _display_module->putText(name, 20, 10, 10);
+    _display_module->putText(name, 20, 20, 50);
     if (_display_module->isKeyPressed(IDisplayModule::ENTER) && name.size() > 1) {
         _set_name  = false;
         name = name.substr(1, name.size());
